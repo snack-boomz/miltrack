@@ -39,9 +39,9 @@ function App() {
         <IndivTag elements={ testObject } component="medical"/>
         <SubTag elements={ testArrayOfObjects } currentSM= { userObject }/>
           <Routes>
-            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/" element={<Dashboard/>} />
+            <Route path="/dashboard" element={<Dashboard/>} />
             <Route path="/:userid" element={<Profile />} />
           </Routes>
       </Router>
