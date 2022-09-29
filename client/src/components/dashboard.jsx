@@ -2,6 +2,21 @@
 import React, { useState, useEffect } from "react";
 import './dashboard.css';
 import styled from 'styled-components';
+import IndivTag from "./IndivTag";
+import SubTag from "./SubTag";
+
+const userObject = {
+    id: 10, username: "billy", password: "a;sdkfjn;alkshdfoiajsd;lfj", rank: "SSG", full_name: "Justin Hernandez", status: "TDY"
+  }
+
+  const testObject = {
+    id: 1, pha_date: Date('2021-03-21'), dental_date: Date('2021-03-21'), hearing_date: Date('2021-03-21') 
+  }
+
+  const testArrayOfObjects = [
+    { id: 2, pha_date: Date('2021-03-21'), dental_date: Date('2021-03-21'), hearing_date: Date('2021-03-21'), vaccination_date: Date('2021-03-21') },
+    { id: 3, training_name: Date('2021-03-21'), training_date: Date('2019-02-01') },
+  ]
 
 const data_user_basic = [
     { "id": 1, username: "Joe Smith", medical_status: 'red', unit_id: '0233, 10th SFG(A)' }
@@ -35,6 +50,7 @@ function Dashboard() {
         <>
             {data_user_basic.map((val, key) => {
                 return (
+                    <>
                     <container id='welcome_box'>
                         <tr key={key}>
                         <div>{val.unit_id}</div>
@@ -42,6 +58,9 @@ function Dashboard() {
                         <div style={{fontStyle: 'italic'}}>"Stay GREEN to stay in the fight!"</div>
                         </tr>
                     </container>
+                         <IndivTag elements={ testObject } component="medical"/>
+                            <SubTag elements={ testArrayOfObjects } currentSM= { userObject }/>
+                            </>
                 )
             })}
         </>
