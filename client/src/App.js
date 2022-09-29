@@ -20,18 +20,18 @@ function App() {
     setState1
   }
 
-  const testObject = {
-    id: 1, pha_date: new new Date('2021-03-21').toString().toString(), dental_date: new Date('2021-03-21').toString(), hearing_date: new Date('2021-03-21').toString() 
-  }
+  // const testObject = {
+  //   id: 1, pha_date: new new Date('2021-03-21').toString().toString(), dental_date: new Date('2021-03-21').toString(), hearing_date: new Date('2021-03-21').toString() 
+  // }
 
-  const userObject = {
-    id: 10, username: "billy", password: "a;sdkfjn;alkshdfoiajsd;lfj", rank: "SSG", full_name: "Justin Hernandez", status: "TDY"
-  }
+  // const userObject = {
+  //   id: 10, username: "billy", password: "a;sdkfjn;alkshdfoiajsd;lfj", rank: "SSG", full_name: "Justin Hernandez", status: "TDY"
+  // }
 
-  const testArrayOfObjects = [
-    { id: 2, pha_date: new Date('2021-03-21').toString(), dental_date: new Date('2021-03-21').toString(), hearing_date: new Date('2021-03-21').toString(), vaccination_date: new Date('2021-03-21').toString() },
-    { id: 3, training_name: new Date('2021-03-21').toString(), training_date: Date('2019-02-01') },
-  ]
+  // const testArrayOfObjects = [
+  //   { id: 2, pha_date: new Date('2021-03-21').toString(), dental_date: new Date('2021-03-21').toString(), hearing_date: new Date('2021-03-21').toString(), vaccination_date: new Date('2021-03-21').toString() },
+  //   { id: 3, training_name: new Date('2021-03-21').toString(), training_date: Date('2019-02-01') },
+  // ]
 
   return (
     <AppContext.Provider value={ getterSetters }>

@@ -10,12 +10,12 @@ const userObject = {
   }
 
   const testObject = {
-    id: 1, pha_date: Date('2021-03-21'), dental_date: Date('2021-03-21'), hearing_date: Date('2021-03-21') 
+    id: 1, pha_date: '2021-03-21', dental_date: '2021-03-21', hearing_date: '2021-03-21' 
   }
 
   const testArrayOfObjects = [
-    { id: 2, pha_date: Date('2021-03-21'), dental_date: Date('2021-03-21'), hearing_date: Date('2021-03-21'), vaccination_date: Date('2021-03-21') },
-    { id: 3, training_name: Date('2021-03-21'), training_date: Date('2019-02-01') },
+    { id: 2, pha_date: '2022-12-30', dental_date: '2022-10-15', hearing_date: '2021-03-21', vaccination_date: '2021-03-21' },
+    { id: 3, training_name: '2021-03-21', training_date: '2021-03-21' },
   ]
 
 const data_user_basic = [
@@ -50,17 +50,20 @@ function Dashboard() {
         <>
             {data_user_basic.map((val, key) => {
                 return (
-                    <>
-                    <container id='welcome_box'>
+                    <section key={key} id="wrapper" className="pb-8 m-12">
+                    <section id='welcome_box'>
                         <tr key={key}>
                         <div>{val.unit_id}</div>
                         <div>Welcome, {val.username}</div>
-                        <div style={{fontStyle: 'italic'}}>"Stay GREEN to stay in the fight!"</div>
+                        <div style={{fontStyle: 'italic'}}>"Stay <strong className="text-[#A3BD8A]">GREEN</strong> to stay in the fight!"</div>
                         </tr>
-                    </container>
-                         <IndivTag elements={ testObject } component="medical"/>
-                            <SubTag elements={ testArrayOfObjects } currentSM= { userObject }/>
-                            </>
+                    </section>
+                         {/* <IndivTag elements={ testObject } component="medical"/> */}
+                         {/* Logged in Soldier below */}
+                            <SubTag elements={ testArrayOfObjects } currentSM= { userObject } key={key}/> 
+                            <hr className="w-10/12 mx-auto border-t-2 mt-12"/>
+                            <h3 className="text-2xl font-bold italic text-center mx-auto mt-12">SMs tracked:</h3>
+                    </section>
                 )
             })}
         </>
