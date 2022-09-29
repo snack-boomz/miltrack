@@ -37,8 +37,6 @@ function App() {
     <AppContext.Provider value={ getterSetters }>
       <Router>
         <Navbar />
-        <IndivTag elements={ testObject } component="medical"/>
-        <SubTag elements={ testArrayOfObjects } currentSM= { userObject }/>
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/register" element={<Register />} />
