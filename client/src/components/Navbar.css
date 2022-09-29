@@ -104,8 +104,10 @@
   color: #224A4F !important;
 }
 
-.quick-links {
-    text-decoration: none;
+.quick-link {
+    font-weight: bold;
+    font-size: 25px;
+    padding-top: 30px;
 }
 
 .links {
