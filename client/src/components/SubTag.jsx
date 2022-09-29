@@ -34,7 +34,7 @@ const SubTag = (props) => {
                             statusColor = "green";
                         }
                         console.log(statusColor);
-                        return <li key={key_index} className="border border-2 border-black border-double p-8 rounded-md shadow-lg"><strong>{key}</strong>: {statusColor}</li>;
+                        return <li key={key_index} className="border border-2 border-black border-double p-8 rounded-md shadow-lg"><strong>{typeof key == 'object' ? key.toString() : key}</strong>: {statusColor}</li>;
                     }
 
                 })

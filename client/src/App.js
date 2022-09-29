@@ -21,7 +21,7 @@ function App() {
   }
 
   const testObject = {
-    id: 1, pha_date: Date('2021-03-21'), dental_date: Date('2021-03-21'), hearing_date: Date('2021-03-21') 
+    id: 1, pha_date: new new Date('2021-03-21').toString().toString(), dental_date: new Date('2021-03-21').toString(), hearing_date: new Date('2021-03-21').toString() 
   }
 
   const userObject = {
@@ -29,8 +29,8 @@ function App() {
   }
 
   const testArrayOfObjects = [
-    { id: 2, pha_date: Date('2021-03-21'), dental_date: Date('2021-03-21'), hearing_date: Date('2021-03-21'), vaccination_date: Date('2021-03-21') },
-    { id: 3, training_name: Date('2021-03-21'), training_date: Date('2019-02-01') },
+    { id: 2, pha_date: new Date('2021-03-21').toString(), dental_date: new Date('2021-03-21').toString(), hearing_date: new Date('2021-03-21').toString(), vaccination_date: new Date('2021-03-21').toString() },
+    { id: 3, training_name: new Date('2021-03-21').toString(), training_date: Date('2019-02-01') },
   ]
 
   return (
