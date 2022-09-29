@@ -4,9 +4,9 @@
  */
 exports.up = function(knex) {
     return knex.schema.createTable('annual_training', table => {
-        table.increments();
+        table.increments('id');
         table.string('training_name');
-        table.datetime('training_date', { precision: 6 });
+        table.string('training_date');
         table.integer('users_id');
         table.foreign('users_id').references('users.id');
 
