@@ -1,3 +1,8 @@
+import styled from 'styled-components';
+import * as AiIcons from 'react-icons/ai';
+import * as IoIcons from 'react-icons/io';
+import * as GrIcons from 'react-icons/gr';
+
 
 const SubTag = (props) => {
     return (

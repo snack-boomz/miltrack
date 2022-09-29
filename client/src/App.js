@@ -9,6 +9,7 @@ import Profile from "./pages/Profile";
 import Navbar from "./components/Navbar";
 import IndivTag from "./components/IndivTag";
 import SubTag from "./components/SubTag";
+import styled from 'styled-components';
 
 function App() {
 
@@ -39,9 +40,9 @@ function App() {
         <IndivTag elements={ testObject } component="medical"/>
         <SubTag elements={ testArrayOfObjects } currentSM= { userObject }/>
           <Routes>
-            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/" element={<Dashboard/>} />
+            <Route path="/dashboard" element={<Dashboard/>} />
             <Route path="/:userid" element={<Profile />} />
           </Routes>
       </Router>
