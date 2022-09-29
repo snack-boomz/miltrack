@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { AppContext } from "./AppContext";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from './components/dashboard';
 import Profile from "./pages/Profile";
 import Navbar from "./components/Navbar";
 
