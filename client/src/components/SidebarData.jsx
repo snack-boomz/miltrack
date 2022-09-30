@@ -12,7 +12,7 @@ export const SidebarData = [
   },
   {
     title: 'logout',
-    path: '/login',
+    path: '/',
     icon: <IoIcons.IoIosPaper />,
     cName: 'nav-text'
   },

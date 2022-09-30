@@ -41,7 +41,7 @@ function Navbar() {
               );
             })}
             <div className="links-container">
-            <h2  className="link"
+            <h2  className="quick-link"
             style={{ color: '#1c464c', textDecorationLine: 'underline'}}>
                 Quick Links
             </h2>

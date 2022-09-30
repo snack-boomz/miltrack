@@ -12,11 +12,13 @@ import SubTag from "./components/SubTag";
 import styled from 'styled-components';
 
 function App() {
-
+  const [loggedUser, setLoggedUser] = useState({});
   const [ state1, setState1 ] = useState([]);
 
   const getterSetters = {
     state1,
+    loggedUser,
+    setLoggedUser,
     setState1
   }
 
@@ -45,7 +47,7 @@ function App() {
           </Routes>
       </Router>
     </AppContext.Provider>    
-  );
-}
+  )
+};
 
 export default App;
