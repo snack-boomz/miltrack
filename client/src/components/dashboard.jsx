@@ -14,8 +14,10 @@ const userObject = {
   }
 
   const testArrayOfObjects = [
+    { id: 1, current_status: "PDY"},
     { id: 2, pha_date: '2022-12-30', dental_date: '2022-10-15', hearing_date: '2021-03-21', vaccination_date: '2021-03-21' },
-    { id: 3, training_name: '2021-03-21', training_date: '2021-03-21' },
+    { id: 3, training_name: '2021-03-21', training_date: '2022-10-05' },
+
   ]
 
 const data_user_basic = [
@@ -58,7 +60,7 @@ function Dashboard() {
                         <div style={{fontStyle: 'italic'}}>"Stay <strong className="text-[#A3BD8A]">GREEN</strong> to stay in the fight!"</div>
                         </tr>
                     </section>
-                         {/* <IndivTag elements={ testObject } component="medical"/> */}
+                         <IndivTag elements={ testObject } component="medical"/>
                          {/* Logged in Soldier below */}
                             <SubTag elements={ testArrayOfObjects } currentSM= { userObject } key={key}/> 
                             <hr className="w-10/12 mx-auto border-t-2 mt-12"/>
