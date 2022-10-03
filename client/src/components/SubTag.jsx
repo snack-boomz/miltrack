@@ -8,13 +8,28 @@ import * as GrIcons from 'react-icons/gr';
 
 const SubTag = (props) => {
 
+    const colorHelper = (amber, red) => {
+
+        if (red) {
+            return 'bg-red-400 border border-2 border-black border-double p-8 rounded-md shadow-lg';
+        
+        } else if (amber) {
+            return 'bg-amber-400 border border-2 border-black border-double p-8 rounded-md shadow-lg'
+        
+        } else {
+            return 'bg-green-400 border border-2 border-black border-double p-8 rounded-md shadow-lg'
+        }
+    }
 
     return (
         <ul key="0" className="w-8/12 list-none flex flex-row flex-wrap gap-8 border border-2 border-gray border-double mx-auto my-8 p-16 bg-[#A3BD8A] rounded-lg shadow-2xl justify-start">
             <h2 className="text-3xl font-bold border-r-2 py-8 pr-8">{props.currentSM.rank} {props.currentSM.full_name}</h2>
-            <h2 className="text-3xl font-bold border-r-2 py-8 pr-8">Status: {props.currentSM.status}</h2>
             {props.elements.map((element, index) => {
-                return Object.keys(element).map((key, key_index) => {
+                let currentLabel = "";
+                let currentLabelStatus = "";
+                let amber = false;
+                let red = false;
+                Object.keys(element).map((key, key_index) => {
 
                     if (key === "id") {
                         return;
@@ -27,47 +42,75 @@ const SubTag = (props) => {
                             currentValue = value;
                         }
                     })
-                    if (index <= 0) {
-                        // console.log(key_index);
-                        // console.log(currentValue);
-                        let statusColor = "";
-                        // console.log(`${currentValue.valueOf()} : ${new Date('2020-01-01').toString().valueOf()}`)
+                    if (index <= 10) {
+                        console.log(key);
+                        console.log(currentValue);
 
-                        if (new Date(currentValue).valueOf() > Date.now()) {
-                            
-                            if (new Date(currentValue).valueOf() - Date.now() <= 2592000000) {
-                                statusColor = "orange";
+                        if (key === "current_status") {
+                            currentLabel = "Status";
+
+                            if (currentValue === "TDY") {
+                                currentLabelStatus = "TDY";
+                                red = true;
+                            } else if (currentValue === "Leave") {
+                                amber = true;
+                                currentLabelStatus = "Leave"
                             } else {
-                                statusColor = "green";
+                                currentLabelStatus = "PDY"
                             }
 
-                        } else if (new Date(currentValue).valueOf() < Date.now()) {
-                                statusColor = "red";
                         }
-                            
-                        // console.log(statusColor);
-                        return <li key={key_index} className={ statusColor === "green" ? `border border-2 border-black border-double p-8 rounded-md shadow-lg` : `bg-${statusColor}-400 border border-2 border-black border-double p-8 rounded-md shadow-lg` }><strong>{key}</strong>: {statusColor}</li>;
-                    }
+                        // console.log(key_index);
+                        // console.log(currentValue);
 
+                        // console.log(`${currentValue.valueOf()} : ${new Date('2020-01-01').toString().valueOf()}`)
+                        if (key === "pha_date" || key === "dental_date" || key === "hearing_date") {
+
+                            currentLabel = "Medical";
+
+                            if (new Date(currentValue).valueOf() > Date.now()) {
+                                
+                                if (new Date(currentValue).valueOf() - Date.now() <= 2592000000) {
+                                    amber = true;
+
+                                } else {
+                                    
+                                }
+
+                            } else if (new Date(currentValue).valueOf() < Date.now()) {
+                                    red = true;
+                                    currentLabelStatus = "red";
+                            }
+                        }
+
+                        if (key === "training_date") {
+                            
+                            currentLabel = "Annual Training";
+
+                            if (new Date(currentValue).valueOf() > Date.now()) {
+                                
+                                if (new Date(currentValue).valueOf() - Date.now() <= 2592000000) {
+                                    amber = true;
+                                    currentLabelStatus = "amber";
+
+                                } else {
+                                    
+                                }
+
+                            } else if (new Date(currentValue).valueOf() < Date.now()) {
+                                    red = true;
+                                    currentLabelStatus = "red";
+                            }
+
+                        }
+                        // console.log(statusColor);
+                        
+                    }
+                    
                 })
                 
-                
+                return <li key={index} className={ colorHelper(amber, red) }><strong>{currentLabel}:</strong> <br/><p className="text-center">{currentLabelStatus}</p> </li>;
 
-                
-
-                // console.log(currentKeys);
-                // if (currentKey === 'id') {
-                //     return <></>
-                // }
-
-                // let currentValue = "";
-                // Object.values(props.elements).map((value, value_index) => {
-                //     if (value_index === key_index) {
-                //         currentValue = value;
-                //     }
-                // })
-
-                // return <li key={key_index} className="border border-2 border-black border-double p-8 rounded-md shadow-lg"><strong>{key}</strong>: {currentValue}</li>;
             })}
         </ul>
     )
