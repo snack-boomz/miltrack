@@ -8,6 +8,7 @@ const app = express();
 app.use(express.json())
 app.use(cors());
 
+
 app.get('/users', (req, res) => {
     knex.select('*')
     .from('users')
@@ -301,6 +302,7 @@ app.delete('/static_skills/:id', (req, res) => {
         .where({ id: id })
         .del()
         .then(res.send({message: 'skill deleted'}))
+
 })
 
 

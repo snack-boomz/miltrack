@@ -37,8 +37,11 @@
 		<type label="SET" length="1" sql="SET" quote=""/>
 		<type label="Bit" length="0" sql="bit" quote=""/>
 	</group>
-</datatypes><table x="871" y="233" name="user_profile">
+</datatypes><table x="871" y="234" name="users">
 <row name="id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="username" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
 <row name="password" null="1" autoincrement="0">
@@ -52,7 +55,7 @@
 <default>NULL</default></row>
 <row name="organization_id" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="Organization" row="id (SELECT rank+location+medical+etc FROM user_profile if === org ID)" />
+<default>NULL</default><relation table="Organizations" row="id (SELECT rank+location+medical+etc FROM user_profile if === org ID)" />
 </row>
 <key type="INDEX" name="">
 <part>id</part>
@@ -64,9 +67,12 @@
 <part>id</part>
 </key>
 </table>
-<table x="742" y="664" name="Organization">
+<table x="741" y="664" name="Organizations">
 <row name="id (SELECT rank+location+medical+etc FROM user_profile if === org ID)" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="organization_name" null="1" autoincrement="0">
+<datatype>MEDIUMTEXT</datatype>
 <default>NULL</default></row>
 <key type="PRIMARY" name="">
 <part>id (SELECT rank+location+medical+etc FROM user_profile if === org ID)</part>
@@ -78,7 +84,7 @@
 <default>NULL</default></row>
 <row name="id_user_profile" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="user_profile" row="id" />
+<default>NULL</default><relation table="users" row="id" />
 </row>
 <row name="pha_date" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
@@ -97,9 +103,15 @@
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
+<row name="training_name" null="1" autoincrement="0">
+<datatype>MEDIUMTEXT</datatype>
+<default>NULL</default></row>
+<row name="training_date" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
 <row name="id_user_profile" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="user_profile" row="id" />
+<default>NULL</default><relation table="users" row="id" />
 </row>
 <key type="PRIMARY" name="">
 <part>id</part>
@@ -111,7 +123,7 @@
 <default>NULL</default></row>
 <row name="id_user_profile" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
-<default>NULL</default><relation table="user_profile" row="id" />
+<default>NULL</default><relation table="users" row="id" />
 </row>
 <row name="eval_name" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
@@ -127,16 +139,16 @@
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
-<row name="id_user_profile" null="1" autoincrement="0">
-<datatype>INTEGER</datatype>
-<default>NULL</default><relation table="user_profile" row="id" />
-</row>
 <row name="skill_name" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
 <row name="skill_refresh_date" null="1" autoincrement="0">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
+<row name="id_user_profile" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="users" row="id" />
+</row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
@@ -145,28 +157,28 @@
 <row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
-<row name="id_user_profile" null="1" autoincrement="0">
-<datatype>INTEGER</datatype>
-<default>NULL</default><relation table="user_profile" row="id" />
-</row>
 <row name="additional_name" null="1" autoincrement="0">
 <datatype>MEDIUMTEXT</datatype>
 <default>NULL</default></row>
+<row name="id_user_profile" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="users" row="id" />
+</row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>
 </table>
 <table x="1355" y="151" name="static_skills (one to many, static_skills = many)">
-<row name="id" null="1" autoincrement="1"></row>
+<row name="id" null="1" autoincrement="1">
 <datatype>INTEGER</datatype>
 <default>NULL</default></row>
-<row name="id_user_profile" null="1" autoincrement="0">
-<datatype>INTEGER</datatype>
-<default>NULL</default><relation table="user_profile" row="id" />
-</row>
 <row name="skill_name" null="1" autoincrement="0">
 <datatype>MEDIUMTEXT</datatype>
 <default>NULL</default></row>
+<row name="id_user_profile" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="users" row="id" />
+</row>
 <key type="PRIMARY" name="">
 <part>id</part>
 </key>

@@ -10,6 +10,6 @@ exports.seed = async function(knex) {
     {id: 2, training_name: 'Cyber_Awareness', training_date:'2021-06-21',users_id:2},
     {id: 3, training_name: 'Cyber_Awareness', training_date:'1999-05-30',users_id:3},
     {id: 4, training_name: 'Sharp_Training', training_date:'2020-08-17',users_id:3},
-    {id: 5, training_name: 'DLC1', training_date:'2021-09-27',users_id:3},
+    {id: 5, training_name: 'DLC1', training_date:'2021-09-27',users_id:3}
   ]);
 };
