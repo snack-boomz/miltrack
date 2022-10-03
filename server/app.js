@@ -1,10 +1,11 @@
 const knex = require('knex')(require('./knexfile.js')[process.env.NODE_ENV||'development']);
 const express = require('express');
 const cors = require('cors');
+
 const port = 3001;
 
 const app = express();
-
+app.use(express.json())
 app.use(cors());
 
 app.get('/users', (request, response) => {
@@ -47,6 +48,50 @@ app.get('/static_skills', (request, response) => {
     .from('static_skills')
     .then(data => response.send(data));
 })
+
+
+
+
+
+
+app.post('/users', (req, res) => {
+    knex('users').insert(req.body)
+        .then(data => res.send({ message: 'user created' }))  
+})
+app.post('/organization', (req, res) => {
+    knex('organization').insert(req.body)
+        .then(data => res.send({ message: 'organization created' }))  
+})
+app.post('/additional', (req, res) => {
+    knex('additional').insert(req.body)
+        .then(data => res.send({ message: 'additional info added' }))  
+})
+app.post('/annual_training', (req, res) => {
+    knex('annual_training').insert(req.body)
+        .then(data => res.send({ message: 'training added' }))  
+})
+app.post('/medical', (req, res) => {
+    knex('medical').insert(req.body)
+        .then(data => res.send({ message: 'medical info added' }))  
+})
+app.post('/evaluations', (req, res) => {
+    knex('evaluations').insert(req.body)
+        .then(data => res.send({ message: 'eval added' }))  
+})
+app.post('/special_skills', (req, res) => {
+    knex('special_skills').insert(req.body)
+        .then(data => res.send({ message: 'skill added' }))  
+})
+app.post('/static_skills', (req, res) => {
+    knex('static_skills').insert(req.body)
+        .then(data => res.send({ message: 'skill added' }))  
+})
+
+
+
+
+
+
 
 
 app.listen(port, (request, response) => {

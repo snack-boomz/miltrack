@@ -9,5 +9,6 @@ exports.seed = async function(knex) {
     {id: 1, additional_name: 'rowValue1', users_id: 1},
     {id: 2, additional_name: 'rowValue2', users_id: 1},
     {id: 3, additional_name: 'rowValue3', users_id: 1}
+    {id: 4, additional_name: 'Weapons_Qual', users_id:3}
   ]);
 };
