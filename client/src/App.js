@@ -39,11 +39,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/register" element={<Register />} />
-<<<<<<< HEAD
-            <Route path="/dashboard" element={<Dashboard/>} />
-=======
             <Route path="/dashboard" element={<Dashboard />} />
->>>>>>> dev
             <Route path="/:userid" element={<Profile />} />
           </Routes>
       </Router>
