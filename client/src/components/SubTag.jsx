@@ -11,24 +11,46 @@ const SubTag = (props) => {
     const colorHelper = (amber, red) => {
 
         if (red) {
-            return 'bg-red-400 border border-2 border-black border-double p-8 rounded-md shadow-lg';
+            return 'bg-red-400 border border-2 border-black border-double py-2 px-8 rounded-md shadow-lg break-all';
         
         } else if (amber) {
-            return 'bg-amber-400 border border-2 border-black border-double p-8 rounded-md shadow-lg'
+            return 'bg-amber-400 border border-2 border-black border-double py-2 px-8 rounded-md shadow-lg break-all';
         
         } else {
-            return 'bg-green-400 border border-2 border-black border-double p-8 rounded-md shadow-lg'
+            return 'bg-green-400 border border-2 border-black border-double py-2 px-8 rounded-md shadow-lg break-all';
         }
     }
 
+    const currentLabelHelper = (currentLabel) => {
+
+        if (currentLabel == "Annual Training") {
+            return "Annual"
+        } else {
+            return currentLabel;
+        }
+
+    }
+
+    const currentLabelHelper2 = (currentLabel) => {
+
+        if (currentLabel == "Annual Training") {
+            return "Training"
+        } else {
+            return;
+        }
+
+    }
+
     return (
-        <ul key="0" className="w-8/12 list-none flex flex-row flex-wrap gap-8 border border-2 border-gray border-double mx-auto my-8 p-16 bg-[#A3BD8A] rounded-lg shadow-2xl justify-start">
+        <ul key="0" className="w-6/12 h-8/12 min-w-fit max-w-fit list-none flex flex-row flex-wrap gap-8 border border-2 border-gray border-double mx-auto my-8 p-4 bg-[#A3BD8A] rounded-lg shadow-2xl justify-center">
             <h2 className="text-3xl font-bold border-r-2 py-8 pr-8">{props.currentSM.rank} {props.currentSM.full_name}</h2>
             {props.elements.map((element, index) => {
+
                 let currentLabel = "";
                 let currentLabelStatus = "";
                 let amber = false;
                 let red = false;
+
                 Object.keys(element).map((key, key_index) => {
 
                     if (key === "id") {
@@ -109,7 +131,21 @@ const SubTag = (props) => {
                     
                 })
                 
-                return <li key={index} className={ colorHelper(amber, red) }><strong>{currentLabel}:</strong> <br/><p className="text-center">{currentLabelStatus}</p> </li>;
+                return <li 
+                key={index} 
+                className={ colorHelper(amber, red) }>
+                    <strong className="text-center"> 
+                        {/* If label isn't annual training, put colon after label */}
+                        { currentLabelHelper(currentLabel) }{currentLabelHelper2(currentLabel) === undefined ? ":" : ""} 
+                        <br/>
+                    </strong>
+                    <strong className="text-center">
+                        {/* If label isn't annual training, do not add colon on new line */}
+                        { currentLabelHelper2(currentLabel) }{currentLabelHelper2(currentLabel) !== undefined ? ":" : ""}
+                    </strong> 
+                    <br/>
+                    <p className="text-center">{currentLabelStatus}</p> 
+                    </li>;
 
             })}
         </ul>
