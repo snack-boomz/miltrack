@@ -151,7 +151,7 @@ const Register = () => {
                         <option value="Counseling"/>
                     </datalist>
                         <div>
-                            <input type="text" name="evaldate" placeholder="Eval Date EX. 2022-10-13" maxlength="10" onChange={(e) => setEvalDate(e.target.value)}/>
+                            <input type="date" value={(Date.now())} min="2018-01-01" max="2050-12-31" name="evaldate" placeholder="Eval Date EX. 2022-10-13" maxlength="10" onChange={(e) => setEvalDate(e.target.value)}/>
                         </div>
                     </div>
                     <div className="columntwo">
