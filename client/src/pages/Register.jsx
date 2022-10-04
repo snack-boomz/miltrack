@@ -182,7 +182,7 @@ const Register = () => {
                         <p>VISION DATE: <input className="datebars" type="date" min="2018-01-01" max="2050-12-31" name="visiondate" maxlength="10" onChange={(e) => setVisionDate(e.target.value)}/></p>
                         </div>
                     </div>
-                    <input type="text" name="specialskill" placeholder="Special Skill" style={{ borderRadius: '5px', width: '250px', textAlign: 'center', borderColor: 'black', marginTop: '10px'}} onChange={(e) => setStaticSkill(e.target.value)}/>
+                    <input type="text" name="specialskill" placeholder="Static Skill" style={{ borderRadius: '5px', width: '250px', textAlign: 'center', borderColor: 'black', marginTop: '10px'}} onChange={(e) => setStaticSkill(e.target.value)}/>
                     <input type="text" name="annualtraining" placeholder="Annual Training" style={{ borderRadius: '5px', width: '250px', textAlign: 'center', borderColor: 'black', marginTop: '10px'}} onChange={(e) => setAnnualTraining(e.target.value)}/>                  
                     <p>Training Date: <input className="datebars" type="date" min="2018-01-01" max="2050-12-31" name="trainingdate" maxlength="10" onChange={(e) => setTrainingDate(e.target.value)}/></p>
                     <input type="text" name="additional" placeholder="Additional Training" style={{ borderRadius: '5px', width: '250px', textAlign: 'center', borderColor: 'black', marginTop: '10px'}} onChange={(e) => setAdditionalTraining(e.target.value)}/>

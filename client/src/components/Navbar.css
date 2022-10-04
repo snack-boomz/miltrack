@@ -5,6 +5,7 @@
     display: flex;
     justify-content: start;
     align-items: center;
+    border-bottom: 4px #1c464c solid;
   }
 
   .title{
