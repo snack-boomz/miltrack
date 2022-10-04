@@ -53,18 +53,24 @@ function Dashboard() {
             {data_user_basic.map((val, key) => {
                 return (
                     <section key={key} id="wrapper" className="pb-8 m-12">
-                    <section id='welcome_box'>
+                    <section id='welcome_box' className="w-1/5 mx-auto p-4 min-w-fit max-w-fit bg-slate-100 opacity-90 rounded-md shadow-xl shadow-black">
                         <tr key={key}>
                         <div>{val.unit_id}</div>
                         <div>Welcome, {val.username}</div>
                         <div style={{fontStyle: 'italic'}}>"Stay <strong className="text-[#A3BD8A]">GREEN</strong> to stay in the fight!"</div>
                         </tr>
                     </section>
-                         <IndivTag elements={ testObject } component="medical"/>
+                         {/* <IndivTag elements={ testObject } component="medical"/> */}
                          {/* Logged in Soldier below */}
-                            <SubTag elements={ testArrayOfObjects } currentSM= { userObject } key={key}/> 
-                            <hr className="w-10/12 mx-auto border-t-2 mt-12"/>
-                            <h3 className="text-2xl font-bold italic text-center mx-auto mt-12">SMs tracked:</h3>
+                        <SubTag elements={ testArrayOfObjects } currentSM= { userObject } key={key}/> 
+                        <hr className="w-10/12 mx-auto border-t-2 mt-12"/>
+                        <h3 className="w-2/12 text-2xl font-bold italic text-center min-w-fit max-w-fit mx-auto mt-12 p-2 bg-slate-100 opacity-90 rounded-md shadow-xl shadow-black">SMs tracked:</h3>
+                        {/* Subordinates below */}
+                        <SubTag elements={ testArrayOfObjects } currentSM= { userObject } key={key}/>
+                        <SubTag elements={ testArrayOfObjects } currentSM= { userObject } key={key}/> 
+                        <SubTag elements={ testArrayOfObjects } currentSM= { userObject } key={key}/> 
+                        <SubTag elements={ testArrayOfObjects } currentSM= { userObject } key={key}/> 
+                        <SubTag elements={ testArrayOfObjects } currentSM= { userObject } key={key}/>  
                     </section>
                 )
             })}

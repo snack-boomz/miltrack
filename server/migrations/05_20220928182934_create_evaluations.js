@@ -7,6 +7,7 @@ exports.up = function(knex) {
         table.increments('id');
         table.string('eval_name');
         table.string('eval_date');
+        table.string('eval_type')
         table.integer('users_id');
         table.foreign('users_id').references('users.id');
 
