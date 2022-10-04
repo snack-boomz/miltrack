@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect, useNavigate } from "react";
 import { Link } from "react-router-dom";
+import "./Register.css";
 
 
 
@@ -20,7 +21,14 @@ const Register = () => {
     const [filteredUnit, setFilteredUnit] = useState([]);
     const [orgId, setOrgId] = useState("");
     const [supervisor, setSupervisor] = useState(0);
+    const [evalName, setEvalName] = useState("");
+    const [evalDate, setEvalDate] = useState("");
+    const [mos, setMos] = useState("");
 
+    const userTable = ({ username, fullName, password, grade, supervisor, orgId, mos })
+   // const annualTrainingTable = ({ trainingName, trainingDate })
+    const evalTable = ({ evalName, evalDate, })
+    const medicalTable = ({ })
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -102,6 +110,7 @@ const Register = () => {
                 <p>Email: {user.email}</p>
                 <p>Username: {user.username}</p>
                 <form onSubmit={eventHandler}>
+                    <div className="columnone">
                     <input type="text" name="rank" placeholder="Grade Ex. e3, o5" maxlength="2" onChange={(e) => setGrade(e.target.value)} />
                     <div className="search">
                         <input type="text" placeholder="Search for a supervisor here..." value={wordEntered} onChange={handleFilter} />
@@ -135,11 +144,24 @@ const Register = () => {
                             </div>
                         )}
                     </div>
+                    <input list="evals" name="eval" placeholder="Evaluation Type" onChange={(e) => setEvalName(e.target.value)}/>
+                    <datalist id="evals">
+                        <option value="OER"/>
+                        <option value="NCOER"/>
+                        <option value="Counseling"/>
+                    </datalist>
+                        <div>
+                            <input type="text" name="evaldate" placeholder="Eval Date EX. 2022-10-13" maxlength="10" onChange={(e) => setEvalDate(e.target.value)}/>
+                        </div>
+                    </div>
+                    <div className="columntwo">
+                    <input type="text" name="mos" placeholder="MOS" maxlength="6" onChange={(e) => setMos(e.target.value)}/>
+                    </div>
                 </form>
                 <Link to={`/${user.username}`}>
                     <button onClick={() => {
                         setFormComplete(false)
-                    }}>Okay</button>
+                    }}>Submit</button>
                 </Link>
             </div>
         )
