@@ -24,11 +24,24 @@ const Register = () => {
     const [evalName, setEvalName] = useState("");
     const [evalDate, setEvalDate] = useState("");
     const [mos, setMos] = useState("");
+    const [phaDate, setPhaDate] = useState("");
+    const [dentalDate, setDentalDate] = useState("");
+    const [hearingDate, setHearingDate] = useState("");
+    const [hivDate, setHivDate] = useState("");
+    const [visionDate, setVisionDate] = useState("");
+    const [staticSkill, setStaticSkill] = useState("");
+    const [annualTraining, setAnnualTraining] = useState("");
+    const [trainingDate, setTrainingDate] = useState("");
+    const [additionalTraining, setAdditionalTraining] = useState("");
+
+
 
     const userTable = ({ username, fullName, password, grade, supervisor, orgId, mos })
-   // const annualTrainingTable = ({ trainingName, trainingDate })
+    const annualTrainingTable = ({ annualTraining, trainingDate })
     const evalTable = ({ evalName, evalDate, })
-    const medicalTable = ({ })
+    const medicalTable = ({ phaDate, dentalDate, hearingDate, hivDate, visionDate })
+    const staticSkillTable = ({ staticSkill })
+    const additionalTrainingTable = ({ additionalTraining })
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -109,7 +122,7 @@ const Register = () => {
                 <p>Full Name: {user.fullName}</p>
                 <p>Email: {user.email}</p>
                 <p>Username: {user.username}</p>
-                <form onSubmit={eventHandler}>
+                <form className="completepage" onSubmit={eventHandler}>
                     <div className="columnone">
                     <input type="text" name="rank" placeholder="Grade Ex. e3, o5" maxlength="2" onChange={(e) => setGrade(e.target.value)} />
                     <div className="search">
@@ -150,12 +163,24 @@ const Register = () => {
                         <option value="NCOER"/>
                         <option value="Counseling"/>
                     </datalist>
-                        <div>
-                            <input type="date" value={(Date.now())} min="2018-01-01" max="2050-12-31" name="evaldate" placeholder="Eval Date EX. 2022-10-13" maxlength="10" onChange={(e) => setEvalDate(e.target.value)}/>
+                        <div style={{ backgroundColor: 'white',
+                                    width: 'fit-content'}}>
+                            Eval Date: <input className="datebars" type="date" min="2018-01-01" max="2050-12-31" name="evaldate" maxlength="10" onChange={(e) => setEvalDate(e.target.value)}/>
                         </div>
                     </div>
-                    <div className="columntwo">
-                    <input type="text" name="mos" placeholder="MOS" maxlength="6" onChange={(e) => setMos(e.target.value)}/>
+                    <div className="columntwo" style={{backgroundColor: 'white', width: 'fit-content'}}>
+                        <input type="text" name="mos" placeholder="MOS" maxlength="6" onChange={(e) => setMos(e.target.value)}/>
+                        PHA DATE: <input className="datebars" type="date" min="2018-01-01" max="2050-12-31" name="phadate" maxlength="10" onChange={(e) => setPhaDate(e.target.value)}/>
+                        DENTAL DATE: <input className="datebars" type="date" min="2018-01-01" max="2050-12-31" name="dentaldate" maxlength="10" onChange={(e) => setDentalDate(e.target.value)}/>
+                        HEARING DATE: <input className="datebars" type="date" min="2018-01-01" max="2050-12-31" name="hearingdate" maxlength="10" onChange={(e) => setHearingDate(e.target.value)}/>
+                        HIV DATE: <input className="datebars" type="date" min="2018-01-01" max="2050-12-31" name="hivdate" maxlength="10" onChange={(e) => setHivDate(e.target.value)}/>
+                        VISION DATE: <input className="datebars" type="date" min="2018-01-01" max="2050-12-31" name="visiondate" maxlength="10" onChange={(e) => setVisionDate(e.target.value)}/>
+                    </div>
+                    <div className="columnthree">
+                    <input type="text" name="specialskill" placeholder="Special Skill" onChange={(e) => setStaticSkill(e.target.value)}/>
+                    <input type="text" name="annualtraining" placeholder="Annual Training" onChange={(e) => setAnnualTraining(e.target.value)}/>                  
+                    Training Date: <input className="datebars" type="date" min="2018-01-01" max="2050-12-31" name="trainingdate" maxlength="10" onChange={(e) => setTrainingDate(e.target.value)}/>
+                    <input type="text" name="additional" placeholder="Additional Training" onChange={(e) => setAdditionalTraining(e.target.value)}/>
                     </div>
                 </form>
                 <Link to={`/${user.username}`}>
