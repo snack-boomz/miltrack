@@ -6,6 +6,7 @@ exports.up = function(knex) {
     return knex.schema.createTable('organization', table => {
         table.increments('id');
         table.string('organization_name');
+        table.string('UIC');
     })
 };
 
