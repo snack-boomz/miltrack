@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect, useNavigate } from "react";
 import { Link } from "react-router-dom";
+import "./Register.css";
 
 
 
@@ -20,7 +21,27 @@ const Register = () => {
     const [filteredUnit, setFilteredUnit] = useState([]);
     const [orgId, setOrgId] = useState("");
     const [supervisor, setSupervisor] = useState(0);
+    const [evalName, setEvalName] = useState("");
+    const [evalDate, setEvalDate] = useState("");
+    const [mos, setMos] = useState("");
+    const [phaDate, setPhaDate] = useState("");
+    const [dentalDate, setDentalDate] = useState("");
+    const [hearingDate, setHearingDate] = useState("");
+    const [hivDate, setHivDate] = useState("");
+    const [visionDate, setVisionDate] = useState("");
+    const [staticSkill, setStaticSkill] = useState("");
+    const [annualTraining, setAnnualTraining] = useState("");
+    const [trainingDate, setTrainingDate] = useState("");
+    const [additionalTraining, setAdditionalTraining] = useState("");
 
+
+
+    const userTable = ({ username, fullName, password, grade, supervisor, orgId, mos })
+    const annualTrainingTable = ({ annualTraining, trainingDate })
+    const evalTable = ({ evalName, evalDate, })
+    const medicalTable = ({ phaDate, dentalDate, hearingDate, hivDate, visionDate })
+    const staticSkillTable = ({ staticSkill })
+    const additionalTrainingTable = ({ additionalTraining })
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -97,14 +118,19 @@ const Register = () => {
 
         return (
             <div>
-                <h1>Thank you for registering!</h1>
-                <p>Full Name: {user.fullName}</p>
-                <p>Email: {user.email}</p>
+                <div id="register-box" className="w-1/5 mx-auto p-4 min-w-fit max-w-fit bg-slate-100 opacity-90 rounded-md shadow-xl shadow-black">
+                <h1>Thank you for registering!
+                <p>{user.fullName}</p>
+                <p>{user.email}</p>
                 <p>Username: {user.username}</p>
-                <form onSubmit={eventHandler}>
-                    <input type="text" name="rank" placeholder="Grade Ex. e3, o5" maxlength="2" onChange={(e) => setGrade(e.target.value)} />
+                <p>Please fill out the information below to finish setting up your profile!</p>
+                </h1>
+                </div>
+                <form className="completepage" onSubmit={eventHandler}>
+                    <div className="columnone">
+                    <input type="text" name="rank" placeholder="Grade Ex. e3, o5" maxlength="2" style={{ borderRadius: '5px', width: '250px', textAlign: 'center', borderColor: 'black', marginTop: '10px'}} onChange={(e) => setGrade(e.target.value)} />
                     <div className="search">
-                        <input type="text" placeholder="Search for a supervisor here..." value={wordEntered} onChange={handleFilter} />
+                        <input type="text" placeholder="Search for a supervisor here..." style={{ borderRadius: '5px', width: '250px', textAlign: 'center', borderColor: 'black', marginTop: '10px'}} value={wordEntered} onChange={handleFilter} />
                         {filteredData.length != 0 && (
                             <div className="dataResult">
                                 {filteredData.slice(0, 15).map((value, key) => {
@@ -112,7 +138,7 @@ const Register = () => {
                                         <div>
                                         <a className="dataItem" target="_blank" key={key}></a>
                                         <button onClick={() => {setSupervisor(value.id); setWordEntered(value.name)}}>
-                                        {wordEntered !== value.name ? <p>{value.name}</p> : setFilteredData([]) }
+                                        {wordEntered !== value.name ? <div className="filter">{value.name}</div> : setFilteredData([]) }
                                         </button>
                                         </div> );
                                })}
@@ -120,7 +146,7 @@ const Register = () => {
                         )}
                     </div>
                     <div className="unit">
-                        <input type="text" placeholder="Search your UIC here..." value={unitWordEntered} onChange={unitHandler} />
+                        <input type="text" placeholder="Search your UIC here..." style={{ borderRadius: '5px', width: '250px', textAlign: 'center', borderColor: 'black', marginTop: '10px'}} value={unitWordEntered} onChange={unitHandler} />
                         {filteredUnit.length != 0 && (
                             <div className="dataResult">
                                 {filteredUnit.slice(0, 15).map((value, key) => {
@@ -128,24 +154,52 @@ const Register = () => {
                                         <div>
                                         <a className="dataItem" target="_blank" key={key}></a>
                                         <button onClick={() => {setOrgId(value.organization_id); setUnitWordEntered(value.organization_id)}}>
-                                        {unitWordEntered !== value.organization_id ? <p>{value.organization_id}</p> : setFilteredUnit([]) }
+                                        {unitWordEntered !== value.organization_id ? <div className="filter">{value.organization_id}</div> : setFilteredUnit([]) }
                                         </button>
                                         </div> );
                                })}
                             </div>
                         )}
                     </div>
-                </form>
-                <Link to={`/${user.username}`}>
-                    <button onClick={() => {
+                   <p><input list="evals" name="eval" placeholder="Evaluation Type" style={{ borderRadius: '5px', width:'100%', textAlign: 'center' }} onChange={(e) => setEvalName(e.target.value)}/></p>
+                    <datalist id="evals">
+                        <option value="OER"/>
+                        <option value="NCOER"/>
+                        <option value="Counseling"/>
+                    </datalist>
+                        <div style={{ backgroundColor: 'white',
+                                    width: 'fit-content'}}>
+                           <p> Eval Date: <input className="datebars" type="date" min="2018-01-01" max="2050-12-31" name="evaldate" maxlength="10" onChange={(e) => setEvalDate(e.target.value)}/></p>
+                        </div>
+                    
+                    <div>
+                        <input type="text" name="mos" placeholder="MOS" maxlength="6" style={{ borderRadius: '5px', width: '250px', textAlign: 'center', borderColor: 'black', marginTop: '10px'}} onChange={(e) => setMos(e.target.value)}/>
+                       <div style={{backgroundColor: 'white', width: 'fit-content'}}>
+                        <p>PHA DATE: <input className="datebars" type="date" min="2018-01-01" max="2050-12-31" name="phadate" maxlength="10" onChange={(e) => setPhaDate(e.target.value)}/> </p>
+                        <p> DENTAL DATE: <input className="datebars" type="date" min="2018-01-01" max="2050-12-31" name="dentaldate" maxlength="10" onChange={(e) => setDentalDate(e.target.value)}/></p>
+                        <p> HEARING DATE: <input className="datebars" type="date" min="2018-01-01" max="2050-12-31" name="hearingdate" maxlength="10" onChange={(e) => setHearingDate(e.target.value)}/></p>
+                        <p> HIV DATE: <input className="datebars" type="date" min="2018-01-01" max="2050-12-31" name="hivdate" maxlength="10" onChange={(e) => setHivDate(e.target.value)}/></p>
+                        <p>VISION DATE: <input className="datebars" type="date" min="2018-01-01" max="2050-12-31" name="visiondate" maxlength="10" onChange={(e) => setVisionDate(e.target.value)}/></p>
+                        </div>
+                    </div>
+                    <input type="text" name="specialskill" placeholder="Static Skill" style={{ borderRadius: '5px', width: '250px', textAlign: 'center', borderColor: 'black', marginTop: '10px'}} onChange={(e) => setStaticSkill(e.target.value)}/>
+                    <input type="text" name="annualtraining" placeholder="Annual Training" style={{ borderRadius: '5px', width: '250px', textAlign: 'center', borderColor: 'black', marginTop: '10px'}} onChange={(e) => setAnnualTraining(e.target.value)}/>                  
+                    <p>Training Date: <input className="datebars" type="date" min="2018-01-01" max="2050-12-31" name="trainingdate" maxlength="10" onChange={(e) => setTrainingDate(e.target.value)}/></p>
+                    <input type="text" name="additional" placeholder="Additional Training" style={{ borderRadius: '5px', width: '250px', textAlign: 'center', borderColor: 'black', marginTop: '10px'}} onChange={(e) => setAdditionalTraining(e.target.value)}/>
+                    <Link to={`/${user.username}`}>
+                    <button className="submit" onClick={() => {
                         setFormComplete(false)
-                    }}>Okay</button>
+                    }}>Submit</button>
                 </Link>
+                </div>
+                </form>
             </div>
+
         )
     } else {
         return (
             <div className="reg-container">
+                <div className="register-form">Register</div>
                 <form onSubmit={handleSubmit}>
                     <div className="input-container">
                         <label>Full Name</label>
