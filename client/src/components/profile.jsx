@@ -5,9 +5,13 @@ import styled from 'styled-components';
 import IndivTag from "./IndivTag";
 import { SubTagMedical, SubTagAnnualTraining, SubTagSpecialTraining, SubTagStaticTraining } from "./MedicalCardInject";
 
-const userObject = {
-    id: 10, username: "billy", password: "a;sdkfjn;alkshdfoiajsd;lfj", rank: "SPC", full_name: "Justin Hernandez", status: "TDY"
+export const userObject = {
+    users_id: 1, username: "billy", password: "a;sdkfjn;alkshdfoiajsd;lfj", rank: "SPC", full_name: "Justin Hernandez", status: "TDY"
 }
+
+// userObject.users_id will equal 1
+// console.log(userObject.users_id)
+// = 1
 
 const medicalBar = {
     name: "Medical Status"
@@ -23,16 +27,33 @@ export const medicalTestArrayOfObjects = [
 
 
 const annualRequirementsTestArrayOfObjects = [
-    { id: 1, sharp_date: "2022-11-01" },
-    { id: 2, eo_date: '2022-12-30' },
-    { id: 3, onlineTraining_date: '2022-10-05' },
-    { id: 4, tarp_date: "2022-11-01" },
+    { id: 1, skill_name: "SHARP TRAINING", refresh_date: "2022-11-01", users_id: 1},
+    { id: 2, skill_name: "EO TRAINING", refresh_date: '2022-12-30', users_id: 1 },
+    { id: 3, skill_name: "ONLINE TRAINING" , refresh_date: '2022-10-05', users_id: 1  },
+    { id: 4, skill_name: "TARP TRAINING", refresh_date: "2022-11-01", users_id: 1  },
 ]
+/*table.increments('id');
+table.string('skill_name');
+table.string('skill_refresh_date');
+table.integer('users_id');
+ */
 
-const specialSkillsTestArrayOfObjects = [
-    { id: 1, language_date: "2022-06-06" },
-    { id: 2, radioOperator_date: '2022-11-01', },
-    { id: 3, jtac_date: '2023-03-21' },
+export const specialSkillsTestArrayOfObjects = [
+    { id: 1, skill_name: "Foreign Language", refresh_date: "2022-06-06", users_id: 1 },
+    { id: 2,  skill_name: "Radio Operator", refresh_date: '2022-11-01', users_id: 1 },
+    { id: 3,  skill_name: "JTAC", refresh_date: '2023-03-21', users_id: 1 },
+    { id: 1, skill_name: "Foreign Language", refresh_date: "2022-06-06", users_id: 1 },
+    { id: 2,  skill_name: "Radio Operator", refresh_date: '2022-11-01', users_id: 1 },
+    { id: 3,  skill_name: "JTAC", refresh_date: '2023-03-21', users_id: 1 },
+    { id: 1, skill_name: "Foreign Language", refresh_date: "2022-06-06", users_id: 1 },
+    { id: 2,  skill_name: "Radio Operator", refresh_date: '2022-11-01', users_id: 1 },
+    { id: 3,  skill_name: "JTAC", refresh_date: '2023-03-21', users_id: 1 },
+    { id: 1, skill_name: "Foreign Language", refresh_date: "2022-06-06", users_id: 1 },
+    { id: 2,  skill_name: "Radio Operator", refresh_date: '2022-11-01', users_id: 1 },
+    { id: 3,  skill_name: "JTAC", refresh_date: '2023-03-21', users_id: 1 },
+    { id: 1, skill_name: "Foreign Language", refresh_date: "2022-06-06", users_id: 1 },
+    { id: 2,  skill_name: "Radio Operator", refresh_date: '2022-11-01', users_id: 1 },
+    { id: 3,  skill_name: "JTAC", refresh_date: '2023-03-21', users_id: 1 },
 ]
 
 
@@ -61,12 +82,12 @@ export const staticSkillsTestArrayOfObjects = [
 ]
 
 const userInfo = [
-    { id: 1, name: "Joe Smith", rank: "SPC", dob: "2000-01-01", basd: "2020-07-01", unit_id: "B Co, 8th BN, 4th ID" },
+    { id: 1, name: "Joe Smith", rank: "SPC", dob: "2000-01-01", basd: "2020-07-01", unit_id: "B Co, 8th BN, 4th ID", dodid: 123456789, mos: "11C" },
 ]
 
 
 function Profile() {
-    const [apptDate, setApptDate] = useState("");
+    // const [apptDate, setApptDate] = useState("");
 
     return (
         <>
@@ -80,16 +101,18 @@ function Profile() {
                                 <div style={{ fontStyle: 'italic' }}>"Stay <strong className="text-[#A3BD8A]">GREEN</strong> to stay in the fight!"</div>
                                 <div>DOB: {val.dob} </div>
                                 <div>BASD: {val.basd} </div>
+                                <div>MOS: {val.mos} </div>
+                                <div>DODID: {val.dodid} </div>
                             </tr>
                         </section>
                         {/* <IndivTag elements={ testObject } component="medical"/> */}
                         {/* Logged in Soldier below */}
                         <hr className="w-10/12 mx-auto border-t-2 mt-12" />
-                       
+
                         {/* Subordinates below */}
                         <SubTagMedical elements={medicalTestArrayOfObjects} />
                         <SubTagAnnualTraining elements={annualRequirementsTestArrayOfObjects} />
-                        <SubTagSpecialTraining elements={specialSkillsTestArrayOfObjects} />
+                        <SubTagSpecialTraining elements={specialSkillsTestArrayOfObjects} skill= { specialSkillsTestArrayOfObjects } key={key}/>
                         <SubTagStaticTraining elements={staticSkillsTestArrayOfObjects} />
                     </section>
                 )
@@ -106,6 +129,6 @@ function Profile() {
                     <SubTagStaticTraining elements={staticSkillsTestArrayOfObjects} />
 
                 </section>
-*/    
+*/
 
 export default Profile;
