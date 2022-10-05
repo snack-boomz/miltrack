@@ -5,7 +5,7 @@ import { AppContext } from "./AppContext";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from './components/dashboard';
-import Profile from "./pages/Profile";
+import Profile from "./components/profile";
 import Navbar from "./components/Navbar";
 import IndivTag from "./components/IndivTag";
 import SubTag from "./components/SubTag";
