@@ -7,7 +7,6 @@ import Register from "./pages/Register";
 import Dashboard from './components/dashboard';
 import Profile from "./pages/Profile";
 import Navbar from "./components/Navbar";
-import Medical from './components/medical';
 import IndivTag from "./components/IndivTag";
 import SubTag from "./components/SubTag";
 import styled from 'styled-components';
@@ -45,7 +44,6 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/dashboard" element={<Dashboard/>} />
             <Route path="/:userid" element={<Profile />} />
-            <Route path="/medical" element={<Medical/>} />
           </Routes>
       </Router>
     </AppContext.Provider>    
