@@ -65,8 +65,8 @@ const SubTag = (props) => {
                         }
                     })
                     if (index <= 10) {
-                        console.log(key);
-                        console.log(currentValue);
+                        // console.log(key);
+                        // console.log(currentValue);
 
                         if (key === "current_status") {
                             currentLabel = "Status";

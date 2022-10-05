@@ -34,12 +34,14 @@ const Loginbars = () => {
       
         const userData = data_users.find((user) => user.username === uname.value);
         setLoggedUser(userData)
+        console.log(loggedUser);
         if (userData) {
             if (userData.password !== pass.value) {
   
                 setErrorMessages({ name: "pass", message: errors.pass });
             } else {
                 setIsSubmitted(true);
+                setTimeout(() => console.log(isSubmitted), 2000);
             }
         } else {
     
