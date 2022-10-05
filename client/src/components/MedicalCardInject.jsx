@@ -43,7 +43,7 @@ export const SubTagMedical = (props) => {
     }
 
     return (
-        <ul key="0" className="w-6/12 h-8/12 min-w-fit max-w-fit list-none flex flex-row flex-wrap gap-8 border border-2 border-gray border-double mx-auto my-8 p-4 bg-[#A3BD8A] rounded-lg shadow-2xl justify-center">
+        <ul key="0" className="w-10/12 h-8/12 width: 'vw' list-none flex flex-row flex-wrap gap-8 border border-2 border-gray border-double mx-auto my-8 p-4 bg-[#A3BD8A] rounded-lg shadow-2xl ">
             <h2 className="text-3xl font-bold border-r-2 py-8 pr-8">Medical Status</h2>
             {props.elements.map((element, index) => {
 
@@ -300,7 +300,7 @@ export const SubTagAnnualTraining = (props) => {
     }
 
     return (
-        <ul key="0" className="w-6/12 h-8/12 min-w-fit max-w-fit list-none flex flex-row flex-wrap gap-8 border border-2 border-gray border-double mx-auto my-8 p-4 bg-[#A3BD8A] rounded-lg shadow-2xl justify-center">
+        <ul key="0" className="w-10/12 h-8/12 width: 'vw' list-none flex flex-row flex-wrap gap-8 border border-2 border-gray border-double mx-auto my-8 p-4 bg-[#A3BD8A] rounded-lg shadow-2xl ">
             <h2 className="text-3xl font-bold border-r-2 py-8 pr-8">Annual Training</h2>
             {props.elements.map((element, index) => {
 
@@ -525,10 +525,11 @@ export const SubTagSpecialTraining = (props) => {
     }
 
     return (
-        <ul key="0" className="w-6/12 h-8/12 min-w-fit max-w-fit list-none flex flex-row flex-wrap gap-8 border border-2 border-gray border-double mx-auto my-8 p-4 bg-[#A3BD8A] rounded-lg shadow-2xl justify-center">
+        <ul key="0" className="w-10/12 h-8/12 width: 'vw' list-none flex flex-row flex-wrap gap-8 border border-2 border-gray border-double mx-auto my-8 p-4 bg-[#A3BD8A] rounded-lg shadow-2xl ">
             <div>
-                <h2 className="text-3xl font-bold border-r-2 py-8 pr-8">Special Training</h2>
-                <h5>Additional Skills requiring recertification</h5>
+                <h2 className="text-3xl font-bold border-r-2 py-2.5 pr-8">Special Training</h2>
+                <h5 className="font-bold border-r-2 py-0 pr-8">Additional Skills requiring</h5> 
+                <h5 className="font-bold border-r-2 py-0 pr-8">recertification</h5>
             </div>
             {props.elements.map((element, index) => {
 
@@ -722,18 +723,20 @@ export const SubTagStaticTraining = (props) => {
         <ul>
        {staticSkills.map((skill) =>
         <li key={skill.id}>
-            {skill.name}
+            { skill.name }--  
+            { skill.skill_date }
         </li>
        )}
         </ul>
     );
         return (
-            <ul key="0" className="w-6/12 h-8/12 min-w-fit max-w-fit list-none flex flex-row flex-wrap gap-8 border border-2 border-gray border-double mx-auto my-8 p-4 bg-[#A3BD8A] rounded-lg shadow-2xl justify-center">
+            <ul key="0" className="w-10/12 h-8/12 list-none flex gap-8 border border-2 border-gray border-double mx-auto my-8 p-4 bg-[#A3BD8A] rounded-lg shadow-2xl ">
                 <div>
-                    <h2 className="text-3xl font-bold border-r-2 py-8 pr-8">Static Training</h2>
-                    <h5>Relevent Training with no recertification required</h5>
+                    <h2 className="text-3xl font-bold border-r-2 py-0 pr-8">Static Training</h2>
+                    <h5 className="font-bold border-r-2 py-0 pr-8">Relevent Training with no </h5>
+                    <h5 className="font-bold border-r-2 py-0 pr-8">recertification required</h5>
                 </div>
-                <ul>
+                <ul id='static'>
                     {staticItems}
                 </ul>
                 

@@ -9,6 +9,7 @@ tr {
     align-items: center;
     font-size: medium;
     font-weight: bolder;
+    
 }
 
 #App {
@@ -33,4 +34,8 @@ tr {
   td {
     text-align: center;
     border-right: 1px solid black;
+  }
+  #static {
+    column-width: 18em;
+    column-count: 6;
   }
