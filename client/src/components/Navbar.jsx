@@ -1,19 +1,35 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
+import * as IoIcons from 'react-icons/io';
 import { Link } from 'react-router-dom';
-import { SidebarData } from './SidebarData';
+//import { SidebarData } from './SidebarData';
 import './Navbar.css';
 import { IconContext } from 'react-icons';
 import * as GrIcons from 'react-icons/gr';
 import styled from 'styled-components';
+import { AppContext } from '../AppContext';
 
 
 
 function Navbar() {
+  const {loggedUser, loggedUser2, user, setLoggedUser2, setUser} = useContext(AppContext)
   const [sidebar, setSidebar] = useState(false);
-
   const showSidebar = () => setSidebar(!sidebar);
+  const SidebarData = [
+    {
+      title: 'My Profile',
+      path: `/${loggedUser.username}`,
+      icon: <AiIcons.AiFillHome />,
+      cName: 'nav-text'
+    },
+    {
+      title: 'logout',
+      path: '/',
+      icon: <IoIcons.IoIosPaper />,
+      cName: 'nav-text'
+    }
+  ]
 
   return (
     <div className='header'>

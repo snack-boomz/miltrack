@@ -13,10 +13,11 @@ import styled from 'styled-components';
 
 function App() {
   const [loggedUser, setLoggedUser] = useState([]);
+  const [loggedUser2, setLoggedUser2] = useState();
   const [ allUsers, setAllUsers ] = useState([]);
   const [ loggedUserOrg, setLoggedUserOrg ] = useState([]);
   const [ loggedUserToggle, setLoggedUserToggle ] = useState(0);
-
+  const [ orgData, setOrgData ] = useState([])
   useEffect(() => {
     fetch('http://localhost:3001/users')
     .then(response => response.json())
@@ -48,6 +49,12 @@ function App() {
     })
 
   }, [])
+  useEffect(() => {
+    fetch(`http://localhost:3001/organization/`)
+    .then(response => response.json())
+    .then(data => setOrgData(data))
+  }, [])
+
 
   const getterSetters = {
     allUsers, 
@@ -57,7 +64,11 @@ function App() {
     loggedUserOrg,
     setLoggedUserOrg,
     loggedUserToggle,
-    setLoggedUserToggle
+    setLoggedUserToggle,
+    loggedUser2,
+    setLoggedUser2,
+    orgData,
+    setOrgData
   }
 
   // const testObject = {

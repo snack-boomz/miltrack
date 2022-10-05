@@ -4,21 +4,25 @@ import "./Loginbars.css";
 import { Link, useNavigate } from "react-router-dom";
 import { AppContext } from "../AppContext";
 
-const data_users = [
-    { id: 1, username: "user1", password: "password1" },
-    { id: 2, username: "user2", password: "password2" },
-    { id: 3, username: "user3", password: "password3" },
-    { id: 4, username: "user4", password: "password4" },
-]
+
 
 
 const Loginbars = () => {
     const [errorMessages, setErrorMessages] = useState({});
     const [isSubmitted, setIsSubmitted] = useState(false);
     const { loggedUser, setLoggedUser } = useContext(AppContext);
+    const [dataUsers, setDataUsers]  = useState([]);
     let navigate = useNavigate();
 
-    
+    useEffect(() => { 
+        fetch("http://localhost:3001/users")
+            .then((response) => response.json())
+            .then((data) => setDataUsers(data));
+    }, []);
+    useEffect(() => { 
+            console.log("userinfo", dataUsers);
+    }, [dataUsers]);
+
 
     const errors = {
         uname: "invalid username",
@@ -32,7 +36,7 @@ const Loginbars = () => {
         var { uname, pass } = document.forms[0];
 
       
-        const userData = data_users.find((user) => user.username === uname.value);
+        const userData = dataUsers.find((user) => user.username === uname.value);
         setLoggedUser(userData)
         console.log(loggedUser);
         if (userData) {
