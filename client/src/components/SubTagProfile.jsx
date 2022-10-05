@@ -4,9 +4,10 @@ import styled from 'styled-components';
 import * as AiIcons from 'react-icons/ai';
 import * as IoIcons from 'react-icons/io';
 import * as GrIcons from 'react-icons/gr';
+import Profile, { medicalTestArrayOfObjects } from './profile';
 
 
-const SubTag = (props) => {
+const SubTagProfil = (props) => {
 
     const colorHelper = (amber, red) => {
 
@@ -33,7 +34,7 @@ const SubTag = (props) => {
 
     const currentLabelHelper2 = (currentLabel) => {
 
-        if (currentLabel == "Annual Training") {
+        if (currentLabel === "Annual Training") {
             return "Training"
         } else {
             return;
@@ -65,8 +66,8 @@ const SubTag = (props) => {
                         }
                     })
                     if (index <= 10) {
-                        // console.log(key);
-                        // console.log(currentValue);
+                        console.log(key);
+                        console.log(currentValue);
 
                         if (key === "current_status") {
                             currentLabel = "Status";
@@ -86,14 +87,15 @@ const SubTag = (props) => {
                         // console.log(currentValue);
 
                         // console.log(`${currentValue.valueOf()} : ${new Date('2020-01-01').toString().valueOf()}`)
-                        if (key === "pha_date" || key === "dental_date" || key === "hearing_date") {
+                        if (key === "pha_date") {
 
-                            currentLabel = "Medical";
+                            currentLabel = "PHA";
 
                             if (new Date(currentValue).valueOf() > Date.now()) {
                                 
                                 if (new Date(currentValue).valueOf() - Date.now() <= 2592000000) {
                                     amber = true;
+                                    currentLabelStatus = medicalTestArrayOfObjects.vision_date
 
                                 } else {
                                     
@@ -101,19 +103,18 @@ const SubTag = (props) => {
 
                             } else if (new Date(currentValue).valueOf() < Date.now()) {
                                     red = true;
-                                    currentLabelStatus = "red";
+                                    currentLabelStatus = "";
                             }
                         }
 
-                        if (key === "training_date") {
-                            
-                            currentLabel = "Annual Training";
+                        if (key === "dental_date") {
+
+                            currentLabel = "Dental";
 
                             if (new Date(currentValue).valueOf() > Date.now()) {
                                 
                                 if (new Date(currentValue).valueOf() - Date.now() <= 2592000000) {
                                     amber = true;
-                                    currentLabelStatus = "amber";
 
                                 } else {
                                     
@@ -121,7 +122,69 @@ const SubTag = (props) => {
 
                             } else if (new Date(currentValue).valueOf() < Date.now()) {
                                     red = true;
-                                    currentLabelStatus = "red";
+                                    currentLabelStatus = "";
+                            }
+                        }
+
+                        if (key === "hearing_date") {
+
+                            currentLabel = "Hearing";
+
+                            if (new Date(currentValue).valueOf() > Date.now()) {
+                                
+                                if (new Date(currentValue).valueOf() - Date.now() <= 2592000000) {
+                                    amber = true;
+                                    currentLabelStatus = key;
+
+                                } else {
+                                    
+                                }
+
+                            } else if (new Date(currentValue).valueOf() < Date.now()) {
+                                    let date = new Date(currentValue).valueOf();
+                                    let msDate = new Date(parseInt(date, 10));
+                                    let uiDate = msDate.toDateString('MM/dd/yyyy');
+                                    red = true;
+                                    currentLabelStatus = uiDate;
+                            }
+                        }
+
+                        if (key === "vision_date") {
+
+                            currentLabel = "Vision";
+
+                            if (new Date(currentValue).valueOf() > Date.now()) {
+                                
+                                if (new Date(currentValue).valueOf() - Date.now() <= 2592000000) {
+                                    amber = true;
+
+                                } else {
+                                    
+                                }
+
+                            } else if (new Date(currentValue).valueOf() < Date.now()) {
+                                    red = true;
+                                    currentLabelStatus = "";
+                            }
+                        }
+
+                        if (key === "hiv_date") {
+                            
+                            currentLabel = "HIV";
+
+                            if (new Date(currentValue).valueOf() > Date.now()) {
+                                
+                                if (new Date(currentValue).valueOf() - Date.now() <= 2592000000) {
+                                    amber = true;
+                                    currentLabelStatus = "";
+
+                                } else {
+                                    
+                                }
+
+                            } else if (new Date(currentValue).valueOf() < Date.now()) {
+                                    red = true;
+                                    currentLabelStatus = "";
                             }
 
                         }
@@ -153,4 +216,4 @@ const SubTag = (props) => {
 };
 
 
-export default SubTag;
+export default SubTagProfil;
