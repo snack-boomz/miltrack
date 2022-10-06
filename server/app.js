@@ -57,7 +57,7 @@ app.get('/annual_training/:id', (req, res) => {
     const { id } = req.params;
     knex.select('*')
     .from('annual_training')
-    .where({ id: id })
+    .where({ users_id: id })
     .then(data => res.send(data));
 })
 
@@ -70,7 +70,7 @@ app.get('/medical/:id', (req, res) => {
     const { id } = req.params;
     knex.select('*')
     .from('medical')
-    .where({ id: id })
+    .where({ users_id: id })
     .then(data => res.send(data));
 })
 
