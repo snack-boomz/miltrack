@@ -41,9 +41,49 @@ const SubTag = (props) => {
 
     }
 
+    const rankHelper = (rank) => {
+        // console.log("Rank: ", rank);
+        switch (rank.toLowerCase()) {
+            case "e1":
+                return "PVT";
+            case "e2":
+                return "PV2";
+            case "e3":
+                return "PFC";
+            case "e4":
+                return "SPC";
+            case "e5":
+                return "SGT";
+            case "e6":
+                return "SSG";
+            case "e7":
+                return "SFC";
+            case "e8":
+                return "1SG";
+            case "e9":
+                return "CSM";
+            case "o1":
+                return "2LT";
+            case "o2":
+                return "1LT";
+            case "o3":
+                return "CPT";
+            case "o4":
+                return "MAJ";
+            case "o5":
+                return "LTC";
+            case "o6":
+                return "COL";
+            default:
+                return "";
+        }
+    }
+
+    let staticCounter = 0;
+
     return (
         <ul key="0" className="w-6/12 h-8/12 min-w-fit max-w-fit list-none flex flex-row flex-wrap gap-8 border border-2 border-gray border-double mx-auto my-8 p-4 bg-[#A3BD8A] rounded-lg shadow-2xl justify-center">
-            <h2 className="text-3xl font-bold border-r-2 py-8 pr-8">{props.currentSM.rank} {props.currentSM.full_name}</h2>
+            <h2 className="text-3xl font-bold border-r-2 py-8 pr-8">{rankHelper(props.currentSM.rank)} {props.currentSM.name}</h2>
             {props.elements.map((element, index) => {
 
                 let currentLabel = "";
@@ -52,7 +92,7 @@ const SubTag = (props) => {
                 let red = false;
 
                 Object.keys(element).map((key, key_index) => {
-
+                    console.log("key: ", key)
                     if (key === "id") {
                         return;
                     }
@@ -81,12 +121,14 @@ const SubTag = (props) => {
                                 currentLabelStatus = "PDY"
                             }
 
+                            
+
                         }
                         // console.log(key_index);
                         // console.log(currentValue);
 
                         // console.log(`${currentValue.valueOf()} : ${new Date('2020-01-01').toString().valueOf()}`)
-                        if (key === "pha_date" || key === "dental_date" || key === "hearing_date") {
+                        if (key === "pha_date" || key === "dental_date" || key === "hearing_date" || key === "pdha_date" || key === "vision_date" || key === "hiv_date") {
 
                             currentLabel = "Medical";
 
@@ -131,21 +173,33 @@ const SubTag = (props) => {
                     
                 })
                 
-                return <li 
-                key={index} 
-                className={ colorHelper(amber, red) }>
-                    <strong className="text-center"> 
-                        {/* If label isn't annual training, put colon after label */}
-                        { currentLabelHelper(currentLabel) }{currentLabelHelper2(currentLabel) === undefined ? ":" : ""} 
-                        <br/>
-                    </strong>
-                    <strong className="text-center">
-                        {/* If label isn't annual training, do not add colon on new line */}
-                        { currentLabelHelper2(currentLabel) }{currentLabelHelper2(currentLabel) !== undefined ? ":" : ""}
-                    </strong> 
-                    <br/>
-                    <p className="text-center">{currentLabelStatus}</p> 
-                    </li>;
+                staticCounter += 1;
+
+                if (staticCounter > 3) {
+                    return <></>
+                } else {
+                    return ( 
+                        <li 
+                        key={index} 
+                        className={ colorHelper(amber, red) }>
+                            <strong className="text-center"> 
+                                {/* If label isn't annual training, put colon after label */}
+                                {console.log(currentLabel)}
+                                { currentLabelHelper(currentLabel) }{currentLabelHelper2(currentLabel) === undefined ? ":" : ""} 
+                                <br/>
+                            </strong>
+                            <strong className="text-center">
+                                {/* If label isn't annual training, do not add colon on new line */}
+                                { currentLabelHelper2(currentLabel) }{currentLabelHelper2(currentLabel) !== undefined ? ":" : ""}
+                            </strong> 
+                            <br/>
+                            <p className="text-center">{currentLabelStatus}</p> 
+                        </li>
+                    )
+
+                }
+
+                
 
             })}
         </ul>
