@@ -32,13 +32,13 @@ function App() {
   // Temporary use effect to set hardcoded LoggedInUser until we have logging in functionality
   useEffect(() => {
     fetch('http://localhost:3001/users')
-    .then(response => response.json())
-    .then(data => setLoggedUser([{"id":1,"username":null,"name":"Russell Annis","password":"1234","rank":"E4", "mos": "17C", "current_status": "PDY", "supervisor_id" : null,"organization_id":1}]))
-    .then(data => {
-        console.log(loggedUser)
-        console.log("Hello!")
+    // .then(response => response.json())
+    // .then(data => setLoggedUser([{"username":null,"name":"Russell Annis","password":"1234","rank":"E4", "mos": "17C", "current_status": "PDY", "supervisor_id" : null,"organization_id":1}]))
+    // .then(data => {
+    //     console.log(loggedUser)
+    //     console.log("Hello!")
     
-    })
+    // })
     .then(data => {
       setLoggedUserToggle(loggedUserToggle + 1)
     })
