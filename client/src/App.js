@@ -20,13 +20,38 @@ function App() {
   const [ loggedUserServiceMembers, setLoggedUserServiceMembers ] = useState([]);
   const [ loggedUserServiceMemberSummaries, setLoggedUserServiceMemberSummaries ] = useState([]);
   const [ loggedUserServiceMemberPromiseChainComplete, setLoggedUserServiceMemberPromiseChainComplete ] = useState(false);
-  
+  const [loggedUser2, setLoggedUser2] = useState();
+  const [ orgData, setOrgData ] = useState([])
 
+  useEffect(() => {
+    fetch('http://localhost:3001/users')
+    .then(response => response.json())
+    .then(data => setAllUsers(data))
+  }, [])
 
-
-
+  // Temporary use effect to set hardcoded LoggedInUser until we have logging in functionality
+  useEffect(() => {
+    fetch('http://localhost:3001/users')
+    .then(response => response.json())
+    .then(data => setLoggedUser([{"id":1,"username":null,"name":"Russell Annis","password":"1234","rank":"E4", "mos": "17C", "current_status": "PDY", "supervisor_id" : null,"organization_id":1}]))
+    .then(data => {
+        console.log(loggedUser)
+        console.log("Hello!")
+    
+    })
+    .then(data => {
+      setLoggedUserToggle(loggedUserToggle + 1)
+    })
+  }, [])
 
   // set loggedUser's subordinates if he/she has any
+
+  useEffect(() => {
+    fetch(`http://localhost:3001/organization/`)
+    .then(response => response.json())
+    .then(data => setOrgData(data))
+  }, [])
+
 
   const getterSetters = {
     allUsers, 
@@ -44,7 +69,11 @@ function App() {
     loggedUserServiceMemberSummaries, 
     setLoggedUserServiceMemberSummaries,
     loggedUserServiceMemberPromiseChainComplete, 
-    setLoggedUserServiceMemberPromiseChainComplete
+    setLoggedUserServiceMemberPromiseChainComplete,
+    loggedUser2,
+    setLoggedUser2,
+    orgData,
+    setOrgData
   }
 
   // const testObject = {
