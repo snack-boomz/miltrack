@@ -44,7 +44,7 @@ app.get('/additional/:id', (req, res) => {
     const { id } = req.params;
     knex.select('*')
     .from('additional')
-    .where({ id: id })
+    .where({ users_id: id })
     .then(data => res.send(data));
 })
 
@@ -83,7 +83,7 @@ app.get('/evaluations/:id', (req, res) => {
     const { id } = req.params;
     knex.select('*')
     .from('evaluations')
-    .where({ id: id })
+    .where({ users_id: id })
     .then(data => res.send(data));
 })
 
@@ -96,7 +96,7 @@ app.get('/special_skills/:id', (req, res) => {
     const { id } = req.params;
     knex.select('*')
     .from('special_skills')
-    .where({ id: id })
+    .where({ users_id: id })
     .then(data => res.send(data));
 })
 
@@ -109,7 +109,7 @@ app.get('/static_skills/:id', (req, res) => {
     const { id } = req.params;
     knex.select('*')
     .from('static_skills')
-    .where({ id: id })
+    .where({ users_id: id })
     .then(data => res.send(data));
 })
 
