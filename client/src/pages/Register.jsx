@@ -183,7 +183,7 @@ const Register = () => {
                 <p>{user.name}</p>
                 <p>{user.email}</p>
                 <p>Username: {user.username}</p>
-                <p>Please fill out the information below to finish setting up your profile!</p>
+                <p>Please fill out the information below and hit submit to finish setting up your profile!</p>
                 </h1>
                 </div>
                 <form className="completepage" onSubmit={eventHandler}>
