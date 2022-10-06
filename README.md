@@ -1,7 +1,7 @@
 # miltrack
 *The tracker to end all trackers*
 
-![CyberReq-cover-image](/cover.png) ## /Miltrack Image goes here/
+ \\\\\\//////Miltrack Image goes here\\\\\\//////
 
 ## Overview
 
@@ -35,7 +35,7 @@ search stuff
 
 ### Schema - Entity Relationship Diagram
 
-![CyberReq-cover-image](./schema.png) //schema picture here//
+\\\\\\//////schema picture here\\\\\\//////
 
 ## Setup & Dependencies: <a name="setup"></a>
 
