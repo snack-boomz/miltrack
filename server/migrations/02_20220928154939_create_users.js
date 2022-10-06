@@ -11,6 +11,7 @@ exports.up = function(knex) {
     table.string('rank');
     table.string('MOS');
     table.integer('supervisor_id').nullable()
+    table.string('current_status');
     table.integer('organization_id')
     table.foreign('organization_id').references('organization.id');
   })
