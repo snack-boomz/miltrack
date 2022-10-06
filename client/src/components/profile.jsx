@@ -39,7 +39,7 @@ table.integer('users_id');
  */
 
 export const specialSkillsTestArrayOfObjects = [
-    { id: 1, skill_name: "Foreign Language", refresh_date: "2022-06-06", users_id: 1 },
+    { id: 1, skill_name: "Fuck All", refresh_date: "2022-06-06", users_id: 1 },
     { id: 2,  skill_name: "Radio Operator", refresh_date: '2022-11-01', users_id: 1 },
     { id: 3,  skill_name: "JTAC", refresh_date: '2023-03-21', users_id: 1 },
     { id: 1, skill_name: "Foreign Language", refresh_date: "2022-06-06", users_id: 1 },
