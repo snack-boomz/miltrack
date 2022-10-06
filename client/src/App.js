@@ -12,17 +12,23 @@ import SubTag from "./components/SubTag";
 import styled from 'styled-components';
 
 function App() {
-  const [loggedUser, setLoggedUser] = useState([]);
-  const [loggedUser2, setLoggedUser2] = useState();
+  const [ loggedUser, setLoggedUser ] = useState([{"id":1,"username":null,"name":"Loading...","password":"1234","rank":"E4", "mos": "Loading...", "current_status": "PDY", "supervisor_id" : null,"organization_id":1}]);
   const [ allUsers, setAllUsers ] = useState([]);
   const [ loggedUserOrg, setLoggedUserOrg ] = useState([]);
   const [ loggedUserToggle, setLoggedUserToggle ] = useState(0);
+  const [ loggedUserSummary, setLoggedUserSummary ] = useState([]);
+  const [ loggedUserServiceMembers, setLoggedUserServiceMembers ] = useState([]);
+  const [ loggedUserServiceMemberSummaries, setLoggedUserServiceMemberSummaries ] = useState([]);
+  const [ loggedUserServiceMemberPromiseChainComplete, setLoggedUserServiceMemberPromiseChainComplete ] = useState(false);
+  const [loggedUser2, setLoggedUser2] = useState();
   const [ orgData, setOrgData ] = useState([])
+
   useEffect(() => {
     fetch('http://localhost:3001/users')
     .then(response => response.json())
     .then(data => setAllUsers(data))
   }, [])
+
   // Temporary use effect to set hardcoded LoggedInUser until we have logging in functionality
   useEffect(() => {
     fetch('http://localhost:3001/users')
@@ -38,17 +44,8 @@ function App() {
     })
   }, [])
 
-  useEffect(() => {
-    fetch(`http://localhost:3001/organization/1`)
-    .then(response => response.json())
-    .then(data => setLoggedUserOrg(data[0].organization_name))
-    .then(data => {
-      console.log(loggedUserOrg)
-      console.log(typeof loggedUserOrg)
-      console.log("logged user org")
-    })
+  // set loggedUser's subordinates if he/she has any
 
-  }, [])
   useEffect(() => {
     fetch(`http://localhost:3001/organization/`)
     .then(response => response.json())
@@ -65,6 +62,14 @@ function App() {
     setLoggedUserOrg,
     loggedUserToggle,
     setLoggedUserToggle,
+    loggedUserSummary,
+    setLoggedUserSummary,
+    loggedUserServiceMembers,
+    setLoggedUserServiceMembers,
+    loggedUserServiceMemberSummaries, 
+    setLoggedUserServiceMemberSummaries,
+    loggedUserServiceMemberPromiseChainComplete, 
+    setLoggedUserServiceMemberPromiseChainComplete,
     loggedUser2,
     setLoggedUser2,
     orgData,
@@ -91,7 +96,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/dashboard" element={<Dashboard/>} />
+            <Route path="/dashboard" element={loggedUser === [] ? <>Loading...</> : <Dashboard/>} />
             <Route path="/:userid" element={<Profile />} />
           </Routes>
       </Router>
