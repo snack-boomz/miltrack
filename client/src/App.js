@@ -5,21 +5,70 @@ import { AppContext } from "./AppContext";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from './components/dashboard';
-import Profile from "./pages/Profile";
+import Profile from "./components/profile";
 import Navbar from "./components/Navbar";
 import IndivTag from "./components/IndivTag";
 import SubTag from "./components/SubTag";
 import styled from 'styled-components';
 
 function App() {
-  const [loggedUser, setLoggedUser] = useState({});
-  const [ state1, setState1 ] = useState([]);
+  const [loggedUser, setLoggedUser] = useState([]);
+  const [loggedUser2, setLoggedUser2] = useState();
+  const [ allUsers, setAllUsers ] = useState([]);
+  const [ loggedUserOrg, setLoggedUserOrg ] = useState([]);
+  const [ loggedUserToggle, setLoggedUserToggle ] = useState(0);
+  const [ orgData, setOrgData ] = useState([])
+  useEffect(() => {
+    fetch('http://localhost:3001/users')
+    .then(response => response.json())
+    .then(data => setAllUsers(data))
+  }, [])
+  // Temporary use effect to set hardcoded LoggedInUser until we have logging in functionality
+  useEffect(() => {
+    fetch('http://localhost:3001/users')
+    .then(response => response.json())
+    .then(data => setLoggedUser([{"id":1,"username":null,"name":"Russell Annis","password":"1234","rank":"E4", "mos": "17C", "current_status": "PDY", "supervisor_id" : null,"organization_id":1}]))
+    .then(data => {
+        console.log(loggedUser)
+        console.log("Hello!")
+    
+    })
+    .then(data => {
+      setLoggedUserToggle(loggedUserToggle + 1)
+    })
+  }, [])
+
+  useEffect(() => {
+    fetch(`http://localhost:3001/organization/1`)
+    .then(response => response.json())
+    .then(data => setLoggedUserOrg(data[0].organization_name))
+    .then(data => {
+      console.log(loggedUserOrg)
+      console.log(typeof loggedUserOrg)
+      console.log("logged user org")
+    })
+
+  }, [])
+  useEffect(() => {
+    fetch(`http://localhost:3001/organization/`)
+    .then(response => response.json())
+    .then(data => setOrgData(data))
+  }, [])
+
 
   const getterSetters = {
-    state1,
+    allUsers, 
+    setAllUsers,
     loggedUser,
     setLoggedUser,
-    setState1
+    loggedUserOrg,
+    setLoggedUserOrg,
+    loggedUserToggle,
+    setLoggedUserToggle,
+    loggedUser2,
+    setLoggedUser2,
+    orgData,
+    setOrgData
   }
 
   // const testObject = {

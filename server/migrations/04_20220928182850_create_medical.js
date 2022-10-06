@@ -9,7 +9,8 @@ exports.up = function(knex) {
         table.string('dental_date');
         table.string('hearing_date');
         table.string('hiv_date');
-        table.string('vision_date')
+        table.string('pdha_date');
+        table.string('vision_date');
         table.integer('users_id');
         table.foreign('users_id').references('users.id');
 
