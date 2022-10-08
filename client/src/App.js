@@ -22,8 +22,10 @@ function App() {
   const [ loggedUserServiceMemberSummaries, setLoggedUserServiceMemberSummaries ] = useState([]);
   const [ loggedUserServiceMemberPromiseChainComplete, setLoggedUserServiceMemberPromiseChainComplete ] = useState(false);
   const [ loggedUserPromiseChainComplete, setLoggedUserPromiseChainComplete ] = useState(false);
+  const [ updateFieldsToggle, setUpdateFieldsToggle ] = useState(0);
   const [loggedUser2, setLoggedUser2] = useState();
-  const [ orgData, setOrgData ] = useState([])
+  const [ orgData, setOrgData ] = useState([]);
+  const [ noUser, setNoUser ] = useState(false);
 
   useEffect(() => {
     fetch('http://localhost:3001/users')
@@ -75,6 +77,10 @@ function App() {
     setLoggedUserServiceMemberPromiseChainComplete,
     loggedUserPromiseChainComplete,
     setLoggedUserPromiseChainComplete,
+    updateFieldsToggle,
+    setUpdateFieldsToggle,
+    noUser,
+    setNoUser,
     loggedUser2,
     setLoggedUser2,
     orgData,

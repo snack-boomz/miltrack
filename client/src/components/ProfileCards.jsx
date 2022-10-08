@@ -8,7 +8,9 @@ import { AppContext } from '../AppContext';
 //import Profile, { staticSkillsTestArrayOfObjects as staticSkills, specialSkillsTestArrayOfObjects as specialSkills, userObject } from './profile';
 //imported for use of dummy data
 
-export const SubTagMedical = (props) => {
+
+
+export const Medical = (props) => {
 
     let {
         loggedUser,
@@ -26,7 +28,9 @@ export const SubTagMedical = (props) => {
         loggedUserServiceMemberSummaries,
         setLoggedUserServiceMemberSummaries,
         loggedUserServiceMemberPromiseChainComplete,
-        setLoggedUserServiceMemberPromiseChainComplete
+        setLoggedUserServiceMemberPromiseChainComplete,
+        updateFieldsToggle,
+        setUpdateFieldsToggle
     }
 
         = useContext(AppContext);
@@ -66,7 +70,9 @@ export const SubTagMedical = (props) => {
 
     return (
         <ul key="0" className="w-10/12 h-8/12 width: 'vw' list-none flex flex-row flex-wrap gap-8 border border-2 border-gray border-double mx-auto my-8 p-4 bg-[#A3BD8A] rounded-lg shadow-2xl ">
-            <h2 className="text-3xl font-bold border-r-2 py-8 pr-8">Medical Status</h2>
+            <div>
+                <h2 className="text-3xl font-bold border-r-2 py-8 pr-8">Medical Status</h2>
+            </div>
             {props.elements.map((element, index) => {
 
                 let currentLabel = "";
@@ -286,7 +292,7 @@ export const SubTagMedical = (props) => {
 
 // ━◦○◦━◦○◦━◦○◦━◦○◦━◦○◦━◦○◦━━◦○◦━◦○◦━◦○◦━◦○◦━◦○◦━◦○◦━━◦○◦━◦○◦━◦○◦━◦○◦━◦○◦━◦○◦━━◦○◦━◦○◦━◦○◦━◦○◦━◦○◦━◦○◦━━◦○◦━◦○◦━◦○◦━◦○◦━◦○◦━◦○◦━━◦○◦━◦○◦━◦○◦━◦○◦━◦○◦━◦○◦━━◦○◦━◦○◦━◦○◦━◦○◦━◦○◦━◦○◦━━◦○◦━◦○◦━◦○◦━◦○◦━◦○◦━◦○◦━
 
-export const SubTagAnnualTraining = (props) => {
+export const AnnualTraining = (props) => {
 
     let {
         loggedUser,
@@ -428,7 +434,7 @@ export const SubTagAnnualTraining = (props) => {
 
 
 
-export const SubTagSpecialTraining = (props) => {
+export const SpecialTraining = (props) => {
 
     let {
         loggedUser,
@@ -569,7 +575,7 @@ export const SubTagSpecialTraining = (props) => {
 };
 
 
-export const SubTagStaticTraining = (props) => {
+export const StaticTraining = (props) => {
 
     let {
         loggedUser,
