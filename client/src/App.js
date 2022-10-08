@@ -12,7 +12,8 @@ import SubTag from "./components/SubTag";
 import styled from 'styled-components';
 
 function App() {
-  const [ loggedUser, setLoggedUser ] = useState([{"id":1,"username":null,"name":"Loading...","password":"1234","rank":"E4", "mos": "Loading...", "current_status": "PDY", "supervisor_id" : null,"organization_id":1}]);
+  // const [ loggedUser, setLoggedUser ] = useState([{"id":1,"username":null,"name":"Loading...","password":"1234","rank":"E4", "mos": "Loading...", "current_status": "PDY", "supervisor_id" : null,"organization_id":1}]);
+  const [ loggedUser, setLoggedUser ] = useState([]);
   const [ allUsers, setAllUsers ] = useState([]);
   const [ loggedUserOrg, setLoggedUserOrg ] = useState([]);
   const [ loggedUserToggle, setLoggedUserToggle ] = useState(0);
@@ -20,6 +21,7 @@ function App() {
   const [ loggedUserServiceMembers, setLoggedUserServiceMembers ] = useState([]);
   const [ loggedUserServiceMemberSummaries, setLoggedUserServiceMemberSummaries ] = useState([]);
   const [ loggedUserServiceMemberPromiseChainComplete, setLoggedUserServiceMemberPromiseChainComplete ] = useState(false);
+  const [ loggedUserPromiseChainComplete, setLoggedUserPromiseChainComplete ] = useState(false);
   const [loggedUser2, setLoggedUser2] = useState();
   const [ orgData, setOrgData ] = useState([])
 
@@ -37,6 +39,7 @@ function App() {
     // .then(data => {
     //     console.log(loggedUser)
     //     console.log("Hello!")
+
     
     // })
     .then(data => {
@@ -70,6 +73,8 @@ function App() {
     setLoggedUserServiceMemberSummaries,
     loggedUserServiceMemberPromiseChainComplete, 
     setLoggedUserServiceMemberPromiseChainComplete,
+    loggedUserPromiseChainComplete,
+    setLoggedUserPromiseChainComplete,
     loggedUser2,
     setLoggedUser2,
     orgData,

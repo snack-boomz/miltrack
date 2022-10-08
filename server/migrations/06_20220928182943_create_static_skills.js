@@ -6,6 +6,7 @@ exports.up = function(knex) {
     return knex.schema.createTable('static_skills', table => {
         table.increments('id');
         table.string('skill_name');
+        table.string('skill_date');
         table.integer('users_id');
         table.foreign('users_id').references('users.id');
 

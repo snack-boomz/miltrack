@@ -1,11 +1,13 @@
 //const { useState } = require("react")
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import './profile.css';
 import styled from 'styled-components';
 import IndivTag from "./IndivTag";
 import { SubTagMedical, SubTagAnnualTraining, SubTagSpecialTraining, SubTagStaticTraining } from "./MedicalCardInject";
+//this is for test or dummy data
+import { AppContext } from '../AppContext';
 
-export const userObject = {
+const userObject = {
     users_id: 1, username: "billy", password: "a;sdkfjn;alkshdfoiajsd;lfj", rank: "SPC", full_name: "Justin Hernandez", status: "TDY"
 }
 
@@ -17,7 +19,7 @@ const medicalBar = {
     name: "Medical Status"
 }
 
-export const medicalTestArrayOfObjects = [
+const medicalTestArrayOfObjects = [
     { id: 1, pha_date: "2022-10-20" },
     { id: 2, dental_date: "2022-12-30" },
     { id: 3, hearing_date: "2023-10-21" },
@@ -27,10 +29,10 @@ export const medicalTestArrayOfObjects = [
 
 
 const annualRequirementsTestArrayOfObjects = [
-    { id: 1, skill_name: "SHARP TRAINING", refresh_date: "2022-11-01", users_id: 1},
+    { id: 1, skill_name: "SHARP TRAINING", refresh_date: "2022-11-01", users_id: 1 },
     { id: 2, skill_name: "EO TRAINING", refresh_date: '2022-12-30', users_id: 1 },
-    { id: 3, skill_name: "ONLINE TRAINING" , refresh_date: '2022-10-05', users_id: 1  },
-    { id: 4, skill_name: "TARP TRAINING", refresh_date: "2022-11-01", users_id: 1  },
+    { id: 3, skill_name: "ONLINE TRAINING", refresh_date: '2022-10-05', users_id: 1 },
+    { id: 4, skill_name: "TARP TRAINING", refresh_date: "2022-11-01", users_id: 1 },
 ]
 /*table.increments('id');
 table.string('skill_name');
@@ -38,26 +40,26 @@ table.string('skill_refresh_date');
 table.integer('users_id');
  */
 
-export const specialSkillsTestArrayOfObjects = [
+const specialSkillsTestArrayOfObjects = [
+    { id: 1, skill_name: "Fuck All", refresh_date: "2022-06-06", users_id: 1 },
+    { id: 2, skill_name: "Radio Operator", refresh_date: '2022-11-01', users_id: 1 },
+    { id: 3, skill_name: "JTAC", refresh_date: '2023-03-21', users_id: 1 },
     { id: 1, skill_name: "Foreign Language", refresh_date: "2022-06-06", users_id: 1 },
-    { id: 2,  skill_name: "Radio Operator", refresh_date: '2022-11-01', users_id: 1 },
-    { id: 3,  skill_name: "JTAC", refresh_date: '2023-03-21', users_id: 1 },
+    { id: 2, skill_name: "Radio Operator", refresh_date: '2022-11-01', users_id: 1 },
+    { id: 3, skill_name: "JTAC", refresh_date: '2023-03-21', users_id: 1 },
     { id: 1, skill_name: "Foreign Language", refresh_date: "2022-06-06", users_id: 1 },
-    { id: 2,  skill_name: "Radio Operator", refresh_date: '2022-11-01', users_id: 1 },
-    { id: 3,  skill_name: "JTAC", refresh_date: '2023-03-21', users_id: 1 },
+    { id: 2, skill_name: "Radio Operator", refresh_date: '2022-11-01', users_id: 1 },
+    { id: 3, skill_name: "JTAC", refresh_date: '2023-03-21', users_id: 1 },
     { id: 1, skill_name: "Foreign Language", refresh_date: "2022-06-06", users_id: 1 },
-    { id: 2,  skill_name: "Radio Operator", refresh_date: '2022-11-01', users_id: 1 },
-    { id: 3,  skill_name: "JTAC", refresh_date: '2023-03-21', users_id: 1 },
+    { id: 2, skill_name: "Radio Operator", refresh_date: '2022-11-01', users_id: 1 },
+    { id: 3, skill_name: "JTAC", refresh_date: '2023-03-21', users_id: 1 },
     { id: 1, skill_name: "Foreign Language", refresh_date: "2022-06-06", users_id: 1 },
-    { id: 2,  skill_name: "Radio Operator", refresh_date: '2022-11-01', users_id: 1 },
-    { id: 3,  skill_name: "JTAC", refresh_date: '2023-03-21', users_id: 1 },
-    { id: 1, skill_name: "Foreign Language", refresh_date: "2022-06-06", users_id: 1 },
-    { id: 2,  skill_name: "Radio Operator", refresh_date: '2022-11-01', users_id: 1 },
-    { id: 3,  skill_name: "JTAC", refresh_date: '2023-03-21', users_id: 1 },
+    { id: 2, skill_name: "Radio Operator", refresh_date: '2022-11-01', users_id: 1 },
+    { id: 3, skill_name: "JTAC", refresh_date: '2023-03-21', users_id: 1 },
 ]
 
 
-export const staticSkillsTestArrayOfObjects = [
+const staticSkillsTestArrayOfObjects = [
     { id: 1, name: "Airborne School", skill_date: "2016-07-01" },
     { id: 2, name: "Ranger School", skill_date: "2018-09-01" },
     { id: 3, name: "SEC+ Certification", skill_date: "2022-05-01" },
@@ -86,39 +88,250 @@ const userInfo = [
 ]
 
 
+
+
+
 function Profile() {
+
+    let { 
+        loggedUser, 
+        setLoggedUser, 
+        allUsers, 
+        setAllUsers, 
+        loggedUserOrg, 
+        setLoggedUserOrg, 
+        loggedUserToggle, 
+        setLoggedUserToggle, 
+        loggedUserSummary, 
+        setLoggedUserSummary, 
+        loggedUserServiceMembers, 
+        setLoggedUserServiceMembers,
+        loggedUserServiceMemberSummaries, 
+        setLoggedUserServiceMemberSummaries,
+        loggedUserPromiseChainComplete, 
+        setLoggedUserServiceMemberPromiseChainComplete,
+        setLoggedUserPromiseChainComplete 
+        } 
+
+    = useContext(AppContext);
+    // grab all users
+    useEffect(() => {
+        fetch('http://localhost:3001/users')
+            .then(response => response.json())
+            .then(data => setAllUsers(data))
+    }, [])
+
+    // Temporary use effect to set hardcoded LoggedInUser until we have logging in functionality
+    // useEffect(() => {
+    //     fetch('http://localhost:3001/users')
+    //         .then(response => response.json())
+    //         .then(data => setLoggedUser([{ id: 1}]))
+    //         .then(data => {
+    //             console.log(loggedUser);
+    //             console.log("Hello!")
+
+    //         })
+    //         .then(data => {
+    //             setLoggedUserToggle(loggedUserToggle += 1)
+    //             console.log(loggedUserToggle);
+    //         })
+    //         .catch(err => {
+    //             console.error("err: ", err)
+    //         })
+    // }, [])
+    // grab logged user org
+    useEffect(() => {
+        console.log(loggedUser);
+        fetch(`http://localhost:3001/organization/1`)
+            .then(response => response.json())
+            .then(data => setLoggedUserOrg(data[0].organization_name))
+            .then(data => {
+                console.log(loggedUserOrg)
+                console.log(typeof loggedUserOrg)
+                console.log("logged user org")
+            })
+            .catch(err => {
+                console.error("err: ", err)
+            })
+
+    }, [loggedUserToggle])
+
+    // grab all logged user information
+
+    useEffect(() => {
+        console.log(loggedUser[0]);
+        let userId = loggedUser[0].id;
+        let medicalPromise = (
+            fetch(`http://localhost:3001/medical/${userId}`)
+                .then(response => response.json())
+                .then(data => {
+
+                    // setLoggedUserSummary([...loggedUserSummary, ...data])
+                    console.log("medical promise")
+                    return data;
+                })
+        )
+        let annualTrainingPromise = (
+            fetch(`http://localhost:3001/annual_training/${userId}`)
+                .then(response => response.json())
+                .then(data => {
+
+                    // setLoggedUserSummary([...loggedUserSummary, ...data])
+                    console.log("annual training promise")
+                    return data;
+                })
+        )
+
+        let evaluationsPromise = (
+
+            fetch(`http://localhost:3001/evaluations/${userId}`)
+                .then(response => response.json())
+                .then(data => {
+
+                    // setLoggedUserSummary([...loggedUserSummary, ...data])
+                    console.log("evaluations promise")
+                    return data;
+                })
+
+        )
+
+        let specialSkillsPromise = (
+            fetch(`http://localhost:3001/special_skills/${userId}`)
+                .then(response => response.json())
+                .then(data => {
+
+                    // setLoggedUserSummary([...loggedUserSummary, ...data])
+                    console.log("special skills promise")
+                    return data;
+                })
+
+        )
+
+        let staticSkillsPromise = (
+
+            fetch(`http://localhost:3001/static_skills/${userId}`)
+                .then(response => response.json())
+                .then(data => {
+
+                    // setLoggedUserSummary([...loggedUserSummary, ...data])
+                    console.log("static skills promise")
+                    return data;
+                })
+
+        )
+        // iterate through each promise and return the element (recursive), to prevent nested for loops below
+        // in Promise.all
+
+        let loggedUserArray = [];
+
+        const promiseAllHelper = (promise, promiseLength) => {
+            console.log("promiseAllhelper promise: ", promise);
+            console.log("promiseAllhelper promiseLength: ", promiseLength);
+            if (promiseLength == 0) {
+
+            } else {
+
+                console.log("pushing promise[promiseLength - 1]: ", promise[promiseLength - 1]);
+                loggedUserArray.push(promise[promiseLength - 1])
+                promiseLength -= 1;
+                promiseAllHelper(promise, promiseLength)
+            }
+
+
+        }
+
+       
+        
+        Promise.all([medicalPromise, annualTrainingPromise, specialSkillsPromise, staticSkillsPromise])
+            .then((info) => {
+
+                console.log("all promises complete");
+                // add SM status from loggedUser
+                console.log(loggedUser[0].status)
+                loggedUserArray.push({ current_status: loggedUser[0].current_status });
+                for (let promise of info) {
+                    console.log("promise: ", promise)
+                    promiseAllHelper(promise, promise.length)
+                }
+                console.log("loggedUserArray: ", loggedUserArray);
+                setLoggedUserSummary(loggedUserArray);
+
+                /*
+
+                    setTimeout(() => Promise.all(subordinatePromises)
+                    .then((info) => {
+
+                        setLoggedUserServiceMemberPromiseChainComplete(true);
+                        console.log("all subordinate promises are complete");
+
+                    }), 3000)
+
+                */
+            })
+            .then((info) => {
+
+                setTimeout(() => {
+                    setLoggedUserPromiseChainComplete(true);
+                    console.log("loggedUserPromiseChain complete");
+                }, 500)
+                
+            })
+
+    }, [loggedUserToggle])
+
+    
     // const [apptDate, setApptDate] = useState("");
-
-    return (
-        <>
-            {userInfo.map((val, key) => {
-                return (
-                    <section key={key} id="wrapper" className="pb-8 m-12">
-                        <section id='welcome_box' className="w-1/5 mx-auto p-4 min-w-fit max-w-fit bg-slate-100 opacity-90 rounded-md shadow-xl shadow-black">
-                            <tr key={key}>
-                                <div>{val.unit_id}</div>
-                                <div>Welcome, {val.rank} {val.name}</div>
-                                <div style={{ fontStyle: 'italic' }}>"Stay <strong className="text-[#A3BD8A]">GREEN</strong> to stay in the fight!"</div>
-                                <div>DOB: {val.dob} </div>
-                                <div>BASD: {val.basd} </div>
-                                <div>MOS: {val.mos} </div>
-                                <div>DODID: {val.dodid} </div>
-                            </tr>
-                        </section>
-                        {/* <IndivTag elements={ testObject } component="medical"/> */}
-                        {/* Logged in Soldier below */}
-                        <hr className="w-10/12 mx-auto border-t-2 mt-12" />
-
-                        {/* Subordinates below */}
-                        <SubTagMedical elements={medicalTestArrayOfObjects} />
-                        <SubTagAnnualTraining elements={annualRequirementsTestArrayOfObjects} />
-                        <SubTagSpecialTraining elements={specialSkillsTestArrayOfObjects} skill= { specialSkillsTestArrayOfObjects } key={key}/>
-                        <SubTagStaticTraining elements={staticSkillsTestArrayOfObjects} />
+    if (loggedUser !== []) {
+        if (loggedUserPromiseChainComplete === true && loggedUserSummary[0] !== undefined) {
+            return (
+                <>
+                    {userInfo.map((val, key) => {
+                        return (
+                            <section key={key} id="wrapper" className="pb-8 m-12">
+                                <section id='welcome_box' className="w-1/5 mx-auto p-4 min-w-fit max-w-fit bg-slate-100 opacity-90 rounded-md shadow-xl shadow-black">
+                                    <tr key={key}>
+                                        <div>{loggedUser.organization_id}</div>
+                                        <div>Welcome, {loggedUser.rank} {loggedUser.name}</div>
+                                        <div style={{ fontStyle: 'italic' }}>"Stay <strong className="text-[#A3BD8A]">GREEN</strong> to stay in the fight!"</div>
+                                        <div>DOB: {val.dob} </div>
+                                        <div>BASD: {val.basd} </div>
+                                        <div>MOS: {val.mos} </div>
+                                        <div>DODID: {val.dodid} </div>
+                                    </tr>
+                                </section>
+                                {/* <IndivTag elements={ testObject } component="medical"/> */}
+                                {/* Logged in Soldier below */}
+                                <hr className="w-10/12 mx-auto border-t-2 mt-12" />
+        
+                                {/* Subordinates below */}
+                                <SubTagMedical elements={medicalTestArrayOfObjects} />
+                                <SubTagAnnualTraining elements={annualRequirementsTestArrayOfObjects} />
+                                <SubTagSpecialTraining elements={specialSkillsTestArrayOfObjects} skill={specialSkillsTestArrayOfObjects} key={key} />
+                                <SubTagStaticTraining elements={staticSkillsTestArrayOfObjects} />
+                            </section>
+                        )
+                    })}
+                </>
+            )
+        } else {
+            return (
+                <section id="wrapper" className="pb-8 m-12">
+                    <section id='welcome_box' className="w-1/5 mx-auto p-4 min-w-fit max-w-fit bg-slate-100 opacity-90 rounded-md shadow-xl shadow-black">
+                        <div>Loading...</div>
                     </section>
-                )
-            })}
-        </>
-    )
+                </section>
+            )
+        }
+    } else {
+        return (
+            <section id="wrapper" className="pb-8 m-12">
+                <section id='welcome_box' className="w-1/5 mx-auto p-4 min-w-fit max-w-fit bg-slate-100 opacity-90 rounded-md shadow-xl shadow-black">
+                    <div>Loading...</div>
+                </section>
+            </section>
+        )
+    }
+    
 }
 /*
                 <section>

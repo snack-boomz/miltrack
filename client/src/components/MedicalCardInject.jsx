@@ -1,13 +1,35 @@
-import React, { useState } from 'react';
+import React, { useStat, useContext } from 'react';
 
 import styled from 'styled-components';
 import * as AiIcons from 'react-icons/ai';
 import * as IoIcons from 'react-icons/io';
 import * as GrIcons from 'react-icons/gr';
-import Profile, { staticSkillsTestArrayOfObjects as staticSkills, specialSkillsTestArrayOfObjects as specialSkills, userObject } from './profile';
-
+import { AppContext } from '../AppContext';
+//import Profile, { staticSkillsTestArrayOfObjects as staticSkills, specialSkillsTestArrayOfObjects as specialSkills, userObject } from './profile';
+//imported for use of dummy data
 
 export const SubTagMedical = (props) => {
+
+    let {
+        loggedUser,
+        setLoggedUser,
+        allUsers,
+        setAllUsers,
+        loggedUserOrg,
+        setLoggedUserOrg,
+        loggedUserToggle,
+        setLoggedUserToggle,
+        loggedUserSummary,
+        setLoggedUserSummary,
+        loggedUserServiceMembers,
+        setLoggedUserServiceMembers,
+        loggedUserServiceMemberSummaries,
+        setLoggedUserServiceMemberSummaries,
+        loggedUserServiceMemberPromiseChainComplete,
+        setLoggedUserServiceMemberPromiseChainComplete
+    }
+
+        = useContext(AppContext);
 
     const colorHelper = (amber, red,) => {
 
@@ -266,6 +288,27 @@ export const SubTagMedical = (props) => {
 
 export const SubTagAnnualTraining = (props) => {
 
+    let {
+        loggedUser,
+        setLoggedUser,
+        allUsers,
+        setAllUsers,
+        loggedUserOrg,
+        setLoggedUserOrg,
+        loggedUserToggle,
+        setLoggedUserToggle,
+        loggedUserSummary,
+        setLoggedUserSummary,
+        loggedUserServiceMembers,
+        setLoggedUserServiceMembers,
+        loggedUserServiceMemberSummaries,
+        setLoggedUserServiceMemberSummaries,
+        loggedUserPromiseChainComplete,
+        setLoggedUserServiceMemberPromiseChainComplete
+    }
+
+        = useContext(AppContext);
+
     const colorHelper = (amber, red,) => {
 
         if (red) {
@@ -280,76 +323,103 @@ export const SubTagAnnualTraining = (props) => {
     }
 
     return (
-        <ul key="0" className="w-10/12 h-8/12 width: 'vw' list-none flex flex-row flex-wrap gap-8 border border-2 border-gray border-double mx-auto my-8 p-4 bg-[#A3BD8A] rounded-lg shadow-2xl ">
+        <ul key="1" className="w-10/12 h-8/12 width: 'vw' list-none flex flex-row flex-wrap gap-8 border border-2 border-gray border-double mx-auto my-8 p-4 bg-[#A3BD8A] rounded-lg shadow-2xl ">
             <div>
                 <h2 className="text-3xl font-bold border-r-2 py-8 pr-8">Annual Training</h2>
             </div>
             {
-                props.elements.map((skill, index) => {
+                loggedUserSummary.map((obj, index) => {
+                    console.log("loggedUserSummary: ", loggedUserSummary)
+                    console.log("obj: ", obj)
+                    if (obj.training_name) {
+                        console.log("test")
+                        //props.elements.map((skill, index) => {
 
-                let currentLabel = "";
-                let currentLabelStatus = "";
-                let amber = false;
-                let red = false;
+                        let currentLabel = "";
+                        let currentLabelStatus = "";
+                        let amber = false;
+                        let red = false;
 
-                if (skill.users_id === userObject.users_id) {
 
-                    currentLabel = skill.skill_name;
 
-                    // { id: 1, skill_name: "Foreign Language", refresh_date: "2022-06-06", users_id: 1 }
+                        currentLabel = obj.training_name;
 
-                    if (new Date(skill.refresh_date).valueOf() > Date.now()) {
+                        // { id: 1, skill_name: "Foreign Language", refresh_date: "2022-06-06", users_id: 1 }
 
-                        let date = new Date(skill.refresh_date).valueOf();
-                        let msDate = new Date(parseInt(date, 10));
-                        let uiDate = msDate.toDateString();
-                        currentLabelStatus = 'Due Date\n' + uiDate;
+                        if (new Date(obj.training_date).valueOf() > Date.now()) {
 
-                        if (new Date(skill.refresh_date).valueOf() - Date.now() <= 2592000000) {
-
-                            let date = new Date(skill.refresh_date).valueOf();
+                            let date = new Date(obj.training_date).valueOf();
                             let msDate = new Date(parseInt(date, 10));
                             let uiDate = msDate.toDateString();
-                            amber = true;
                             currentLabelStatus = 'Due Date\n' + uiDate;
 
+                            if (new Date(obj.training_date).valueOf() - Date.now() <= 2592000000) {
+
+                                let date = new Date(obj.training_date).valueOf();
+                                let msDate = new Date(parseInt(date, 10));
+                                let uiDate = msDate.toDateString();
+                                amber = true;
+                                currentLabelStatus = 'Due Date\n' + uiDate;
+
+                            }
+
+                        } else if (new Date(obj.training_date).valueOf() < Date.now()) {
+
+                            let date = new Date(obj.training_date).valueOf();
+                            let msDate = new Date(parseInt(date, 10));
+                            let uiDate = msDate.toDateString();
+                            red = true;
+                            currentLabelStatus = 'Due Date\n' + uiDate;
                         }
+                        
+                        if (currentLabel === "") {
+                            return <></>
+                            
+                        } else {
+                            
+                            
+                        if (loggedUser !== []) {
+                            if (loggedUserPromiseChainComplete === true && loggedUserSummary[0] !== undefined) { 
 
-                    } else if (new Date(skill.refresh_date).valueOf() < Date.now()) {
+                                return (
 
-                        let date = new Date(skill.refresh_date).valueOf();
-                        let msDate = new Date(parseInt(date, 10));
-                        let uiDate = msDate.toDateString();
-                        red = true;
-                        currentLabelStatus = 'Due Date\n' + uiDate;
-                    }
+                                    <li
 
-                }
+                                        key={index}
+                                        className={colorHelper(amber, red)}>
 
-                
-                    if (currentLabel === "") {
-                        return <></>
-                    } else {
+                                        <strong className="text-center">
+                                            {currentLabel}
+                                        </strong>
 
-                        return (
+                                        <p className="text-center">{currentLabelStatus}</p>
 
-                            <li
+                                    </li>
+
+                                );
+                            } else {
+
+                                <li
 
                                 key={index}
                                 className={colorHelper(amber, red)}>
-                                <strong className="text-center">
-                                    {currentLabel}
 
+                                <strong className="text-center">
+                                    Loading...
                                 </strong>
 
+                                <p className="text-center">Loading...</p>
 
-                                <p className="text-center">{currentLabelStatus}</p>
-                            </li>
+                                </li>
 
-                        );
+                            }
+                        }
+
+                        }
+                    } else {
+                        return <></>;
 
                     }
-
                 })
             }
         </ul>
@@ -357,7 +427,29 @@ export const SubTagAnnualTraining = (props) => {
 };
 
 
+
 export const SubTagSpecialTraining = (props) => {
+
+    let {
+        loggedUser,
+        setLoggedUser,
+        allUsers,
+        setAllUsers,
+        loggedUserOrg,
+        setLoggedUserOrg,
+        loggedUserToggle,
+        setLoggedUserToggle,
+        loggedUserSummary,
+        setLoggedUserSummary,
+        loggedUserServiceMembers,
+        setLoggedUserServiceMembers,
+        loggedUserServiceMemberSummaries,
+        setLoggedUserServiceMemberSummaries,
+        loggedUserPromiseChainComplete,
+        setLoggedUserServiceMemberPromiseChainComplete
+    }
+
+        = useContext(AppContext);
 
     const colorHelper = (amber, red,) => {
 
@@ -373,107 +465,191 @@ export const SubTagSpecialTraining = (props) => {
     }
 
     return (
-        <ul key="0" className="w-10/12 h-8/12 width: 'vw' list-none flex flex-row flex-wrap gap-8 border border-2 border-gray border-double mx-auto my-8 p-4 bg-[#A3BD8A] rounded-lg shadow-2xl ">
+        <ul key="1" className="w-10/12 h-8/12 width: 'vw' list-none flex flex-row flex-wrap gap-8 border border-2 border-gray border-double mx-auto my-8 p-4 bg-[#A3BD8A] rounded-lg shadow-2xl ">
             <div>
-                <h2 className="text-3xl font-bold border-r-2 py-2.5 pr-8">Special Training</h2>
-                <h5 className="font-bold border-r-2 py-0 pr-8">Additional Skills requiring</h5>
-                <h5 className="font-bold border-r-2 py-0 pr-8">recertification</h5>
+                <h2 className="text-3xl font-bold border-r-2 py-8 pr-8">Special Training</h2>
             </div>
             {
-                props.elements.map((skill, index) => {
+                loggedUserSummary.map((obj, index) => {
+                    console.log("loggedUserSummary: ", loggedUserSummary)
+                    console.log("obj: ", obj)
+                    if (obj.skill_refresh_date) {
+                        console.log("test")
+                        //props.elements.map((skill, index) => {
 
-                let currentLabel = "";
-                let currentLabelStatus = "";
-                let amber = false;
-                let red = false;
+                        let currentLabel = "";
+                        let currentLabelStatus = "";
+                        let amber = false;
+                        let red = false;
 
-                if (skill.users_id === userObject.users_id) {
 
-                    currentLabel = skill.skill_name;
 
-                    // { id: 1, skill_name: "Foreign Language", refresh_date: "2022-06-06", users_id: 1 }
+                        currentLabel = obj.skill_name;
 
-                    if (new Date(skill.refresh_date).valueOf() > Date.now()) {
+                        // { id: 1, skill_name: "Foreign Language", refresh_date: "2022-06-06", users_id: 1 }
 
-                        let date = new Date(skill.refresh_date).valueOf();
-                        let msDate = new Date(parseInt(date, 10));
-                        let uiDate = msDate.toDateString();
-                        currentLabelStatus = 'Due Date\n' + uiDate;
+                        if (new Date(obj.skill_refresh_date).valueOf() > Date.now()) {
 
-                        if (new Date(skill.refresh_date).valueOf() - Date.now() <= 2592000000) {
-
-                            let date = new Date(skill.refresh_date).valueOf();
+                            let date = new Date(obj.skill_refresh_date).valueOf();
                             let msDate = new Date(parseInt(date, 10));
                             let uiDate = msDate.toDateString();
-                            amber = true;
                             currentLabelStatus = 'Due Date\n' + uiDate;
 
+                            if (new Date(obj.skill_refresh_date).valueOf() - Date.now() <= 2592000000) {
+
+                                let date = new Date(obj.skill_refresh_date).valueOf();
+                                let msDate = new Date(parseInt(date, 10));
+                                let uiDate = msDate.toDateString();
+                                amber = true;
+                                currentLabelStatus = 'Due Date\n' + uiDate;
+
+                            }
+
+                        } else if (new Date(obj.skill_refresh_date).valueOf() < Date.now()) {
+
+                            let date = new Date(obj.skill_refresh_date).valueOf();
+                            let msDate = new Date(parseInt(date, 10));
+                            let uiDate = msDate.toDateString();
+                            red = true;
+                            currentLabelStatus = 'Due Date\n' + uiDate;
                         }
+                        
+                        if (currentLabel === "") {
+                            return <></>
+                            
+                        } else {
+                            
+                            
+                        if (loggedUser !== []) {
+                            if (loggedUserPromiseChainComplete === true && loggedUserSummary[0] !== undefined) { 
 
-                    } else if (new Date(skill.refresh_date).valueOf() < Date.now()) {
+                                return (
 
-                        let date = new Date(skill.refresh_date).valueOf();
-                        let msDate = new Date(parseInt(date, 10));
-                        let uiDate = msDate.toDateString();
-                        red = true;
-                        currentLabelStatus = 'Due Date\n' + uiDate;
-                    }
+                                    <li
 
-                }
+                                        key={index}
+                                        className={colorHelper(amber, red)}>
 
-                
-                    if (currentLabel === "") {
-                        return <></>
-                    } else {
+                                        <strong className="text-center">
+                                            {currentLabel}
+                                        </strong>
 
-                        return (
+                                        <p className="text-center">{currentLabelStatus}</p>
 
-                            <li
+                                    </li>
+
+                                );
+                            } else {
+
+                                <li
 
                                 key={index}
                                 className={colorHelper(amber, red)}>
-                                <strong className="text-center">
-                                    {currentLabel}
 
+                                <strong className="text-center">
+                                    Loading...
                                 </strong>
 
+                                <p className="text-center">Loading...</p>
 
-                                <p className="text-center">{currentLabelStatus}</p>
-                            </li>
+                                </li>
 
-                        );
+                            }
+                        }
+
+                        }
+                    } else {
+                        return <></>;
 
                     }
-
                 })
             }
         </ul>
     )
 };
 
+
 export const SubTagStaticTraining = (props) => {
-    const staticItems = (
-        <ul>
-            {staticSkills.map((skill) =>
-                <li key={skill.id}>
-                    {skill.name}--
-                    {skill.skill_date}
-                </li>
-            )}
-        </ul>
-    );
+
+    let {
+        loggedUser,
+        setLoggedUser,
+        allUsers,
+        setAllUsers,
+        loggedUserOrg,
+        setLoggedUserOrg,
+        loggedUserToggle,
+        setLoggedUserToggle,
+        loggedUserSummary,
+        setLoggedUserSummary,
+        loggedUserServiceMembers,
+        setLoggedUserServiceMembers,
+        loggedUserServiceMemberSummaries,
+        setLoggedUserServiceMemberSummaries,
+        loggedUserServiceMemberPromiseChainComplete,
+        setLoggedUserServiceMemberPromiseChainComplete
+    }
+
+        = useContext(AppContext);
+    // const staticItems = () => {
+
+    //}
+    // const staticItems = (
+    //     <ul>
+    //         {loggedUserSummary.map((obj) => {
+    //                 if (obj.skill_name && !obj.skill_refresh_date) {
+    //                     <li key={skill.id}>
+    //                         {skill.name}--
+    //                         {skill.skill_date}
+    //                     </li>
+    //         )}
+
+    //         </ul>
+
+    // );
+
+    /*
+    STATIC
+           "id": 1,
+           "skill_name": "Knowledge Management Professional",
+           "users_id": 1
+   SPECIAL
+           {
+   "id": 1,
+   "skill_name": "SEC+",
+   "skill_refresh_date": "2025-05-22",
+   "users_id": 1
+ },
+       */
+
+    /* 
+        {skill_name: 'SEC+', skill_refresh_date:'2025-05-22', users_id:1 },
+    */
     return (
-        <ul key="0" className="w-10/12 h-8/12 list-none flex gap-8 border border-2 border-gray border-double mx-auto my-8 p-4 bg-[#A3BD8A] rounded-lg shadow-2xl ">
+        <ul className="w-10/12 h-8/12 list-none flex gap-8 border border-2 border-gray border-double mx-auto my-8 p-4 bg-[#A3BD8A] rounded-lg shadow-2xl ">
             <div>
                 <h2 className="text-3xl font-bold border-r-2 py-0 pr-8">Static Training</h2>
                 <h5 className="font-bold border-r-2 py-0 pr-8">Relevent Training with no </h5>
                 <h5 className="font-bold border-r-2 py-0 pr-8">recertification required</h5>
             </div>
             <ul id='static'>
-                {staticItems}
+                <ul>
+
+                    {loggedUserSummary.map((obj, index) => {
+                        console.log("loggedUserSummary: ", loggedUserSummary)
+                        console.log("obj: ", obj)
+                        if (obj.skill_name && !obj.skill_refresh_date) {
+                            return (
+                                <li key={index}>
+                                    {obj.skill_name}--
+                                    {obj.skill_date}
+                                </li>
+                            )
+                        }
+                    })}
+
+                </ul>
             </ul>
-
-
         </ul>
     )
 
