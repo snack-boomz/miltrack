@@ -327,7 +327,7 @@ function Profile() {
 
         } catch (error) {
 
-            {loggedUser[0] === undefined ? setNoUser(true) : console.log(error)}
+            loggedUser[0] === undefined ? setNoUser(true) : console.log(error)
 
         }
 

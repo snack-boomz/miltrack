@@ -10,9 +10,11 @@ import { AppContext } from "../AppContext";
 const Loginbars = () => {
     const [errorMessages, setErrorMessages] = useState({});
     const [isSubmitted, setIsSubmitted] = useState(false);
-    const { loggedUser, setLoggedUser } = useContext(AppContext);
+    let { loggedUser, setLoggedUser, loggedUserToggle, setLoggedUserToggle } = useContext(AppContext);
     const [dataUsers, setDataUsers]  = useState([]);
     let navigate = useNavigate();
+
+
 
     useEffect(() => { 
         fetch("http://localhost:3001/users")
@@ -42,6 +44,7 @@ const Loginbars = () => {
         let loggedUserCopy = loggedUser.slice();
         loggedUserCopy.push(userData);
         setLoggedUser(loggedUserCopy);
+        setLoggedUserToggle(loggedUserToggle += 1);
 
         console.log(loggedUser);
         if (userData) {
