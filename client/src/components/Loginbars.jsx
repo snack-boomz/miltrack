@@ -37,7 +37,12 @@ const Loginbars = () => {
 
       
         const userData = dataUsers.find((user) => user.username === uname.value);
-        setLoggedUser(userData)
+        // setLoggedUser(userData)
+
+        let loggedUserCopy = loggedUser.slice();
+        loggedUserCopy.push(userData);
+        setLoggedUser(loggedUserCopy);
+
         console.log(loggedUser);
         if (userData) {
             if (userData.password !== pass.value) {
@@ -89,7 +94,7 @@ const Loginbars = () => {
         <div className="app">
             <div className="login-form">
                 <div className="signIn">Sign In</div>
-               {isSubmitted ? navigate(`/${loggedUser.username}`) : renderForm}
+               {isSubmitted ? navigate(`/${loggedUser[0].username}`) : renderForm}
             </div>
         </div>
     );
