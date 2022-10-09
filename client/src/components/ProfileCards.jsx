@@ -68,6 +68,77 @@ export const Medical = (props) => {
 
     }
 
+    const dateHelper = (uiDate) => {
+
+        const monthHelper = (month) => {
+
+            switch (month.toLowerCase()) {
+
+                case 'jan':
+                    return '01';
+                    break;
+                
+                case 'feb':
+                    return '02';
+                    break;
+
+                case 'mar':
+                    return '03';
+                    break;
+                    
+                case 'apr':
+                    return '04';
+                    break;
+                
+                case 'may':
+                    return '05';
+                    break;
+        
+                case 'jun':
+                    return '06';
+                    break;
+                
+                case 'jul':
+                    return '07';
+                    break;
+
+                case 'aug':
+                    return '08';
+                    break;
+        
+                case 'sep':
+                    return '09';
+                    break;
+
+                case 'oct':
+                    return '10';
+                    break;
+
+                case 'nov':
+                    return '11';
+                    break;
+
+                case 'dec':
+                    return '12';
+                    break;
+                default:
+                    break;
+
+            }
+
+        }
+
+        let dateArray = uiDate.split(" ");
+
+        console.log("dateArray: ", dateArray);
+        
+        let correctedDateFormat = `${dateArray[3]}-${monthHelper(dateArray[1])}-${dateArray[2]}`;
+
+        console.log("correctedDateFormat: ", correctedDateFormat);
+        return correctedDateFormat;
+
+    }
+
     return (
         <ul key="0" className="w-10/12 h-8/12 width: 'vw' list-none flex flex-row flex-wrap gap-8 border border-2 border-gray border-double mx-auto my-8 p-4 bg-[#A3BD8A] rounded-lg shadow-2xl ">
             <div>
@@ -80,7 +151,9 @@ export const Medical = (props) => {
                 let amber = false;
                 let red = false;
 
-
+                let date;
+                let msDate;
+                let uiDate;
 
                 Object.keys(element).map((key, key_index) => {
 
@@ -122,24 +195,24 @@ export const Medical = (props) => {
                             currentLabel = "PHA";
 
                             if (new Date(currentValue).valueOf() > Date.now()) {
-                                let date = new Date(currentValue).valueOf();
-                                let msDate = new Date(parseInt(date, 10));
-                                let uiDate = msDate.toDateString();
+                                date = new Date(currentValue).valueOf();
+                                msDate = new Date(parseInt(date, 10));
+                                uiDate = msDate.toDateString();
                                 currentLabelStatus = 'Due Date\n' + uiDate;
 
                                 if (new Date(currentValue).valueOf() - Date.now() <= 2592000000) {
-                                    let date = new Date(currentValue).valueOf();
-                                    let msDate = new Date(parseInt(date, 10));
-                                    let uiDate = msDate.toDateString();
+                                    date = new Date(currentValue).valueOf();
+                                    msDate = new Date(parseInt(date, 10));
+                                    uiDate = msDate.toDateString();
                                     amber = true;
                                     currentLabelStatus = 'Due Date\n' + uiDate;
 
                                 }
 
                             } else if (new Date(currentValue).valueOf() < Date.now()) {
-                                let date = new Date(currentValue).valueOf();
-                                let msDate = new Date(parseInt(date, 10));
-                                let uiDate = msDate.toDateString();
+                                date = new Date(currentValue).valueOf();
+                                msDate = new Date(parseInt(date, 10));
+                                uiDate = msDate.toDateString();
                                 red = true;
                                 currentLabelStatus = 'Due Date\n' + uiDate;
                             }
@@ -150,24 +223,24 @@ export const Medical = (props) => {
                             currentLabel = "Dental";
 
                             if (new Date(currentValue).valueOf() > Date.now()) {
-                                let date = new Date(currentValue).valueOf();
-                                let msDate = new Date(parseInt(date, 10));
-                                let uiDate = msDate.toDateString();
+                                date = new Date(currentValue).valueOf();
+                                msDate = new Date(parseInt(date, 10));
+                                uiDate = msDate.toDateString();
                                 currentLabelStatus = 'Due Date\n' + uiDate;
 
                                 if (new Date(currentValue).valueOf() - Date.now() <= 2592000000) {
-                                    let date = new Date(currentValue).valueOf();
-                                    let msDate = new Date(parseInt(date, 10));
-                                    let uiDate = msDate.toDateString();
+                                    date = new Date(currentValue).valueOf();
+                                    msDate = new Date(parseInt(date, 10));
+                                    uiDate = msDate.toDateString();
                                     amber = true;
                                     currentLabelStatus = 'Due Date\n' + uiDate;
 
                                 }
 
                             } else if (new Date(currentValue).valueOf() < Date.now()) {
-                                let date = new Date(currentValue).valueOf();
-                                let msDate = new Date(parseInt(date, 10));
-                                let uiDate = msDate.toDateString();
+                                date = new Date(currentValue).valueOf();
+                                msDate = new Date(parseInt(date, 10));
+                                uiDate = msDate.toDateString();
                                 red = true;
                                 currentLabelStatus = 'Due Date\n' + uiDate;
                             }
@@ -178,24 +251,24 @@ export const Medical = (props) => {
                             currentLabel = "Hearing";
 
                             if (new Date(currentValue).valueOf() > Date.now()) {
-                                let date = new Date(currentValue).valueOf();
-                                let msDate = new Date(parseInt(date, 10));
-                                let uiDate = msDate.toDateString();
+                                date = new Date(currentValue).valueOf();
+                                msDate = new Date(parseInt(date, 10));
+                                uiDate = msDate.toDateString();
                                 currentLabelStatus = 'Due Date\n' + uiDate;
 
                                 if (new Date(currentValue).valueOf() - Date.now() <= 2592000000) {
-                                    let date = new Date(currentValue).valueOf();
-                                    let msDate = new Date(parseInt(date, 10));
-                                    let uiDate = msDate.toDateString();
+                                    date = new Date(currentValue).valueOf();
+                                    msDate = new Date(parseInt(date, 10));
+                                    uiDate = msDate.toDateString();
                                     amber = true;
                                     currentLabelStatus = 'Due Date\n' + uiDate;
 
                                 }
 
                             } else if (new Date(currentValue).valueOf() < Date.now()) {
-                                let date = new Date(currentValue).valueOf();
-                                let msDate = new Date(parseInt(date, 10));
-                                let uiDate = msDate.toDateString();
+                                date = new Date(currentValue).valueOf();
+                                msDate = new Date(parseInt(date, 10));
+                                uiDate = msDate.toDateString();
                                 red = true;
                                 currentLabelStatus = 'Due Date\n' + uiDate;
 
@@ -207,15 +280,15 @@ export const Medical = (props) => {
                             currentLabel = "Vision";
 
                             if (new Date(currentValue).valueOf() > Date.now()) {
-                                let date = new Date(currentValue).valueOf();
-                                let msDate = new Date(parseInt(date, 10));
-                                let uiDate = msDate.toDateString();
+                                date = new Date(currentValue).valueOf();
+                                msDate = new Date(parseInt(date, 10));
+                                uiDate = msDate.toDateString();
                                 currentLabelStatus = 'Due Date\n' + uiDate;
 
                                 if (new Date(currentValue).valueOf() - Date.now() <= 2592000000) {
-                                    let date = new Date(currentValue).valueOf();
-                                    let msDate = new Date(parseInt(date, 10));
-                                    let uiDate = msDate.toDateString();
+                                    date = new Date(currentValue).valueOf();
+                                    msDate = new Date(parseInt(date, 10));
+                                    uiDate = msDate.toDateString();
                                     amber = true;
                                     currentLabelStatus = 'Due Date\n' + uiDate;
 
@@ -224,9 +297,9 @@ export const Medical = (props) => {
                                 }
 
                             } else if (new Date(currentValue).valueOf() < Date.now()) {
-                                let date = new Date(currentValue).valueOf();
-                                let msDate = new Date(parseInt(date, 10));
-                                let uiDate = msDate.toDateString();
+                                date = new Date(currentValue).valueOf();
+                                msDate = new Date(parseInt(date, 10));
+                                uiDate = msDate.toDateString();
                                 red = true;
                                 currentLabelStatus = 'Due Date\n' + uiDate;
                             }
@@ -237,15 +310,15 @@ export const Medical = (props) => {
                             currentLabel = "HIV";
 
                             if (new Date(currentValue).valueOf() > Date.now()) {
-                                let date = new Date(currentValue).valueOf();
-                                let msDate = new Date(parseInt(date, 10));
-                                let uiDate = msDate.toDateString();
+                                date = new Date(currentValue).valueOf();
+                                msDate = new Date(parseInt(date, 10));
+                                uiDate = msDate.toDateString();
                                 currentLabelStatus = 'Due Date\n' + uiDate;
 
                                 if (new Date(currentValue).valueOf() - Date.now() <= 2592000000) {
-                                    let date = new Date(currentValue).valueOf();
-                                    let msDate = new Date(parseInt(date, 10));
-                                    let uiDate = msDate.toDateString();
+                                    date = new Date(currentValue).valueOf();
+                                    msDate = new Date(parseInt(date, 10));
+                                    uiDate = msDate.toDateString();
                                     amber = true;
                                     currentLabelStatus = 'Due Date\n' + uiDate;
 
@@ -254,9 +327,9 @@ export const Medical = (props) => {
                                 }
 
                             } else if (new Date(currentValue).valueOf() < Date.now()) {
-                                let date = new Date(currentValue).valueOf();
-                                let msDate = new Date(parseInt(date, 10));
-                                let uiDate = msDate.toDateString();
+                                date = new Date(currentValue).valueOf();
+                                msDate = new Date(parseInt(date, 10));
+                                uiDate = msDate.toDateString();
                                 red = true;
                                 currentLabelStatus = 'Due Date\n' + uiDate;
                             }
@@ -268,21 +341,46 @@ export const Medical = (props) => {
 
                 })
 
-                return <li
-                    key={index}
-                    className={colorHelper(amber, red)}>
-                    <strong className="text-center">
-                        {/* If label isn't annual training, put colon after label */}
-                        {currentLabelHelper(currentLabel)}{currentLabelHelper2(currentLabel) === undefined ? ":" : ""}
+                if (updateFieldsToggle % 2 === 0) {
+                    return ( 
+                        <li
+                        key={index}
+                        className={colorHelper(amber, red)}>
+                        <strong className="text-center">
+                            {/* If label isn't annual training, put colon after label */}
+                            {currentLabelHelper(currentLabel)}{currentLabelHelper2(currentLabel) === undefined ? ":" : ""}
 
-                    </strong>
-                    <strong className="text-center">
-                        {/* If label isn't annual training, do not add colon on new line */}
-                        {currentLabelHelper2(currentLabel)}{currentLabelHelper2(currentLabel) !== undefined ? ":" : ""}
-                    </strong>
+                        </strong>
+                        <strong className="text-center">
+                            {/* If label isn't annual training, do not add colon on new line */}
+                            {currentLabelHelper2(currentLabel)}{currentLabelHelper2(currentLabel) !== undefined ? ":" : ""}
+                        </strong>
 
-                    <p className="text-center">{currentLabelStatus}</p>
-                </li>;
+                        <p className="text-center">{currentLabelStatus}</p>
+                        </li> 
+                    )
+                } else {
+                    return ( 
+                        <li
+                        key={index}
+                        className="bg-slate-400 border border-2 border-black border-double py-2 px-8 rounded-md shadow-lg break-all">
+                        <strong className="text-center">
+                            {/* If label isn't annual training, put colon after label */}
+                            {"New " + currentLabelHelper(currentLabel) + " Date"}{currentLabelHelper2(currentLabel) === undefined ? ":" : ""}
+
+                        </strong>
+                        <strong className="text-center">
+                            {/* If label isn't annual training, do not add colon on new line */}
+                            {currentLabelHelper2(currentLabel)}{currentLabelHelper2(currentLabel) !== undefined ? ":" : ""}
+                        </strong>
+                        <br/>
+                        <br/>
+                        { /* dateHelper(uiDate) */ }
+                        <input type="date" value="2018-07-07" onChange={(event) => {currentLabelStatus = event.target.value; console.log(currentLabelStatus)}}/>
+                        </li> 
+                    )
+                }
+                
 
             })}
         </ul>

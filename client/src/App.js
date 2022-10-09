@@ -26,6 +26,7 @@ function App() {
   const [loggedUser2, setLoggedUser2] = useState();
   const [ orgData, setOrgData ] = useState([]);
   const [ noUser, setNoUser ] = useState(false);
+  const [ hidePersonalInfo, setHidePersonalInfo ] = useState(0);
 
   useEffect(() => {
     fetch('http://localhost:3001/users')
@@ -84,7 +85,9 @@ function App() {
     loggedUser2,
     setLoggedUser2,
     orgData,
-    setOrgData
+    setOrgData,
+    hidePersonalInfo,
+    setHidePersonalInfo
   }
 
   // const testObject = {

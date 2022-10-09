@@ -143,17 +143,15 @@ function Profile() {
         setLoggedUserToggle, 
         loggedUserSummary, 
         setLoggedUserSummary, 
-        loggedUserServiceMembers, 
-        setLoggedUserServiceMembers,
-        loggedUserServiceMemberSummaries, 
-        setLoggedUserServiceMemberSummaries,
         loggedUserPromiseChainComplete, 
-        setLoggedUserServiceMemberPromiseChainComplete,
         setLoggedUserPromiseChainComplete,
         updateFieldsToggle,
         setUpdateFieldsToggle,
         noUser,
-        setNoUser 
+        setNoUser,
+        hidePersonalInfo,
+        setHidePersonalInfo
+
         } 
 
     = useContext(AppContext);
@@ -355,12 +353,15 @@ function Profile() {
                                         <div>{loggedUserOrg}</div>
                                         <div>Welcome, {rankHelper(loggedUser[0].rank)} {loggedUser[0].name}</div>
                                         <div style={{ fontStyle: 'italic' }}>"Stay <strong className="text-[#A3BD8A]">GREEN</strong> to stay in the fight!"</div>
-                                        <div>DOB: {val.dob} </div>
-                                        <div>BASD: {val.basd} </div>
-                                        <div>MOS: {val.mos} </div>
-                                        <div>DODID: {val.dodid} </div>
+                                        <section className={hidePersonalInfo % 2 === 0 ? "hidden" : ""}>
+                                            <div>DOB: {val.dob} </div>
+                                            <div>BASD: {val.basd} </div>
+                                            <div>MOS: {val.mos} </div>
+                                            <div>DODID: {val.dodid} </div>
+                                        </section>
                                     </tr>
-                                    <button onClick={ updateFieldsToggle } className="block py-4 w-7/12 rounded-lg ml-8 text-black bg-transparent border border-black border-double hover:bg-black transition transition-200 text-white">Update Profile</button>
+                                    <button onClick={ () => setHidePersonalInfo(hidePersonalInfo += 1) } className="block w-7/12 py-1 rounded-lg mx-auto mt-2 text-black bg-transparent border border-black border-double hover:bg-black transition transition-200 text-white">{hidePersonalInfo % 2 === 0 ? "Show Personal Info" : "Hide Personal Info"}</button>
+                                    <button onClick={ () => setUpdateFieldsToggle(updateFieldsToggle += 1) } className={updateFieldsToggle % 2 === 0 ? "block w-7/12 py-1 rounded-lg mx-auto mt-2 text-black bg-transparent border border-black border-double hover:bg-black transition transition-200 text-white" : "block w-7/12 py-1 rounded-lg mx-auto mt-2 text-black bg-green-400 border border-black border-double hover:bg-black transition transition-200 text-white"}>{updateFieldsToggle % 2 === 0 ? "Update Profile" : "Submit Changes"}</button>
                                 </section>
                                 {/* <IndivTag elements={ testObject } component="medical"/> */}
                                 {/* Logged in Soldier below */}
