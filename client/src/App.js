@@ -27,6 +27,8 @@ function App() {
   const [ orgData, setOrgData ] = useState([]);
   const [ noUser, setNoUser ] = useState(false);
   const [ hidePersonalInfo, setHidePersonalInfo ] = useState(0);
+  const [ fieldChanged, setFieldChanged ] = useState(0);
+  const [ newFieldChanges, setNewFieldChanges ] = useState([]);
 
   useEffect(() => {
     fetch('http://localhost:3001/users')
@@ -87,7 +89,11 @@ function App() {
     orgData,
     setOrgData,
     hidePersonalInfo,
-    setHidePersonalInfo
+    setHidePersonalInfo,
+    fieldChanged,
+    setFieldChanged,
+    newFieldChanges,
+    setNewFieldChanges
   }
 
   // const testObject = {
