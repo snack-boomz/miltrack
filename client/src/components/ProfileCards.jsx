@@ -41,7 +41,7 @@ export const Medical = (props) => {
 
         = useContext(AppContext);
 
-    const colorHelper = (amber, red,) => {
+    const colorHelper = (amber, red) => {
 
         if (red) {
             return 'bg-red-400 border border-2 border-black border-double py-2 px-8 rounded-md shadow-lg break-all';
@@ -144,6 +144,45 @@ export const Medical = (props) => {
         return correctedDateFormat;
 
     }
+
+    const updateFieldHelper = (object, newDate) => {
+
+        let objectKeyName = Object.keys(object)[0];
+        let objectKeyNameValue = Object.values(object)[0];
+
+        let objectKeyDateName = `${objectKeyNameValue.toLowerCase()}_date`;
+        let objectToPush = {[objectKeyDateName]: newDate };
+        
+
+        let newFieldChangesCopy = newFieldChanges.slice();
+
+        let alreadyExists = false;
+
+        for (let object of newFieldChangesCopy) {
+            if ( Object.keys(objectToPush)[0] == Object.keys(object)[0] ) {
+                alreadyExists = true;
+            
+            }
+        }
+        
+
+        if (alreadyExists) {
+            for (let object of newFieldChangesCopy) {
+                if (Object.keys(objectToPush)[0] == Object.keys(object[0])) {
+                    object[objectKeyDateName] = newDate;
+                }
+            }
+        } else {
+            newFieldChangesCopy.push(objectToPush);
+        }
+        
+
+        setNewFieldChanges(newFieldChangesCopy);
+
+        setTimeout(() => console.log("new FIeld changes: ", newFieldChanges), 5000);
+
+    }
+
     // used and ran when changes are submitted via the update profile button
     useEffect(() => {
 
@@ -269,7 +308,7 @@ export const Medical = (props) => {
                                                 <br/>
                                                 <br/>
                                                 { /* dateHelper(uiDate) */ }
-                                                <input type="date" defaultValue={dateHelper(uiDate)} onChange={(event) => console.log("event.target.value: ", event.target.value)} />
+                                                <input type="date" defaultValue={dateHelper(uiDate)} onChange={(event) => console.log("event.target.value: ", updateFieldHelper(medicalObject, event.target.value))} />
                                                 </li> 
                                             )
                                         }
