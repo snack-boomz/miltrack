@@ -168,7 +168,7 @@ export const Medical = (props) => {
 
         if (alreadyExists) {
             for (let object of newFieldChangesCopy) {
-                if (Object.keys(objectToPush)[0] == Object.keys(object[0])) {
+                if (Object.keys(objectToPush)[0] == Object.keys(object)[0]) {
                     object[objectKeyDateName] = newDate;
                 }
             }
@@ -186,6 +186,21 @@ export const Medical = (props) => {
     // used and ran when changes are submitted via the update profile button
     useEffect(() => {
 
+        const fetchFieldHelper = (field) => {
+            
+            switch (field) {
+
+            }
+
+        }
+
+        newFieldChanges.forEach((fieldObject, index) => {
+
+            if (fieldObject) {
+
+            }
+
+        })
 
 
     }, [fieldChanged])

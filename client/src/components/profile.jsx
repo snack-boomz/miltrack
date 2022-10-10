@@ -186,7 +186,10 @@ function Profile() {
     //             console.error("err: ", err)
     //         })
     // }, [])
-    // grab logged user org
+
+    /*
+        grab logged user org
+    */
     useEffect(() => {
         console.log(loggedUser);
         fetch(`http://localhost:3001/organization/1`)
