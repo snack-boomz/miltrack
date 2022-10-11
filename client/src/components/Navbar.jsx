@@ -13,7 +13,7 @@ import { AppContext } from '../AppContext';
 
 
 function Navbar() {
-  const {loggedUser, loggedUser2, user, setLoggedUser2, setUser} = useContext(AppContext)
+  const {loggedUser, loggedUser2, user, setLoggedUser2, setUser, setLoggedUser} = useContext(AppContext)
   const [sidebar, setSidebar] = useState(false);
   const showSidebar = () => setSidebar(!sidebar);
   const SidebarData = [
@@ -24,10 +24,17 @@ function Navbar() {
       cName: 'nav-text'
     },
     {
+      title: 'Subordinate Dashboard',
+      path: '/dashboard',
+      icon: <IoIcons.IoIosPeople />,
+      cName: 'nav-text'
+
+    },
+    {
       title: 'logout',
       path: '/',
       icon: <IoIcons.IoIosPaper />,
-      cName: 'nav-text'
+      cName: 'nav-text',
     }
   ]
 
@@ -49,7 +56,7 @@ function Navbar() {
             {SidebarData.map((item, index) => {
               return (
                 <li key={index} className={item.cName}>
-                  <Link to={item.path}>
+                  <Link to={item.path} >
                     {item.icon}
                     <span>{item.title}</span>
                   </Link>

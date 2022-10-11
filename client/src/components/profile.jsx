@@ -193,7 +193,7 @@ function Profile() {
         grab logged user org
     */
     useEffect(() => {
-        console.log(loggedUser);
+        console.log("this is the user" , loggedUser);
         fetch(`http://localhost:3001/organization/1`)
             .then(response => response.json())
             .then(data => setLoggedUserOrg(data[0].organization_name))
@@ -348,6 +348,10 @@ function Profile() {
     }
 
     // const [apptDate, setApptDate] = useState("");
+    // if loggedUser[0].supervisor_id is null then navigate to /dashboard
+   // if (loggedUser[0].supervisor_id === null) {
+   //     navigate(`/dashboard`);
+   // } else
     if (loggedUser !== []) {
         
         if (loggedUserPromiseChainComplete === true && loggedUserSummary[0] !== undefined && loggedUser[0] !== undefined) {

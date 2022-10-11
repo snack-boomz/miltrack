@@ -38,7 +38,7 @@ function App() {
   }, [])
 
   // Temporary use effect to set hardcoded LoggedInUser until we have logging in functionality
-<<<<<<< HEAD
+
   useEffect(() => {
     fetch('http://localhost:3001/users')
     /*.then(response => response.json())
@@ -52,7 +52,7 @@ function App() {
       setLoggedUserToggle(loggedUserToggle + 1)
     })
   }, [])
-=======
+
   // useEffect(() => {
   //   fetch('http://localhost:3001/users')
   //   // .then(response => response.json())
@@ -67,7 +67,7 @@ function App() {
   //     setLoggedUserToggle(loggedUserToggle + 1)
   //   })
   // }, [])
->>>>>>> dev
+
 
   // set loggedUser's subordinates if he/she has any
 
