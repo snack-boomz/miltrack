@@ -1,4 +1,4 @@
-import React, { useStat, useContext } from 'react';
+import React, { useStat, useContext, useEffect } from 'react';
 
 import styled from 'styled-components';
 import * as AiIcons from 'react-icons/ai';
@@ -8,7 +8,9 @@ import { AppContext } from '../AppContext';
 //import Profile, { staticSkillsTestArrayOfObjects as staticSkills, specialSkillsTestArrayOfObjects as specialSkills, userObject } from './profile';
 //imported for use of dummy data
 
-export const SubTagMedical = (props) => {
+
+
+export const Medical = (props) => {
 
     let {
         loggedUser,
@@ -21,17 +23,27 @@ export const SubTagMedical = (props) => {
         setLoggedUserToggle,
         loggedUserSummary,
         setLoggedUserSummary,
+        loggedUserPromiseChainComplete,
+        setLoggedUserPromiseChainComplete,
         loggedUserServiceMembers,
         setLoggedUserServiceMembers,
         loggedUserServiceMemberSummaries,
         setLoggedUserServiceMemberSummaries,
         loggedUserServiceMemberPromiseChainComplete,
-        setLoggedUserServiceMemberPromiseChainComplete
+        setLoggedUserServiceMemberPromiseChainComplete,
+        updateFieldsToggle,
+        setUpdateFieldsToggle,
+        fieldChanged,
+        setFieldChanged,
+        newFieldChanges,
+        setNewFieldChanges,
+        fieldFetchesComplete, 
+        setFieldFetchesComplete
     }
 
         = useContext(AppContext);
 
-    const colorHelper = (amber, red,) => {
+    const colorHelper = (amber, red) => {
 
         if (red) {
             return 'bg-red-400 border border-2 border-black border-double py-2 px-8 rounded-md shadow-lg break-all';
@@ -64,221 +76,349 @@ export const SubTagMedical = (props) => {
 
     }
 
+    const dateHelper = (uiDate) => {
+
+        const monthHelper = (month) => {
+
+            switch (month.toLowerCase()) {
+
+                case 'jan':
+                    return '01';
+                    break;
+                
+                case 'feb':
+                    return '02';
+                    break;
+
+                case 'mar':
+                    return '03';
+                    break;
+                    
+                case 'apr':
+                    return '04';
+                    break;
+                
+                case 'may':
+                    return '05';
+                    break;
+        
+                case 'jun':
+                    return '06';
+                    break;
+                
+                case 'jul':
+                    return '07';
+                    break;
+
+                case 'aug':
+                    return '08';
+                    break;
+        
+                case 'sep':
+                    return '09';
+                    break;
+
+                case 'oct':
+                    return '10';
+                    break;
+
+                case 'nov':
+                    return '11';
+                    break;
+
+                case 'dec':
+                    return '12';
+                    break;
+                default:
+                    break;
+
+            }
+
+        }
+
+        let dateArray = uiDate.split(" ");
+
+        console.log("dateArray: ", dateArray);
+        
+        let correctedDateFormat = `${dateArray[3]}-${monthHelper(dateArray[1])}-${dateArray[2]}`;
+
+        console.log("correctedDateFormat: ", correctedDateFormat);
+        return correctedDateFormat;
+
+    }
+
+    const updateFieldHelper = (object, newDate) => {
+
+        let objectKeyName = Object.keys(object)[0];
+        let objectKeyNameValue = Object.values(object)[0];
+
+        let objectKeyDateName = `${objectKeyNameValue.toLowerCase()}_date`;
+        let objectToPush = {[objectKeyDateName]: newDate };
+        
+
+        let newFieldChangesCopy = newFieldChanges.slice();
+
+        let alreadyExists = false;
+
+        for (let object of newFieldChangesCopy) {
+            if ( Object.keys(objectToPush)[0] == Object.keys(object)[0] ) {
+                alreadyExists = true;
+            
+            }
+        }
+        
+
+        if (alreadyExists) {
+            for (let object of newFieldChangesCopy) {
+                if (Object.keys(objectToPush)[0] == Object.keys(object)[0]) {
+                    object[objectKeyDateName] = newDate;
+                }
+            }
+        } else {
+            newFieldChangesCopy.push(objectToPush);
+        }
+        
+
+        setNewFieldChanges(newFieldChangesCopy);
+
+        setTimeout(() => console.log("new FIeld changes: ", newFieldChanges), 5000);
+
+    }
+
+    // used and ran when changes are submitted via the update profile button
+    useEffect(() => {
+
+        console.log("newFieldChanges: ", newFieldChanges);
+
+        let userId = loggedUser[0].id;
+
+        const fetchFieldHelper = (field) => {
+
+            /*
+            const response = await fetch('https://httpbin.org/post', {
+                method: 'post',
+                body: JSON.stringify(body),
+                headers: {'Content-Type': 'application/json'}
+            });
+            */
+
+            let patchBody = {
+                method: 'PATCH',
+                body: JSON.stringify(field),
+                headers: {"Access-Control-Allow-Origin": "*"}
+            }
+
+            
+            
+            if (field.pha_date || field.dental_date || field.hearing_date || field.vision_date || field.hiv_date) {
+                
+                    console.log("field: ", field);
+                    fetch(`http://localhost:3001/medical/${userId}`, {
+                        method: 'PATCH',
+                        body: JSON.stringify(field),
+                        headers: {"Access-Control-Allow-Origin": "*", 'Content-Type': 'application/json'}
+                    })
+                    .then(response => response.json())
+                    .then(data => console.log("Success: ", data))
+                    .catch(err => console.log("err: ", err))
+
+                // } else if () {
+
+                // } else if () {
+                    
+                // } else if () {
+                    
+                // } else if () {
+                    
+                // } else if () {
+                    
+                // } else if () {
+                    
+                // }
+            }
+
+
+        }
+
+        let newFieldChangesPromisesArray = [];
+
+        newFieldChanges.forEach((fieldObject, index) => {
+            
+            newFieldChangesPromisesArray.push(new Promise(() => fetchFieldHelper(fieldObject)));
+
+        })
+
+        console.log("newFieldChangesPromisesArray: ", newFieldChangesPromisesArray)
+
+        Promise.all(newFieldChangesPromisesArray)
+        .then(info => {
+            console.log("All fields updated!")
+            setNewFieldChanges([]);
+        })
+        .then(info => {
+            setLoggedUserToggle(loggedUserToggle += 1);
+        })
+        .then(info => {
+            console.log("loggedUserToggle in ProfileCards: ", loggedUserToggle);
+        })
+        
+
+
+    }, [fieldChanged])
+
     return (
         <ul key="0" className="w-10/12 h-8/12 width: 'vw' list-none flex flex-row flex-wrap gap-8 border border-2 border-gray border-double mx-auto my-8 p-4 bg-[#A3BD8A] rounded-lg shadow-2xl ">
-            <h2 className="text-3xl font-bold border-r-2 py-8 pr-8">Medical Status</h2>
-            {props.elements.map((element, index) => {
+            <div>
+                <h2 className="text-3xl font-bold border-r-2 py-8 pr-8">Medical Status</h2>
+            </div>
 
-                let currentLabel = "";
-                let currentLabelStatus = "";
-                let amber = false;
-                let red = false;
+            {loggedUserSummary.map((obj, index) => {
+                if (obj.pha_date || obj.dental_date || obj.hearing_date || obj.vision_date || obj.hiv_date) {
+                    let medicalObjects = [];
+                    console.log("loggedUserSummary: ", loggedUserSummary);
+                    console.log("obj: ", obj);
+                    console.log("loggedUser: ", loggedUser);
 
+                    const keyHelper = (object) => {
+                        loggedUserSummary.forEach((object, index) => {
+                            if (object.pha_date || object.dental_date || object.hearing_date || object.vision_date || object.hiv_date) {
+                                medicalObjects.push({medicalObjectName: "PHA", medicalObjectDate: object.pha_date});
+                                medicalObjects.push({medicalObjectName: "Dental", medicalObjectDate: object.dental_date});
+                                medicalObjects.push({medicalObjectName: "Hearing", medicalObjectDate: object.hearing_date});
+                                medicalObjects.push({medicalObjectName: "Vision", medicalObjectDate: object.vision_date});
+                                medicalObjects.push({medicalObjectName: "HIV", medicalObjectDate: object.hiv_date});
+                            }
+                        })
 
-
-                Object.keys(element).map((key, key_index) => {
-
-                    if (key === "id") {
-                        return;
                     }
 
-                    // console.log(key_index)
-                    let currentValue = "";
-                    Object.values(element).map((value, value_index) => {
-                        if (value_index === key_index) {
-                            currentValue = value;
-                        }
-                    })
-                    if (index <= 10) {
-                        console.log(key);
-                        console.log(currentValue);
+                    keyHelper(obj);
+                    console.log("medicalObjects: ", medicalObjects)
 
-                        if (key === "current_status") {
-                            currentLabel = "Status";
 
-                            if (currentValue === "TDY") {
-                                currentLabelStatus = "TDY";
+                    return medicalObjects.map((medicalObject, index) => {
+                            console.log("test")
+                            
+    
+                            let currentLabel = "";
+                            let currentLabelStatus = "";
+                            let amber = false;
+                            let red = false;
+
+                            let date;
+                            let msDate;
+                            let uiDate;
+
+                            currentLabel = medicalObject.medicalObjectName;
+    
+                            if (new Date(medicalObject.medicalObjectDate).valueOf() > Date.now()) {
+    
+                                date = new Date(medicalObject.medicalObjectDate).valueOf();
+                                msDate = new Date(parseInt(date, 10));
+                                uiDate = msDate.toDateString();
+                                currentLabelStatus = 'Due Date\n' + uiDate;
+    
+                                if (new Date(medicalObject.medicalObjectDate).valueOf() - Date.now() <= 2592000000) {
+    
+                                    date = new Date(medicalObject.medicalObjectDate).valueOf();
+                                    msDate = new Date(parseInt(date, 10));
+                                    uiDate = msDate.toDateString();
+                                    amber = true;
+                                    currentLabelStatus = 'Due Date\n' + uiDate;
+    
+                                }
+    
+                            } else if (new Date(medicalObject.medicalObjectDate).valueOf() < Date.now()) {
+    
+                                date = new Date(medicalObject.medicalObjectDate).valueOf();
+                                msDate = new Date(parseInt(date, 10));
+                                uiDate = msDate.toDateString();
                                 red = true;
-                            } else if (currentValue === "Leave") {
-                                amber = true;
-                                currentLabelStatus = "Leave"
+                                currentLabelStatus = 'Due Date\n' + uiDate;
+                            }
+
+                            console.log("profileCard here date: ", date)
+                            console.log("profileCard here msDate: ", msDate)
+                            console.log("profileCard here uiDate: ", uiDate)
+                            
+                            if (currentLabel === "") {
+                                return <></>
+                                
                             } else {
-                                currentLabelStatus = "PDY"
-                            }
-
-                        }
-                        // console.log(key_index);
-                        // console.log(currentValue);
-
-                        // console.log(`${currentValue.valueOf()} : ${new Date('2020-01-01').toString().valueOf()}`)
-                        if (key === "pha_date") {
-
-                            currentLabel = "PHA";
-
-                            if (new Date(currentValue).valueOf() > Date.now()) {
-                                let date = new Date(currentValue).valueOf();
-                                let msDate = new Date(parseInt(date, 10));
-                                let uiDate = msDate.toDateString();
-                                currentLabelStatus = 'Due Date\n' + uiDate;
-
-                                if (new Date(currentValue).valueOf() - Date.now() <= 2592000000) {
-                                    let date = new Date(currentValue).valueOf();
-                                    let msDate = new Date(parseInt(date, 10));
-                                    let uiDate = msDate.toDateString();
-                                    amber = true;
-                                    currentLabelStatus = 'Due Date\n' + uiDate;
-
+                                
+                                
+                                if (loggedUser !== []) {
+                                    if (loggedUserPromiseChainComplete === true && loggedUserSummary[0] !== undefined) { 
+                                        
+                                        if (updateFieldsToggle % 2 === 0) {
+                                            return ( 
+                                                <li
+                                                key={index}
+                                                className={colorHelper(amber, red)}>
+                                                <strong className="text-center">
+                                                    {/* If label isn't annual training, put colon after label */}
+                                                    {currentLabelHelper(currentLabel)}{currentLabelHelper2(currentLabel) === undefined ? ":" : ""}
+                        
+                                                </strong>
+                                                <strong className="text-center">
+                                                    {/* If label isn't annual training, do not add colon on new line */}
+                                                    {currentLabelHelper2(currentLabel)}{currentLabelHelper2(currentLabel) !== undefined ? ":" : ""}
+                                                </strong>
+                                                { console.log(`currentLabelStatus: ${currentLabel}, `, currentLabelStatus) }
+                                                <p className="text-center">{currentLabelStatus}</p>
+                                                </li> 
+                                            )
+                                        } else {
+                                            return ( 
+                                                <li
+                                                key={index}
+                                                className="bg-slate-400 border border-2 border-black border-double py-2 px-8 rounded-md shadow-lg break-all">
+                                                <strong className="text-center">
+                                                    {/* If label isn't annual training, put colon after label */}
+                                                    {"New " + currentLabelHelper(currentLabel) + " Date"}{currentLabelHelper2(currentLabel) === undefined ? ":" : ""}
+                        
+                                                </strong>
+                                                <strong className="text-center">
+                                                    {/* If label isn't annual training, do not add colon on new line */}
+                                                    {currentLabelHelper2(currentLabel)}{currentLabelHelper2(currentLabel) !== undefined ? ":" : ""}
+                                                </strong>
+                                                <br/>
+                                                <br/>
+                                                { /* dateHelper(uiDate) */ }
+                                                <input type="date" defaultValue={dateHelper(uiDate)} onChange={(event) => console.log("event.target.value: ", updateFieldHelper(medicalObject, event.target.value))} />
+                                                </li> 
+                                            )
+                                        }
+                                    } else {
+    
+                                        <li
+    
+                                        key={index}
+                                        className={colorHelper(amber, red)}>
+    
+                                        <strong className="text-center">
+                                            Loading...
+                                        </strong>
+    
+                                        <p className="text-center">Loading...</p>
+    
+                                        </li>
+    
+                                    }
                                 }
-
-                            } else if (new Date(currentValue).valueOf() < Date.now()) {
-                                let date = new Date(currentValue).valueOf();
-                                let msDate = new Date(parseInt(date, 10));
-                                let uiDate = msDate.toDateString();
-                                red = true;
-                                currentLabelStatus = 'Due Date\n' + uiDate;
+    
                             }
-                        }
+                            
+                    })
 
-                        if (key === "dental_date") {
+                } else {
+                    return <></>;
 
-                            currentLabel = "Dental";
-
-                            if (new Date(currentValue).valueOf() > Date.now()) {
-                                let date = new Date(currentValue).valueOf();
-                                let msDate = new Date(parseInt(date, 10));
-                                let uiDate = msDate.toDateString();
-                                currentLabelStatus = 'Due Date\n' + uiDate;
-
-                                if (new Date(currentValue).valueOf() - Date.now() <= 2592000000) {
-                                    let date = new Date(currentValue).valueOf();
-                                    let msDate = new Date(parseInt(date, 10));
-                                    let uiDate = msDate.toDateString();
-                                    amber = true;
-                                    currentLabelStatus = 'Due Date\n' + uiDate;
-
-                                }
-
-                            } else if (new Date(currentValue).valueOf() < Date.now()) {
-                                let date = new Date(currentValue).valueOf();
-                                let msDate = new Date(parseInt(date, 10));
-                                let uiDate = msDate.toDateString();
-                                red = true;
-                                currentLabelStatus = 'Due Date\n' + uiDate;
-                            }
-                        }
-
-                        if (key === "hearing_date") {
-
-                            currentLabel = "Hearing";
-
-                            if (new Date(currentValue).valueOf() > Date.now()) {
-                                let date = new Date(currentValue).valueOf();
-                                let msDate = new Date(parseInt(date, 10));
-                                let uiDate = msDate.toDateString();
-                                currentLabelStatus = 'Due Date\n' + uiDate;
-
-                                if (new Date(currentValue).valueOf() - Date.now() <= 2592000000) {
-                                    let date = new Date(currentValue).valueOf();
-                                    let msDate = new Date(parseInt(date, 10));
-                                    let uiDate = msDate.toDateString();
-                                    amber = true;
-                                    currentLabelStatus = 'Due Date\n' + uiDate;
-
-                                }
-
-                            } else if (new Date(currentValue).valueOf() < Date.now()) {
-                                let date = new Date(currentValue).valueOf();
-                                let msDate = new Date(parseInt(date, 10));
-                                let uiDate = msDate.toDateString();
-                                red = true;
-                                currentLabelStatus = 'Due Date\n' + uiDate;
-
-                            }
-                        }
-
-                        if (key === "vision_date") {
-
-                            currentLabel = "Vision";
-
-                            if (new Date(currentValue).valueOf() > Date.now()) {
-                                let date = new Date(currentValue).valueOf();
-                                let msDate = new Date(parseInt(date, 10));
-                                let uiDate = msDate.toDateString();
-                                currentLabelStatus = 'Due Date\n' + uiDate;
-
-                                if (new Date(currentValue).valueOf() - Date.now() <= 2592000000) {
-                                    let date = new Date(currentValue).valueOf();
-                                    let msDate = new Date(parseInt(date, 10));
-                                    let uiDate = msDate.toDateString();
-                                    amber = true;
-                                    currentLabelStatus = 'Due Date\n' + uiDate;
-
-                                } else {
-
-                                }
-
-                            } else if (new Date(currentValue).valueOf() < Date.now()) {
-                                let date = new Date(currentValue).valueOf();
-                                let msDate = new Date(parseInt(date, 10));
-                                let uiDate = msDate.toDateString();
-                                red = true;
-                                currentLabelStatus = 'Due Date\n' + uiDate;
-                            }
-                        }
-
-                        if (key === "hiv_date") {
-
-                            currentLabel = "HIV";
-
-                            if (new Date(currentValue).valueOf() > Date.now()) {
-                                let date = new Date(currentValue).valueOf();
-                                let msDate = new Date(parseInt(date, 10));
-                                let uiDate = msDate.toDateString();
-                                currentLabelStatus = 'Due Date\n' + uiDate;
-
-                                if (new Date(currentValue).valueOf() - Date.now() <= 2592000000) {
-                                    let date = new Date(currentValue).valueOf();
-                                    let msDate = new Date(parseInt(date, 10));
-                                    let uiDate = msDate.toDateString();
-                                    amber = true;
-                                    currentLabelStatus = 'Due Date\n' + uiDate;
-
-                                } else {
-
-                                }
-
-                            } else if (new Date(currentValue).valueOf() < Date.now()) {
-                                let date = new Date(currentValue).valueOf();
-                                let msDate = new Date(parseInt(date, 10));
-                                let uiDate = msDate.toDateString();
-                                red = true;
-                                currentLabelStatus = 'Due Date\n' + uiDate;
-                            }
-
-                        }
-                        // console.log(statusColor);
-
-                    }
-
-                })
-
-                return <li
-                    key={index}
-                    className={colorHelper(amber, red)}>
-                    <strong className="text-center">
-                        {/* If label isn't annual training, put colon after label */}
-                        {currentLabelHelper(currentLabel)}{currentLabelHelper2(currentLabel) === undefined ? ":" : ""}
-
-                    </strong>
-                    <strong className="text-center">
-                        {/* If label isn't annual training, do not add colon on new line */}
-                        {currentLabelHelper2(currentLabel)}{currentLabelHelper2(currentLabel) !== undefined ? ":" : ""}
-                    </strong>
-
-                    <p className="text-center">{currentLabelStatus}</p>
-                </li>;
+                }
 
             })}
+            
+            
         </ul>
     )
 };
@@ -286,7 +426,7 @@ export const SubTagMedical = (props) => {
 
 // ━◦○◦━◦○◦━◦○◦━◦○◦━◦○◦━◦○◦━━◦○◦━◦○◦━◦○◦━◦○◦━◦○◦━◦○◦━━◦○◦━◦○◦━◦○◦━◦○◦━◦○◦━◦○◦━━◦○◦━◦○◦━◦○◦━◦○◦━◦○◦━◦○◦━━◦○◦━◦○◦━◦○◦━◦○◦━◦○◦━◦○◦━━◦○◦━◦○◦━◦○◦━◦○◦━◦○◦━◦○◦━━◦○◦━◦○◦━◦○◦━◦○◦━◦○◦━◦○◦━━◦○◦━◦○◦━◦○◦━◦○◦━◦○◦━◦○◦━
 
-export const SubTagAnnualTraining = (props) => {
+export const AnnualTraining = (props) => {
 
     let {
         loggedUser,
@@ -428,7 +568,7 @@ export const SubTagAnnualTraining = (props) => {
 
 
 
-export const SubTagSpecialTraining = (props) => {
+export const SpecialTraining = (props) => {
 
     let {
         loggedUser,
@@ -569,7 +709,7 @@ export const SubTagSpecialTraining = (props) => {
 };
 
 
-export const SubTagStaticTraining = (props) => {
+export const StaticTraining = (props) => {
 
     let {
         loggedUser,

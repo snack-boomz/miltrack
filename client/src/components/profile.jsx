@@ -3,9 +3,48 @@ import React, { useState, useEffect, useContext } from "react";
 import './profile.css';
 import styled from 'styled-components';
 import IndivTag from "./IndivTag";
-import { SubTagMedical, SubTagAnnualTraining, SubTagSpecialTraining, SubTagStaticTraining } from "./MedicalCardInject";
+import { Medical, AnnualTraining, SpecialTraining, StaticTraining } from "./ProfileCards";
+import { Link, useNavigate } from "react-router-dom";
 //this is for test or dummy data
 import { AppContext } from '../AppContext';
+
+const rankHelper = (rank) => {
+    // console.log("Rank: ", rank);
+    switch (rank.toLowerCase()) {
+        case "e1":
+            return "PVT";
+        case "e2":
+            return "PV2";
+        case "e3":
+            return "PFC";
+        case "e4":
+            return "SPC";
+        case "e5":
+            return "SGT";
+        case "e6":
+            return "SSG";
+        case "e7":
+            return "SFC";
+        case "e8":
+            return "1SG";
+        case "e9":
+            return "CSM";
+        case "o1":
+            return "2LT";
+        case "o2":
+            return "1LT";
+        case "o3":
+            return "CPT";
+        case "o4":
+            return "MAJ";
+        case "o5":
+            return "LTC";
+        case "o6":
+            return "COL";
+        default:
+            return "";
+    }
+}
 
 const userObject = {
     users_id: 1, username: "billy", password: "a;sdkfjn;alkshdfoiajsd;lfj", rank: "SPC", full_name: "Justin Hernandez", status: "TDY"
@@ -104,16 +143,26 @@ function Profile() {
         setLoggedUserToggle, 
         loggedUserSummary, 
         setLoggedUserSummary, 
-        loggedUserServiceMembers, 
-        setLoggedUserServiceMembers,
-        loggedUserServiceMemberSummaries, 
-        setLoggedUserServiceMemberSummaries,
         loggedUserPromiseChainComplete, 
-        setLoggedUserServiceMemberPromiseChainComplete,
-        setLoggedUserPromiseChainComplete 
+        setLoggedUserPromiseChainComplete,
+        updateFieldsToggle,
+        setUpdateFieldsToggle,
+        noUser,
+        setNoUser,
+        hidePersonalInfo,
+        setHidePersonalInfo,
+        fieldChanged,
+        setFieldChanged,
+        fieldFetchesComplete,
+        setFieldFetchesComplete
+
         } 
 
     = useContext(AppContext);
+
+    // used for returning to home page if user is not logged in
+    let navigate = useNavigate();
+
     // grab all users
     useEffect(() => {
         fetch('http://localhost:3001/users')
@@ -139,7 +188,10 @@ function Profile() {
     //             console.error("err: ", err)
     //         })
     // }, [])
-    // grab logged user org
+
+    /*
+        grab logged user org
+    */
     useEffect(() => {
         console.log(loggedUser);
         fetch(`http://localhost:3001/organization/1`)
@@ -159,130 +211,146 @@ function Profile() {
     // grab all logged user information
 
     useEffect(() => {
-        console.log(loggedUser[0]);
-        let userId = loggedUser[0].id;
-        let medicalPromise = (
-            fetch(`http://localhost:3001/medical/${userId}`)
-                .then(response => response.json())
-                .then(data => {
+        try {
+            console.log(loggedUser[0]);
+            let userId = loggedUser[0].id;
+            let medicalPromise = (
+                fetch(`http://localhost:3001/medical/${userId}`)
+                    .then(response => response.json())
+                    .then(data => {
 
-                    // setLoggedUserSummary([...loggedUserSummary, ...data])
-                    console.log("medical promise")
-                    return data;
-                })
-        )
-        let annualTrainingPromise = (
-            fetch(`http://localhost:3001/annual_training/${userId}`)
-                .then(response => response.json())
-                .then(data => {
+                        // setLoggedUserSummary([...loggedUserSummary, ...data])
+                        console.log("medical promise")
+                        return data;
+                    })
+            )
+            let annualTrainingPromise = (
+                fetch(`http://localhost:3001/annual_training/${userId}`)
+                    .then(response => response.json())
+                    .then(data => {
 
-                    // setLoggedUserSummary([...loggedUserSummary, ...data])
-                    console.log("annual training promise")
-                    return data;
-                })
-        )
+                        // setLoggedUserSummary([...loggedUserSummary, ...data])
+                        console.log("annual training promise")
+                        return data;
+                    })
+            )
 
-        let evaluationsPromise = (
+            let evaluationsPromise = (
 
-            fetch(`http://localhost:3001/evaluations/${userId}`)
-                .then(response => response.json())
-                .then(data => {
+                fetch(`http://localhost:3001/evaluations/${userId}`)
+                    .then(response => response.json())
+                    .then(data => {
 
-                    // setLoggedUserSummary([...loggedUserSummary, ...data])
-                    console.log("evaluations promise")
-                    return data;
-                })
+                        // setLoggedUserSummary([...loggedUserSummary, ...data])
+                        console.log("evaluations promise")
+                        return data;
+                    })
 
-        )
+            )
 
-        let specialSkillsPromise = (
-            fetch(`http://localhost:3001/special_skills/${userId}`)
-                .then(response => response.json())
-                .then(data => {
+            let specialSkillsPromise = (
+                fetch(`http://localhost:3001/special_skills/${userId}`)
+                    .then(response => response.json())
+                    .then(data => {
 
-                    // setLoggedUserSummary([...loggedUserSummary, ...data])
-                    console.log("special skills promise")
-                    return data;
-                })
+                        // setLoggedUserSummary([...loggedUserSummary, ...data])
+                        console.log("special skills promise")
+                        return data;
+                    })
 
-        )
+            )
 
-        let staticSkillsPromise = (
+            let staticSkillsPromise = (
 
-            fetch(`http://localhost:3001/static_skills/${userId}`)
-                .then(response => response.json())
-                .then(data => {
+                fetch(`http://localhost:3001/static_skills/${userId}`)
+                    .then(response => response.json())
+                    .then(data => {
 
-                    // setLoggedUserSummary([...loggedUserSummary, ...data])
-                    console.log("static skills promise")
-                    return data;
-                })
+                        // setLoggedUserSummary([...loggedUserSummary, ...data])
+                        console.log("static skills promise")
+                        return data;
+                    })
 
-        )
-        // iterate through each promise and return the element (recursive), to prevent nested for loops below
-        // in Promise.all
+            )
+            // iterate through each promise and return the element (recursive), to prevent nested for loops below
+            // in Promise.all
 
-        let loggedUserArray = [];
+            let loggedUserArray = [];
 
-        const promiseAllHelper = (promise, promiseLength) => {
-            console.log("promiseAllhelper promise: ", promise);
-            console.log("promiseAllhelper promiseLength: ", promiseLength);
-            if (promiseLength == 0) {
+            const promiseAllHelper = (promise, promiseLength) => {
+                console.log("promiseAllhelper promise: ", promise);
+                console.log("promiseAllhelper promiseLength: ", promiseLength);
+                if (promiseLength == 0) {
 
-            } else {
+                } else {
 
-                console.log("pushing promise[promiseLength - 1]: ", promise[promiseLength - 1]);
-                loggedUserArray.push(promise[promiseLength - 1])
-                promiseLength -= 1;
-                promiseAllHelper(promise, promiseLength)
+                    console.log("pushing promise[promiseLength - 1]: ", promise[promiseLength - 1]);
+                    loggedUserArray.push(promise[promiseLength - 1])
+                    promiseLength -= 1;
+                    promiseAllHelper(promise, promiseLength)
+                }
+
+
             }
 
+        
+            
+            Promise.all([medicalPromise, annualTrainingPromise, specialSkillsPromise, staticSkillsPromise])
+                .then((info) => {
+
+                    console.log("all promises complete");
+                    // add SM status from loggedUser
+                    console.log(loggedUser[0].status)
+                    loggedUserArray.push({ current_status: loggedUser[0].current_status });
+                    for (let promise of info) {
+                        console.log("promise: ", promise)
+                        promiseAllHelper(promise, promise.length)
+                    }
+                    console.log("loggedUserArray: ", loggedUserArray);
+                    setLoggedUserSummary(loggedUserArray);
+
+                    /*
+
+                        setTimeout(() => Promise.all(subordinatePromises)
+                        .then((info) => {
+
+                            setLoggedUserServiceMemberPromiseChainComplete(true);
+                            console.log("all subordinate promises are complete");
+
+                        }), 3000)
+
+                    */
+                })
+                .then((info) => {
+
+                    setTimeout(() => {
+                        setLoggedUserPromiseChainComplete(true);
+                        console.log("loggedUserPromiseChain complete");
+                    }, 500)
+                    
+                })
+                console.log("loggedUserToggle: ", loggedUserToggle)
+
+        } catch (error) {
+
+            loggedUser[0] === undefined ? setNoUser(true) : console.log(error)
 
         }
 
-       
         
-        Promise.all([medicalPromise, annualTrainingPromise, specialSkillsPromise, staticSkillsPromise])
-            .then((info) => {
 
-                console.log("all promises complete");
-                // add SM status from loggedUser
-                console.log(loggedUser[0].status)
-                loggedUserArray.push({ current_status: loggedUser[0].current_status });
-                for (let promise of info) {
-                    console.log("promise: ", promise)
-                    promiseAllHelper(promise, promise.length)
-                }
-                console.log("loggedUserArray: ", loggedUserArray);
-                setLoggedUserSummary(loggedUserArray);
+    }, [loggedUserToggle, fieldChanged])
 
-                /*
+    // if page is rerendered and user has been reset, return home to login.
+    if (noUser) {
+        console.log(noUser);
+        navigate(`/`);
+    }
 
-                    setTimeout(() => Promise.all(subordinatePromises)
-                    .then((info) => {
-
-                        setLoggedUserServiceMemberPromiseChainComplete(true);
-                        console.log("all subordinate promises are complete");
-
-                    }), 3000)
-
-                */
-            })
-            .then((info) => {
-
-                setTimeout(() => {
-                    setLoggedUserPromiseChainComplete(true);
-                    console.log("loggedUserPromiseChain complete");
-                }, 500)
-                
-            })
-
-    }, [loggedUserToggle])
-
-    
     // const [apptDate, setApptDate] = useState("");
     if (loggedUser !== []) {
-        if (loggedUserPromiseChainComplete === true && loggedUserSummary[0] !== undefined) {
+        
+        if (loggedUserPromiseChainComplete === true && loggedUserSummary[0] !== undefined && loggedUser[0] !== undefined) {
             return (
                 <>
                     {userInfo.map((val, key) => {
@@ -290,24 +358,29 @@ function Profile() {
                             <section key={key} id="wrapper" className="pb-8 m-12">
                                 <section id='welcome_box' className="w-1/5 mx-auto p-4 min-w-fit max-w-fit bg-slate-100 opacity-90 rounded-md shadow-xl shadow-black">
                                     <tr key={key}>
-                                        <div>{loggedUser.organization_id}</div>
-                                        <div>Welcome, {loggedUser.rank} {loggedUser.name}</div>
+                                        <div>{loggedUserOrg}</div>
+                                        <div>Welcome, {rankHelper(loggedUser[0].rank)} {loggedUser[0].name}</div>
                                         <div style={{ fontStyle: 'italic' }}>"Stay <strong className="text-[#A3BD8A]">GREEN</strong> to stay in the fight!"</div>
-                                        <div>DOB: {val.dob} </div>
-                                        <div>BASD: {val.basd} </div>
-                                        <div>MOS: {val.mos} </div>
-                                        <div>DODID: {val.dodid} </div>
+                                        <section className={hidePersonalInfo % 2 === 0 ? "hidden" : ""}>
+                                            <div>DOB: {val.dob} </div>
+                                            <div>BASD: {val.basd} </div>
+                                            <div>MOS: {val.mos} </div>
+                                            <div>DODID: {val.dodid} </div>
+                                        </section>
                                     </tr>
+                                    <button onClick={ () => setHidePersonalInfo(hidePersonalInfo += 1) } className="block w-7/12 py-1 rounded-lg mx-auto mt-2 text-black bg-transparent border border-black border-double hover:bg-slate-400 transition transition-200">{hidePersonalInfo % 2 === 0 ? "Show Personal Info" : "Hide Personal Info"}</button>
+                                    <button onClick={ () => { setUpdateFieldsToggle(updateFieldsToggle += 1);  updateFieldsToggle % 2 === 0 ? setFieldChanged(fieldChanged += 1) : console.log("updateField wasn't triggered"); console.log("fieldChanged: ", fieldChanged)  } } className={updateFieldsToggle % 2 === 0 ? "block w-7/12 py-1 rounded-lg mx-auto mt-2 text-black bg-transparent border border-black border-double hover:bg-slate-400 transition transition-200" : "block w-7/12 py-1 rounded-lg mx-auto mt-2 text-black bg-green-400 border border-black border-double hover:bg-black transition transition-200 text-white"}>{updateFieldsToggle % 2 === 0 ? "Update Profile" : "Submit Changes"}</button>
                                 </section>
                                 {/* <IndivTag elements={ testObject } component="medical"/> */}
                                 {/* Logged in Soldier below */}
                                 <hr className="w-10/12 mx-auto border-t-2 mt-12" />
         
                                 {/* Subordinates below */}
-                                <SubTagMedical elements={medicalTestArrayOfObjects} />
-                                <SubTagAnnualTraining elements={annualRequirementsTestArrayOfObjects} />
-                                <SubTagSpecialTraining elements={specialSkillsTestArrayOfObjects} skill={specialSkillsTestArrayOfObjects} key={key} />
-                                <SubTagStaticTraining elements={staticSkillsTestArrayOfObjects} />
+                                
+                                <Medical elements={medicalTestArrayOfObjects} />
+                                <AnnualTraining/>
+                                <SpecialTraining/>
+                                <StaticTraining/>
                             </section>
                         )
                     })}
@@ -336,10 +409,10 @@ function Profile() {
 /*
                 <section>
 
-                    <SubTagMedical elements={medicalTestArrayOfObjects} />
-                    <SubTagAnnualTraining elements={annualRequirementsTestArrayOfObjects} />
-                    <SubTagSpecialTraining elements={specialSkillsTestArrayOfObjects} />
-                    <SubTagStaticTraining elements={staticSkillsTestArrayOfObjects} />
+                    <Medical elements={medicalTestArrayOfObjects} />
+                    <AnnualTraining elements={annualRequirementsTestArrayOfObjects} />
+                    <SpecialTraining elements={specialSkillsTestArrayOfObjects} />
+                    <StaticTraining elements={staticSkillsTestArrayOfObjects} />
 
                 </section>
 */
