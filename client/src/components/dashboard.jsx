@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import IndivTag from "./IndivTag";
 import SubTag from "./SubTag";
 import { AppContext } from '../AppContext';
+import { Link } from 'react-router-dom';
 
 
 
@@ -50,7 +51,8 @@ const data_user_additional = [
         return <Context.Provider elementue={userData}></Context.Provider>
     */
 function Dashboard() {
-
+const [ skillEntered, setSkillEntered ] = useState('');
+const [ filteredData, setFilteredData ] = useState([]);
     let { 
         loggedUser, 
         setLoggedUser, 
@@ -67,19 +69,61 @@ function Dashboard() {
         loggedUserServiceMemberSummaries, 
         setLoggedUserServiceMemberSummaries,
         loggedUserServiceMemberPromiseChainComplete, 
-        setLoggedUserServiceMemberPromiseChainComplete
+        setLoggedUserServiceMemberPromiseChainComplete,
          
         } 
     = useContext(AppContext);
 
+ /*   const searchHandler = (e) => {
+        const searchWord = e.target.value;
+        setSkillEntered(searchWord);
+        const newFilter = loggedUserServiceMemberSummaries.filter((value) => {
+            return value.name.toLowerCase().includes(searchWord.toLowerCase());
+        });
 
 
-    // grab all users
-    useEffect(() => {
-        fetch('http://localhost:3001/users')
-        .then(response => response.json())
-        .then(data => setAllUsers(data))
-    }, [])
+        if (searchWord === "") {
+            setFilteredData([]);
+        } else {
+            setFilteredData(newFilter);
+        }
+    };
+    */
+
+    const renderFunc = (key) => {
+      return loggedUserServiceMembers.map((member, index) => {
+            {console.log("loggedUserServiceMembers: ", loggedUserServiceMembers)}
+            {console.log(member)}
+            {console.log(loggedUserServiceMemberSummaries[index])}
+            {console.log("loggedUserServiceMemberSummaries: ", loggedUserServiceMemberSummaries)}
+            return ( <Link to={`/${member.username}`}> <SubTag elements={ loggedUserServiceMemberSummaries[index] } currentSM= { member } key={key}/>
+            </Link>)
+            
+            
+      })};
+
+      const skillHandler = (event) => {
+        const searchWord = event.target.value;
+        setSkillEntered(searchWord);
+        const newFilter = loggedUserServiceMemberSummaries.filter((value) => {
+            return value.name.toLowerCase().includes(searchWord.toLowerCase());
+        })};
+
+    const searchFunc = (searchWord) => {
+
+        {filteredData.length != 0 && (
+            <div className="dataResult">
+                {filteredData.slice(0, 15).map((value, key) => {
+                    return (
+                        <div>
+                        <a className="dataItem" target="_blank" key={key}></a>
+                        {searchWord !== value.name ? <div className="filter">{value.name}</div> : setFilteredData([]) }
+                        </div> );
+               })}
+            </div>
+        )}};
+    
+
 
   // Temporary use effect to set hardcoded LoggedInUser until we have logging in functionality
     useEffect(() => {
@@ -120,7 +164,7 @@ function Dashboard() {
     // grab all logged user information
 
     useEffect(() => {
-        console.log(loggedUser[0]);
+        console.log("medical: ", loggedUser[0]);
         let userId = loggedUser[0].id;
         let medicalPromise = (
             fetch(`http://localhost:3001/medical/${userId}`)
@@ -381,20 +425,19 @@ function Dashboard() {
                                 </section>
                                     {/* <IndivTag elements={ testObject } component="medical"/> */}
                                     {/* Logged in Soldier below */}
+                                    <Link to={`/${element.username}`}>
                                     <SubTag elements={ loggedUserSummary } currentSM= { loggedUser[0] } key={key}/>
+                                    </Link>
                                     {console.log("subordinate promise chain: ", loggedUserServiceMemberPromiseChainComplete)} 
                                     <hr className="w-10/12 mx-auto border-t-2 mt-12"/>
                                     <h3 className="w-2/12 text-2xl font-bold italic text-center min-w-fit max-w-fit mx-auto mt-12 p-2 bg-slate-100 opacity-90 rounded-md shadow-xl shadow-black">SMs tracked:</h3>
                                     {/* Subordinates below */}
-                                    {
-                                        loggedUserServiceMembers.map((member, index) => {
-                                            {console.log("loggedUserServiceMembers: ", loggedUserServiceMembers)}
-                                            {console.log(member)}
-                                            {console.log(loggedUserServiceMemberSummaries[index])}
-                                            {console.log("loggedUserServiceMemberSummaries: ", loggedUserServiceMemberSummaries)}
-                                            return <SubTag elements={ loggedUserServiceMemberSummaries[index] } currentSM= { member } key={key}/>
-                                        })
-                                    }
+                                        <input type="text" placeholder="Search a Skill Here!" value={skillEntered} onChange={skillHandler} />
+                                        {skillEntered === "" ? renderFunc(key) : null }
+
+                                        
+
+                                    
                                     
                                 </section>
                             )
