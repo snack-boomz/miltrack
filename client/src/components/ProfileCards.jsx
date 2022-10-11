@@ -36,7 +36,9 @@ export const Medical = (props) => {
         fieldChanged,
         setFieldChanged,
         newFieldChanges,
-        setNewFieldChanges
+        setNewFieldChanges,
+        fieldFetchesComplete, 
+        setFieldFetchesComplete
     }
 
         = useContext(AppContext);
@@ -186,21 +188,80 @@ export const Medical = (props) => {
     // used and ran when changes are submitted via the update profile button
     useEffect(() => {
 
-        const fetchFieldHelper = (field) => {
-            
-            switch (field) {
+        console.log("newFieldChanges: ", newFieldChanges);
 
+        let userId = loggedUser[0].id;
+
+        const fetchFieldHelper = (field) => {
+
+            /*
+            const response = await fetch('https://httpbin.org/post', {
+                method: 'post',
+                body: JSON.stringify(body),
+                headers: {'Content-Type': 'application/json'}
+            });
+            */
+
+            let patchBody = {
+                method: 'PATCH',
+                body: JSON.stringify(field),
+                headers: {"Access-Control-Allow-Origin": "*"}
             }
+
+            
+            
+            if (field.pha_date || field.dental_date || field.hearing_date || field.vision_date || field.hiv_date) {
+                
+                    console.log("field: ", field);
+                    fetch(`http://localhost:3001/medical/${userId}`, {
+                        method: 'PATCH',
+                        body: JSON.stringify(field),
+                        headers: {"Access-Control-Allow-Origin": "*", 'Content-Type': 'application/json'}
+                    })
+                    .then(response => response.json())
+                    .then(data => console.log("Success: ", data))
+                    .catch(err => console.log("err: ", err))
+
+                // } else if () {
+
+                // } else if () {
+                    
+                // } else if () {
+                    
+                // } else if () {
+                    
+                // } else if () {
+                    
+                // } else if () {
+                    
+                // }
+            }
+
 
         }
 
+        let newFieldChangesPromisesArray = [];
+
         newFieldChanges.forEach((fieldObject, index) => {
-
-            if (fieldObject) {
-
-            }
+            
+            newFieldChangesPromisesArray.push(new Promise(() => fetchFieldHelper(fieldObject)));
 
         })
+
+        console.log("newFieldChangesPromisesArray: ", newFieldChangesPromisesArray)
+
+        Promise.all(newFieldChangesPromisesArray)
+        .then(info => {
+            console.log("All fields updated!")
+            setNewFieldChanges([]);
+        })
+        .then(info => {
+            setLoggedUserToggle(loggedUserToggle += 1);
+        })
+        .then(info => {
+            console.log("loggedUserToggle in ProfileCards: ", loggedUserToggle);
+        })
+        
 
 
     }, [fieldChanged])
@@ -214,8 +275,9 @@ export const Medical = (props) => {
             {loggedUserSummary.map((obj, index) => {
                 if (obj.pha_date || obj.dental_date || obj.hearing_date || obj.vision_date || obj.hiv_date) {
                     let medicalObjects = [];
-                    console.log("loggedUserSummary: ", loggedUserSummary)
-                    console.log("obj: ", obj)
+                    console.log("loggedUserSummary: ", loggedUserSummary);
+                    console.log("obj: ", obj);
+                    console.log("loggedUser: ", loggedUser);
 
                     const keyHelper = (object) => {
                         loggedUserSummary.forEach((object, index) => {

@@ -152,7 +152,9 @@ function Profile() {
         hidePersonalInfo,
         setHidePersonalInfo,
         fieldChanged,
-        setFieldChanged
+        setFieldChanged,
+        fieldFetchesComplete,
+        setFieldFetchesComplete
 
         } 
 
@@ -327,6 +329,7 @@ function Profile() {
                     }, 500)
                     
                 })
+                console.log("loggedUserToggle: ", loggedUserToggle)
 
         } catch (error) {
 
@@ -336,7 +339,7 @@ function Profile() {
 
         
 
-    }, [loggedUserToggle])
+    }, [loggedUserToggle, fieldChanged])
 
     // if page is rerendered and user has been reset, return home to login.
     if (noUser) {
@@ -373,6 +376,7 @@ function Profile() {
                                 <hr className="w-10/12 mx-auto border-t-2 mt-12" />
         
                                 {/* Subordinates below */}
+                                
                                 <Medical elements={medicalTestArrayOfObjects} />
                                 <AnnualTraining/>
                                 <SpecialTraining/>

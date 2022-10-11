@@ -19,7 +19,11 @@ const Loginbars = () => {
     useEffect(() => { 
         fetch("http://localhost:3001/users")
             .then((response) => response.json())
-            .then((data) => setDataUsers(data));
+            .then((data) => {
+                console.log("data: ", data);
+                setDataUsers(data)}
+            )
+            .catch((err) => console.log("err: ", err))
     }, []);
     useEffect(() => { 
             console.log("userinfo", dataUsers);
@@ -92,15 +96,25 @@ const Loginbars = () => {
         </div>
     );
 
-
-    return (
-        <div className="app">
-            <div className="login-form">
-                <div className="signIn">Sign In</div>
-               {isSubmitted ? navigate(`/${loggedUser[0].username}`) : renderForm}
+    if (dataUsers.length !== 0) {
+        return (
+            <div className="app">
+                <div className="login-form">
+                    <div className="signIn">Sign In</div>
+                   {isSubmitted ? navigate(`/${loggedUser[0].username}`) : renderForm}
+                </div>
             </div>
-        </div>
-    );
+        );
+    } else {
+        return (
+            <section id="wrapper" className="pb-8 m-12">
+                <section id='welcome_box' className="w-1/5 mx-auto p-4 min-w-fit max-w-fit bg-slate-100 opacity-90 rounded-md shadow-xl shadow-black">
+                    <div>Loading...</div>
+                </section>
+            </section>
+        )
+    }
+    
 }
 
 export default Loginbars;
