@@ -206,8 +206,9 @@ app.patch('/additional/:id', (req, res) => {
 app.patch('/annual_training/:id', (req, res) => {
     const { id } = req.params;
     knex('annual_training')
-        .where({ id: id })
-        .update(req.body)
+        .where({ users_id: id })
+        .where({ training_name: req.body.training_name })
+        .update(req.body, ['*'])
         .then(data => res.send({ message: 'user updated' }))
         .catch(err =>
             res.status(404).json({
@@ -230,9 +231,6 @@ app.patch('/medical/:id', (req, res) => {
     
     
     // }
-
-    
-
     knex.select('*')
     .from('medical')
     .where({ users_id: id })
@@ -246,7 +244,7 @@ app.patch('/medical/:id', (req, res) => {
 app.patch('/evaluations/:id', (req, res) => {
     const { id } = req.params;
     knex('evaluations')
-        .where({ id: id })
+        .where({ users_id: id })
         .update(req.body)
         .then(data => res.send({ message: 'user updated' }))
         .catch(err =>
@@ -258,8 +256,9 @@ app.patch('/evaluations/:id', (req, res) => {
 app.patch('/special_skills/:id', (req, res) => {
     const { id } = req.params;
     knex('special_skills')
-        .where({ id: id })
-        .update(req.body)
+        .where({ users_id: id })
+        .where({ skill_name: req.body.skill_name })
+        .update(req.body, ['*'])
         .then(data => res.send({ message: 'user updated' }))
         .catch(err =>
             res.status(404).json({
@@ -270,8 +269,9 @@ app.patch('/special_skills/:id', (req, res) => {
 app.patch('/static_skills/:id', (req, res) => {
     const { id } = req.params;
     knex('static_skills')
-        .where({ id: id })
-        .update(req.body)
+        .where({ users_id: id })
+        .where({ skill_name: req.body.skill_name })
+        .update(req.body, ['*'])
         .then(data => res.send({ message: 'user updated' }))
         .catch(err =>
             res.status(404).json({
