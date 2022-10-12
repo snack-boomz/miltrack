@@ -6,7 +6,20 @@ const port = 3001;
 
 const app = express();
 app.use(express.json())
+
+
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    next();
+});
+
 app.use(cors());
+// https://stackoverflow.com/questions/18310394/no-access-control-allow-origin-node-apache-port-issue?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+
+
+// res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+// res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
 
 
 app.get('/users', (req, res) => {
@@ -44,7 +57,7 @@ app.get('/additional/:id', (req, res) => {
     const { id } = req.params;
     knex.select('*')
     .from('additional')
-    .where({ id: id })
+    .where({ users_id: id })
     .then(data => res.send(data));
 })
 
@@ -83,7 +96,7 @@ app.get('/evaluations/:id', (req, res) => {
     const { id } = req.params;
     knex.select('*')
     .from('evaluations')
-    .where({ id: id })
+    .where({ users_id: id })
     .then(data => res.send(data));
 })
 
@@ -96,7 +109,7 @@ app.get('/special_skills/:id', (req, res) => {
     const { id } = req.params;
     knex.select('*')
     .from('special_skills')
-    .where({ id: id })
+    .where({ users_id: id })
     .then(data => res.send(data));
 })
 
@@ -109,7 +122,7 @@ app.get('/static_skills/:id', (req, res) => {
     const { id } = req.params;
     knex.select('*')
     .from('static_skills')
-    .where({ id: id })
+    .where({ users_id: id })
     .then(data => res.send(data));
 })
 
@@ -155,6 +168,7 @@ app.post('/static_skills', (req, res) => {
 
 
 app.patch('/users/:id', (req, res) => {
+    const { id } = req.params;
     knex('users')
         .where({ id: id })
         .update(req.body)
@@ -166,6 +180,7 @@ app.patch('/users/:id', (req, res) => {
             }))
 })
 app.patch('/organization/:id', (req, res) => {
+    const { id } = req.params;
     knex('organization')
         .where({ id: id })
         .update(req.body)
@@ -177,6 +192,7 @@ app.patch('/organization/:id', (req, res) => {
             }))
 })
 app.patch('/additional/:id', (req, res) => {
+    const { id } = req.params;
     knex('additional')
         .where({ id: id })
         .update(req.body)
@@ -188,6 +204,7 @@ app.patch('/additional/:id', (req, res) => {
             }))
 })
 app.patch('/annual_training/:id', (req, res) => {
+    const { id } = req.params;
     knex('annual_training')
         .where({ id: id })
         .update(req.body)
@@ -199,17 +216,35 @@ app.patch('/annual_training/:id', (req, res) => {
             }))
 })
 app.patch('/medical/:id', (req, res) => {
-    knex('medical')
-        .where({ id: id })
-        .update(req.body)
+    const { id } = req.params;
+    
+    // if (req.body.pha_date) {
+
+    // } else if ((req.body.medical_date)) {
+
+    // } else if ((req.body.dental_date)) {
+
+    // } else if ((req.body.vision_date)) {
+
+    // } else if ((req.body.hearing_date)) {
+    
+    
+    // }
+
+    
+
+    knex.select('*')
+    .from('medical')
+    .where({ users_id: id })
+        .update(req.body, ['*'])
         .then(data => res.send({ message: 'user updated' }))
         .catch(err =>
             res.status(404).json({
-                message:
-                    'The data you are looking for could not be found. Please try again'
+                 Message: `Error: ${err}`
             }))
 })
 app.patch('/evaluations/:id', (req, res) => {
+    const { id } = req.params;
     knex('evaluations')
         .where({ id: id })
         .update(req.body)
@@ -221,6 +256,7 @@ app.patch('/evaluations/:id', (req, res) => {
             }))
 })
 app.patch('/special_skills/:id', (req, res) => {
+    const { id } = req.params;
     knex('special_skills')
         .where({ id: id })
         .update(req.body)
@@ -232,6 +268,7 @@ app.patch('/special_skills/:id', (req, res) => {
             }))
 })
 app.patch('/static_skills/:id', (req, res) => {
+    const { id } = req.params;
     knex('static_skills')
         .where({ id: id })
         .update(req.body)
@@ -307,6 +344,10 @@ app.delete('/static_skills/:id', (req, res) => {
 
 
 app.listen(port, (req, res) => {
+    // https://stackoverflow.com/questions/18310394/no-access-control-allow-origin-node-apache-port-issue?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+
+
+
     console.log(`App is listening at port ${port}`);
 })
 

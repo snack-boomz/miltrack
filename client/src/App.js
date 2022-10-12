@@ -12,7 +12,8 @@ import SubTag from "./components/SubTag";
 import styled from 'styled-components';
 
 function App() {
-  const [ loggedUser, setLoggedUser ] = useState([{"id":1,"username":null,"name":"Loading...","password":"1234","rank":"E4", "mos": "Loading...", "current_status": "PDY", "supervisor_id" : null,"organization_id":1}]);
+  // const [ loggedUser, setLoggedUser ] = useState([{"id":1,"username":null,"name":"Loading...","password":"1234","rank":"E4", "mos": "Loading...", "current_status": "PDY", "supervisor_id" : null,"organization_id":1}]);
+  const [ loggedUser, setLoggedUser ] = useState([]);
   const [ allUsers, setAllUsers ] = useState([]);
   const [ loggedUserOrg, setLoggedUserOrg ] = useState([]);
   const [ loggedUserToggle, setLoggedUserToggle ] = useState(0);
@@ -20,8 +21,15 @@ function App() {
   const [ loggedUserServiceMembers, setLoggedUserServiceMembers ] = useState([]);
   const [ loggedUserServiceMemberSummaries, setLoggedUserServiceMemberSummaries ] = useState([]);
   const [ loggedUserServiceMemberPromiseChainComplete, setLoggedUserServiceMemberPromiseChainComplete ] = useState(false);
+  const [ loggedUserPromiseChainComplete, setLoggedUserPromiseChainComplete ] = useState(false);
+  const [ updateFieldsToggle, setUpdateFieldsToggle ] = useState(0);
   const [loggedUser2, setLoggedUser2] = useState();
-  const [ orgData, setOrgData ] = useState([])
+  const [ orgData, setOrgData ] = useState([]);
+  const [ noUser, setNoUser ] = useState(false);
+  const [ hidePersonalInfo, setHidePersonalInfo ] = useState(0);
+  const [ fieldChanged, setFieldChanged ] = useState(0);
+  const [ newFieldChanges, setNewFieldChanges ] = useState([]);
+  const [ fieldFetchesComplete, setFieldFetchesComplete ] = useState(0);
 
   useEffect(() => {
     fetch('http://localhost:3001/users')
@@ -30,19 +38,20 @@ function App() {
   }, [])
 
   // Temporary use effect to set hardcoded LoggedInUser until we have logging in functionality
-  useEffect(() => {
-    fetch('http://localhost:3001/users')
-    .then(response => response.json())
-    .then(data => setLoggedUser([{"id":1,"username":null,"name":"Russell Annis","password":"1234","rank":"E4", "mos": "17C", "current_status": "PDY", "supervisor_id" : null,"organization_id":1}]))
-    .then(data => {
-        console.log(loggedUser)
-        console.log("Hello!")
+  // useEffect(() => {
+  //   fetch('http://localhost:3001/users')
+  //   // .then(response => response.json())
+  //   // .then(data => setLoggedUser([{"username":null,"name":"Russell Annis","password":"1234","rank":"E4", "mos": "17C", "current_status": "PDY", "supervisor_id" : null,"organization_id":1}]))
+  //   // .then(data => {
+  //   //     console.log(loggedUser)
+  //   //     console.log("Hello!")
+
     
-    })
-    .then(data => {
-      setLoggedUserToggle(loggedUserToggle + 1)
-    })
-  }, [])
+  //   // })
+  //   .then(data => {
+  //     setLoggedUserToggle(loggedUserToggle + 1)
+  //   })
+  // }, [])
 
   // set loggedUser's subordinates if he/she has any
 
@@ -70,10 +79,24 @@ function App() {
     setLoggedUserServiceMemberSummaries,
     loggedUserServiceMemberPromiseChainComplete, 
     setLoggedUserServiceMemberPromiseChainComplete,
+    loggedUserPromiseChainComplete,
+    setLoggedUserPromiseChainComplete,
+    updateFieldsToggle,
+    setUpdateFieldsToggle,
+    noUser,
+    setNoUser,
     loggedUser2,
     setLoggedUser2,
     orgData,
-    setOrgData
+    setOrgData,
+    hidePersonalInfo,
+    setHidePersonalInfo,
+    fieldChanged,
+    setFieldChanged,
+    newFieldChanges,
+    setNewFieldChanges,
+    fieldFetchesComplete,
+    setFieldFetchesComplete,
   }
 
   // const testObject = {

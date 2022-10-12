@@ -82,23 +82,23 @@ function Dashboard() {
     }, [])
 
   // Temporary use effect to set hardcoded LoggedInUser until we have logging in functionality
-    useEffect(() => {
-        fetch('http://localhost:3001/users')
-        .then(response => response.json())
-        .then(data => setLoggedUser([{id: 6, username:'ocelottip',name: 'Joe Rogan', password: '1234', rank: 'O6',supervisor_id:null,organization_id:3, MOS:'35F', current_status: "PDY"}]))
-        .then(data => {
-            console.log(loggedUser);
-            console.log("Hello!")
+    // useEffect(() => {
+    //     fetch('http://localhost:3001/users')
+    //     .then(response => response.json())
+    //     .then(data => setLoggedUser([{id: 6, username:'ocelottip',name: 'Joe Rogan', password: '1234', rank: 'O6',supervisor_id:null,organization_id:3, MOS:'35F', current_status: "PDY"}]))
+    //     .then(data => {
+    //         console.log(loggedUser);
+    //         console.log("Hello!")
         
-        })
-        .then(data => {
-        setLoggedUserToggle(loggedUserToggle += 1)
-        console.log(loggedUserToggle);
-        })
-        .catch(err => {
-            console.error("err: ", err)
-        })
-    }, [])
+    //     })
+    //     .then(data => {
+    //     setLoggedUserToggle(loggedUserToggle += 1)
+    //     console.log(loggedUserToggle);
+    //     })
+    //     .catch(err => {
+    //         console.error("err: ", err)
+    //     })
+    // }, [])
 
     // grab logged user org
     useEffect(() => {
