@@ -30,6 +30,7 @@ function App() {
   const [ fieldChanged, setFieldChanged ] = useState(0);
   const [ newFieldChanges, setNewFieldChanges ] = useState([]);
   const [ fieldFetchesComplete, setFieldFetchesComplete ] = useState(0);
+  const [ serviceMember, setServiceMember ] = useState([]);
 
   useEffect(() => {
     fetch('http://localhost:3001/users')
@@ -113,6 +114,8 @@ function App() {
     setNewFieldChanges,
     fieldFetchesComplete,
     setFieldFetchesComplete,
+    serviceMember,
+    setServiceMember
   }
 
   // const testObject = {

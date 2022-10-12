@@ -15,6 +15,8 @@ const [ skillEntered, setSkillEntered ] = useState('');
 const [ filteredData, setFilteredData ] = useState([]);
 const [ skillFilter, setSkillFilter ] = useState([]);
 const [skillsArr, setSkillsArr] = useState([]);
+
+// const [memberArr, setMemberArr] = useState([]);
     let { 
         loggedUser, 
         setLoggedUser, 
@@ -32,6 +34,8 @@ const [skillsArr, setSkillsArr] = useState([]);
         setLoggedUserServiceMemberSummaries,
         loggedUserServiceMemberPromiseChainComplete, 
         setLoggedUserServiceMemberPromiseChainComplete,
+        serviceMember,
+        setServiceMember,
          
         } 
     = useContext(AppContext);
@@ -51,34 +55,62 @@ const [skillsArr, setSkillsArr] = useState([]);
         }
     };
     */
-  
+ 
+    const samesiesFunc = (id) => {
+        return loggedUserServiceMembers.map((member, index, key) => {
+            if (member.id === id /*&& !memberArr.includes(id)*/) {
+                // if(!memberArr.includes(member)){
+                //     setMemberArr({...memberArr, member})
+                // }
+            
+              return ( 
+                <div  onClick={() => {console.log("THIS IS SUBORD"); setServiceMember(member.name)}}>
+              <Link to={`/${member.username}`}> <SubTag  elements={ loggedUserServiceMemberSummaries[index] } currentSM= { member } key={key}/>
+              </Link>
+              </div>) }
+        })
+    };
+
+
     const renderFunc = (key) => {
       return loggedUserServiceMembers.map((member, index) => {
             {console.log("loggedUserServiceMembers: ", loggedUserServiceMembers)}
             {console.log(member)}
             {console.log(loggedUserServiceMemberSummaries[index])}
             {console.log("loggedUserServiceMemberSummaries: ", loggedUserServiceMemberSummaries)}
-            return ( <Link to={`/${member.username}`}> <SubTag elements={ loggedUserServiceMemberSummaries[index] } currentSM= { member } key={key}/>
-            </Link>)
-            
-            
+            return ( 
+                <div  onClick={() => {console.log("THIS IS SUBORD"); setServiceMember(member.name)}}>
+            <Link to={`/${member.username}`} > <SubTag  elements={ loggedUserServiceMemberSummaries[index] } currentSM= { member } key={key}/>
+            </Link>
+            </div>)   
       })};
       
 
      const skillHandler = (e) => {
         const searchWord = e.target.value;
         setSkillEntered(searchWord);
-        console.log("gimme message bitch 2",skillsArr[0][0].skill_name)
-        // const newFilter = []
-        for(let i=0;i<skillsArr.length;i++){
-            if(skillsArr[i][0].skill_name.toLowerCase().includes(searchWord.toLowerCase())){
-                console.log('the skilliest of filters', skillsArr[i][0])
-                setSkillFilter(skillsArr[i][0]) 
-               
-            }else {
-                setSkillFilter([]);
-            }
+        let newFilter;
+          newFilter = skillsArr.filter((value) => {
+            return value.skill_name.toLowerCase().includes(searchWord.toLowerCase());
+                
+        });
+
+        if (searchWord === "") {
+            setSkillFilter([]);
+        } else {
+            setSkillFilter(newFilter);
+            console.log("skillFilter: ", skillFilter)
         }
+        // const newFilter = []
+       // for(let i=0;i<skillsArr.length;i++){
+        //    if(skillsArr[i][0].skill_name.toLowerCase().includes(searchWord.toLowerCase())){
+          //      console.log('the skilliest of filters', skillsArr[i][0])
+        //         setSkillFilter(skillsArr[i][0]) 
+               
+        //     }else {
+        //         setSkillFilter([]);
+        //     }
+        // }
         // console.log("fucking work already", newFilter)
 
         // const secondFilter = newFilter.filter((value) =>{  
@@ -99,44 +131,39 @@ const [skillsArr, setSkillsArr] = useState([]);
         loggedUserServiceMembers.map((member)=>{
             fetch(`http://localhost:3001/special_skills/${member.id}`)
             .then(response => response.json())
-            .then(specialData => (newArr.push(specialData)))
+            .then(specialData => (specialData.map((data)=>newArr.push(data))))
 
             fetch(`http://localhost:3001/static_skills/${member.id}`)
             .then(response => response.json())
-            .then(staticData => (newArr.push(staticData)))
+            .then(staticData => (staticData.map((data)=>newArr.push(data))))
         })
+        
+        
         setSkillsArr(newArr)
+        console.log("This is NEWARR HOE", skillsArr)
     }, [loggedUserServiceMembers])
 
-    const searchFunc = (skillEntered) => {
-        /*
-        // .map((member, index) => {
-        //     subUserId.push(member.id);
-        // })
-        let skillsArr = []
-        loggedUserServiceMembers.map((member)=>{
-            fetch(`http://localhost:3001/special_skills/${member.id}`)
-            .then(response => response.json())
-            .then(specialData => (skillsArr.push(specialData)))
-
-            fetch(`http://localhost:3001/static_skills/${member.id}`)
-            .then(response => response.json())
-            .then(staticData => (skillsArr.push(staticData)))
-
-        }) 
-        */
-        return loggedUserServiceMembers.map((member, index) => {
-        {skillFilter.length != 0 && (
-            <div className="dataResult">
-                {skillFilter.slice(0, 15).map((value, key) => {
-                    return (
-                        <div>
-                        {skillEntered.includes(value.skill_name) ? <Link to={`/${member.username}`}> <SubTag elements={ loggedUserServiceMemberSummaries[index] } currentSM= { member } key={key}/>
-            </Link> : setSkillFilter([])}
-                        </div> );
-               })}
-            </div>
-        )}})};
+    const searchFunc = (key) => {
+       
+            console.log("MADE IT TO HERE")
+            if(skillFilter.length != 0){
+                return(
+                //   <div className="dataResult">
+                <>
+                    {skillFilter.map((value, key) => {
+                        console.log("WTF IS THIS: ", value.skill_name.toLowerCase().includes(skillEntered.toLowerCase()))
+                        return (
+                            <div style={{width: '100%'}}>
+                            { value.skill_name.toLowerCase().includes(skillEntered.toLowerCase()) ? samesiesFunc(value.users_id)/*smth like this*/ : <p>YOU SUCK BUT IT WORKED!</p>}
+                            </div> 
+                        );
+                    })}</>
+                // </div>   
+                )
+                
+            }
+ 
+    };
     
 
 
@@ -439,15 +466,19 @@ const [skillsArr, setSkillsArr] = useState([]);
                                 </section>
                                     {/* <IndivTag elements={ testObject } component="medical"/> */}
                                     {/* Logged in Soldier below */}
+                                    <div  onClick={() => {console.log("THIS IS SUBORD"); setServiceMember(element.username)}}>
                                     <Link to={`/${element.username}`}>
-                                    <SubTag elements={ loggedUserSummary } currentSM= { loggedUser[0] } key={key}/>
+                                    <SubTag elements={ loggedUserSummary } currentSM= { loggedUser[0] } key={key} />
                                     </Link>
+                                    </div>
                                     {console.log("subordinate promise chain: ", loggedUserServiceMemberPromiseChainComplete)} 
                                     <hr className="w-10/12 mx-auto border-t-2 mt-12"/>
                                     <h3 className="w-2/12 text-2xl font-bold italic text-center min-w-fit max-w-fit mx-auto mt-12 p-2 bg-slate-100 opacity-90 rounded-md shadow-xl shadow-black">SMs tracked:</h3>
-                                    <input type="text" placeholder="Search a Skill Here!" value={skillEntered} onChange={skillHandler} />
+                                    <div className="searchbar_container">
+                                    <input className="searchbar" style={{height: '40px'}}type="text" placeholder="Search a member of your teams skills here!" value={skillEntered} onChange={skillHandler} />
+                                    </div>
                                     {/* Subordinates below */}
-                                        {skillEntered === "" ? renderFunc(key) : searchFunc(skillEntered) } 
+                                        {skillEntered === "" ? renderFunc(key) : searchFunc(key)} 
 
                                         
 
