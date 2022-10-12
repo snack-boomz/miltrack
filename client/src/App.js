@@ -30,9 +30,10 @@ function App() {
   const [ fieldChanged, setFieldChanged ] = useState(0);
   const [ newFieldChanges, setNewFieldChanges ] = useState([]);
   const [ fieldFetchesComplete, setFieldFetchesComplete ] = useState(0);
+
+  const [ serviceMember, setServiceMember ] = useState([]);
   const [ formattedItemsCollection, setFormattedItemsCollection ] = useState([]);
   const [ allPostPromisesComplete, setAllPostPromisesComplete ] = useState(0);
-
 
   useEffect(() => {
     fetch('http://localhost:3001/users')
@@ -41,6 +42,21 @@ function App() {
   }, [])
 
   // Temporary use effect to set hardcoded LoggedInUser until we have logging in functionality
+
+  useEffect(() => {
+    fetch('http://localhost:3001/users')
+    /*.then(response => response.json())
+    .then(data => setLoggedUser([{"id":1,"username":null,"name":"Russell Annis","password":"1234","rank":"E4", "mos": "17C", "current_status": "PDY", "supervisor_id" : null,"organization_id":1}]))
+    .then(data => {
+        console.log(loggedUser)
+        console.log("Hello!")
+    
+    })*/
+    .then(data => {
+      setLoggedUserToggle(loggedUserToggle + 1)
+    })
+  }, [])
+
   // useEffect(() => {
   //   fetch('http://localhost:3001/users')
   //   // .then(response => response.json())
@@ -55,6 +71,7 @@ function App() {
   //     setLoggedUserToggle(loggedUserToggle + 1)
   //   })
   // }, [])
+
 
   // set loggedUser's subordinates if he/she has any
 
@@ -100,10 +117,13 @@ function App() {
     setNewFieldChanges,
     fieldFetchesComplete,
     setFieldFetchesComplete,
+    serviceMember,
+    setServiceMember,
     formattedItemsCollection,
     setFormattedItemsCollection,
     allPostPromisesComplete, 
     setAllPostPromisesComplete
+
   }
 
   // const testObject = {
