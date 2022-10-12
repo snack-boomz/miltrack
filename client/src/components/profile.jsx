@@ -455,12 +455,11 @@ function Profile() {
                                     </tr>
                                     <button onClick={ () => setHidePersonalInfo(hidePersonalInfo += 1) } className="block w-7/12 py-1 rounded-lg mx-auto mt-2 text-black bg-transparent border border-black border-double hover:bg-slate-400 transition transition-200">{hidePersonalInfo % 2 === 0 ? "Show Personal Info" : "Hide Personal Info"}</button>
 
-                                    <button onClick={ () => { setUpdateFieldsToggle(updateFieldsToggle += 1);  updateFieldsToggle % 2 === 0 ? setFieldChanged(fieldChanged += 1) : console.log("updateField wasn't triggered"); console.log("fieldChanged: ", fieldChanged)  } } className={updateFieldsToggle % 2 === 0 ? "block w-7/12 py-1 rounded-lg mx-auto mt-2 text-black bg-transparent border border-black border-double hover:bg-slate-400 transition transition-200" : "block w-7/12 py-1 rounded-lg mx-auto mt-2 text-black bg-green-400 border border-black border-double hover:bg-black transition transition-200 text-white"}>{updateFieldsToggle % 2 === 0 ? "Update Profile" : "Submit Changes"}</button>
-                                </section> 
-                    }
-
                                     <button onClick={ () => { setUpdateFieldsToggle(updateFieldsToggle += 1);  updateFieldsToggle % 2 === 0 ? setFieldChanged(fieldChanged += 1) : console.log("updateField wasn't triggered"); console.log("fieldChanged: ", fieldChanged); setUpdateFieldsToggle(updateFieldsToggle += 1); setUpdateFieldsToggle(updateFieldsToggle += 1);  } } className={updateFieldsToggle % 2 === 0 ? "block w-7/12 py-1 rounded-lg mx-auto mt-2 text-black bg-transparent border border-black border-double hover:bg-slate-400 transition transition-200" : "block w-7/12 py-1 rounded-lg mx-auto mt-2 text-black bg-green-400 border border-black border-double hover:bg-black transition transition-200 text-white"}>{updateFieldsToggle % 2 === 0 ? "Update Profile" : "Submit Changes"}</button>
                                 </section>
+                    }
+
+
 
                                 {/* <IndivTag elements={ testObject } component="medical"/> */}
                                 {/* Logged in Soldier below */}
