@@ -186,6 +186,7 @@ const [skillsArr, setSkillsArr] = useState([]);
         })
      }, [])
 
+
     // grab logged user org
     useEffect(() => {
         console.log(loggedUser);

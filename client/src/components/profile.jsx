@@ -159,7 +159,11 @@ function Profile() {
         loggedUserServiceMembers,
         setLoggedUserServiceMembers,
         serviceMember,
-        setServiceMember
+        setServiceMember,
+        formattedItemsCollection,
+        setFormattedItemsCollection,
+        allPostPromisesComplete, 
+        setAllPostPromisesComplete
 
         } 
 
@@ -328,10 +332,11 @@ function Profile() {
                 })
                 .then((info) => {
 
-                    setTimeout(() => {
+                    const timer = setTimeout(() => {
                         setLoggedUserPromiseChainComplete(true);
                         console.log("loggedUserPromiseChain complete");
                     }, 500)
+                    return () => clearTimeout(timer);
                     
                 })
                 console.log("loggedUserToggle: ", loggedUserToggle)
@@ -344,7 +349,73 @@ function Profile() {
 
         
 
-    }, [loggedUserToggle, fieldChanged])
+    }, [loggedUserToggle, fieldChanged, updateFieldsToggle, allPostPromisesComplete])
+
+    // used for all post requests made for adding trainings (AddItem component)
+    useEffect(() => {
+
+        let userId = loggedUser[0].id;
+        let allPostPromises = [];
+
+        const recursiveCreateFetchesFunction = (array, arrayLength, arrayType) => {
+
+            if (arrayLength == 0) {
+
+            }
+
+            let promise = (
+                fetch(`http://localhost:3001/${arrayType}/${userId}`, {
+                    method: 'POST',
+                    body: JSON.stringify(array[arrayLength - 1]),
+                    headers: {"Access-Control-Allow-Origin": "*", 'Content-Type': 'application/json'}
+                })
+                .then(response => response.json())
+                .then(data => console.log("Success: ", data))
+                .catch(err => console.log("err: ", err))
+            )
+
+            allPostPromises.push(promise);
+
+            arrayLength -= 1;
+            
+            recursiveCreateFetchesFunction(array, arrayLength, arrayType)
+
+        }
+
+        const fetchPostHelper = (array) => {
+
+            if (array[0].training_name) {
+                let arrayType = "annual_training";
+                recursiveCreateFetchesFunction(array, array.length, arrayType);
+            } else if (array[0].skill_refresh_date) {
+                let arrayType = "special_skills";
+                recursiveCreateFetchesFunction(array, array.length, arrayType);
+            } else if (array[0].skill_date) {
+                let arrayType = "static_skills";
+                recursiveCreateFetchesFunction(array, array.length, arrayType);
+            }
+
+        }
+
+        for (let formattedItemArray of formattedItemsCollection) {
+
+            fetchPostHelper(formattedItemArray);
+
+        }
+
+        //formattedItemsCollection
+
+        Promise.all(allPostPromises)
+        .then(info => {
+            console.log("All post promises complete")
+        })
+        .then(info => {
+            
+            setAllPostPromisesComplete(allPostPromisesComplete += 1);
+
+        })
+
+    }, [fieldChanged])
 
     // if page is rerendered and user has been reset, return home to login.
     if (noUser) {
@@ -383,9 +454,14 @@ function Profile() {
                                         </section>
                                     </tr>
                                     <button onClick={ () => setHidePersonalInfo(hidePersonalInfo += 1) } className="block w-7/12 py-1 rounded-lg mx-auto mt-2 text-black bg-transparent border border-black border-double hover:bg-slate-400 transition transition-200">{hidePersonalInfo % 2 === 0 ? "Show Personal Info" : "Hide Personal Info"}</button>
+
                                     <button onClick={ () => { setUpdateFieldsToggle(updateFieldsToggle += 1);  updateFieldsToggle % 2 === 0 ? setFieldChanged(fieldChanged += 1) : console.log("updateField wasn't triggered"); console.log("fieldChanged: ", fieldChanged)  } } className={updateFieldsToggle % 2 === 0 ? "block w-7/12 py-1 rounded-lg mx-auto mt-2 text-black bg-transparent border border-black border-double hover:bg-slate-400 transition transition-200" : "block w-7/12 py-1 rounded-lg mx-auto mt-2 text-black bg-green-400 border border-black border-double hover:bg-black transition transition-200 text-white"}>{updateFieldsToggle % 2 === 0 ? "Update Profile" : "Submit Changes"}</button>
                                 </section> 
                     }
+
+                                    <button onClick={ () => { setUpdateFieldsToggle(updateFieldsToggle += 1);  updateFieldsToggle % 2 === 0 ? setFieldChanged(fieldChanged += 1) : console.log("updateField wasn't triggered"); console.log("fieldChanged: ", fieldChanged); setUpdateFieldsToggle(updateFieldsToggle += 1); setUpdateFieldsToggle(updateFieldsToggle += 1);  } } className={updateFieldsToggle % 2 === 0 ? "block w-7/12 py-1 rounded-lg mx-auto mt-2 text-black bg-transparent border border-black border-double hover:bg-slate-400 transition transition-200" : "block w-7/12 py-1 rounded-lg mx-auto mt-2 text-black bg-green-400 border border-black border-double hover:bg-black transition transition-200 text-white"}>{updateFieldsToggle % 2 === 0 ? "Update Profile" : "Submit Changes"}</button>
+                                </section>
+
                                 {/* <IndivTag elements={ testObject } component="medical"/> */}
                                 {/* Logged in Soldier below */}
                                 <hr className="w-10/12 mx-auto border-t-2 mt-12" />
