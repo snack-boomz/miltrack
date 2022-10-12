@@ -156,7 +156,9 @@ function Profile() {
         fieldFetchesComplete,
         setFieldFetchesComplete,
         formattedItemsCollection,
-        setFormattedItemsCollection
+        setFormattedItemsCollection,
+        allPostPromisesComplete, 
+        setAllPostPromisesComplete
         } 
 
     = useContext(AppContext);
@@ -341,7 +343,7 @@ function Profile() {
 
         
 
-    }, [loggedUserToggle, fieldChanged, updateFieldsToggle])
+    }, [loggedUserToggle, fieldChanged, updateFieldsToggle, allPostPromisesComplete])
 
     // used for all post requests made for adding trainings (AddItem component)
     useEffect(() => {
@@ -377,27 +379,35 @@ function Profile() {
         const fetchPostHelper = (array) => {
 
             if (array[0].training_name) {
-                let arrayType = "annual_training"
-                recursiveCreateFetchesFunction(array, array.length, arrayType)
+                let arrayType = "annual_training";
+                recursiveCreateFetchesFunction(array, array.length, arrayType);
             } else if (array[0].skill_refresh_date) {
-                let arrayType = "special_skills"
-                recursiveCreateFetchesFunction(array, array.length, arrayType)
+                let arrayType = "special_skills";
+                recursiveCreateFetchesFunction(array, array.length, arrayType);
             } else if (array[0].skill_date) {
-                let arrayType = "static_skills"
-                recursiveCreateFetchesFunction(array, array.length, arrayType)
+                let arrayType = "static_skills";
+                recursiveCreateFetchesFunction(array, array.length, arrayType);
             }
 
         }
 
         for (let formattedItemArray of formattedItemsCollection) {
 
-            fetchPostHelper(formattedItemArray)
+            fetchPostHelper(formattedItemArray);
 
         }
 
         //formattedItemsCollection
 
+        Promise.all(allPostPromises)
+        .then(info => {
+            console.log("All post promises complete")
+        })
+        .then(info => {
+            
+            setAllPostPromisesComplete(allPostPromisesComplete += 1);
 
+        })
 
     }, [fieldChanged])
 
