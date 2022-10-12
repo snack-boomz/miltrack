@@ -1,10 +1,11 @@
-import React, { useStat, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 
 import styled from 'styled-components';
 import * as AiIcons from 'react-icons/ai';
 import * as IoIcons from 'react-icons/io';
 import * as GrIcons from 'react-icons/gr';
 import { AppContext } from '../AppContext';
+import { AddItem } from './AddItem';
 //import Profile, { staticSkillsTestArrayOfObjects as staticSkills, specialSkillsTestArrayOfObjects as specialSkills, userObject } from './profile';
 //imported for use of dummy data
 
@@ -40,7 +41,6 @@ export const Medical = (props) => {
         fieldFetchesComplete, 
         setFieldFetchesComplete
     }
-
         = useContext(AppContext);
 
     const colorHelper = (amber, red) => {
@@ -181,7 +181,7 @@ export const Medical = (props) => {
 
         setNewFieldChanges(newFieldChangesCopy);
 
-        setTimeout(() => console.log("new FIeld changes: ", newFieldChanges), 5000);
+        // setTimeout(() => console.log("new FIeld changes: ", newFieldChanges), 5000);
 
     }
 
@@ -222,9 +222,9 @@ export const Medical = (props) => {
                     .then(data => console.log("Success: ", data))
                     .catch(err => console.log("err: ", err))
 
-                // } else if () {
+            }
 
-                // } else if () {
+              // } else if () {
                     
                 // } else if () {
                     
@@ -235,8 +235,6 @@ export const Medical = (props) => {
                 // } else if () {
                     
                 // }
-            }
-
 
         }
 
@@ -418,7 +416,7 @@ export const Medical = (props) => {
 
             })}
             
-            
+ 
         </ul>
     )
 };
@@ -439,15 +437,26 @@ export const AnnualTraining = (props) => {
         setLoggedUserToggle,
         loggedUserSummary,
         setLoggedUserSummary,
+        loggedUserPromiseChainComplete,
+        setLoggedUserPromiseChainComplete,
         loggedUserServiceMembers,
         setLoggedUserServiceMembers,
         loggedUserServiceMemberSummaries,
         setLoggedUserServiceMemberSummaries,
-        loggedUserPromiseChainComplete,
-        setLoggedUserServiceMemberPromiseChainComplete
+        loggedUserServiceMemberPromiseChainComplete,
+        setLoggedUserServiceMemberPromiseChainComplete,
+        updateFieldsToggle,
+        setUpdateFieldsToggle,
+        fieldChanged,
+        setFieldChanged,
+        newFieldChanges,
+        setNewFieldChanges,
+        fieldFetchesComplete, 
+        setFieldFetchesComplete
     }
-
         = useContext(AppContext);
+
+    let [ timerComplete, setTimerComplete ] = useState(false);
 
     const colorHelper = (amber, red,) => {
 
@@ -462,111 +471,378 @@ export const AnnualTraining = (props) => {
         }
     }
 
-    return (
-        <ul key="1" className="w-10/12 h-8/12 width: 'vw' list-none flex flex-row flex-wrap gap-8 border border-2 border-gray border-double mx-auto my-8 p-4 bg-[#A3BD8A] rounded-lg shadow-2xl ">
-            <div>
-                <h2 className="text-3xl font-bold border-r-2 py-8 pr-8">Annual Training</h2>
-            </div>
-            {
-                loggedUserSummary.map((obj, index) => {
-                    console.log("loggedUserSummary: ", loggedUserSummary)
-                    console.log("obj: ", obj)
-                    if (obj.training_name) {
-                        console.log("test")
-                        //props.elements.map((skill, index) => {
+    const currentLabelHelper = (currentLabel) => {
 
-                        let currentLabel = "";
-                        let currentLabelStatus = "";
-                        let amber = false;
-                        let red = false;
+        if (currentLabel == "Annual Training") {
+            return "Annual"
+        } else {
+            return currentLabel;
+        }
+
+    }
+
+    const currentLabelHelper2 = (currentLabel) => {
+
+        if (currentLabel === "Annual Training") {
+            return "Training"
+        } else {
+            return;
+        }
+
+    }
+
+    const dateHelper = (uiDate) => {
+
+        const monthHelper = (month) => {
+
+            switch (month.toLowerCase()) {
+
+                case 'jan':
+                    return '01';
+                    break;
+                
+                case 'feb':
+                    return '02';
+                    break;
+
+                case 'mar':
+                    return '03';
+                    break;
+                    
+                case 'apr':
+                    return '04';
+                    break;
+                
+                case 'may':
+                    return '05';
+                    break;
+        
+                case 'jun':
+                    return '06';
+                    break;
+                
+                case 'jul':
+                    return '07';
+                    break;
+
+                case 'aug':
+                    return '08';
+                    break;
+        
+                case 'sep':
+                    return '09';
+                    break;
+
+                case 'oct':
+                    return '10';
+                    break;
+
+                case 'nov':
+                    return '11';
+                    break;
+
+                case 'dec':
+                    return '12';
+                    break;
+                default:
+                    break;
+
+            }
+
+        }
+
+        let dateArray = uiDate.split(" ");
+
+        console.log("dateArray: ", dateArray);
+        
+        let correctedDateFormat = `${dateArray[3]}-${monthHelper(dateArray[1])}-${dateArray[2]}`;
+
+        console.log("correctedDateFormat: ", correctedDateFormat);
+        return correctedDateFormat;
+
+    }
+
+    const updateFieldHelper = (object, newDate) => {
+
+        console.log("object, newDate: ", object, newDate);
+        let objectKeyName = Object.keys(object)[1];
+        let objectKeyNameValue = Object.values(object)[1];
+
+        let objectKeyDateName = Object.keys(object)[2];
+        let objectToPush = {[objectKeyName]: objectKeyNameValue, [objectKeyDateName]: newDate };
+        
+
+        let newFieldChangesCopy = newFieldChanges.slice();
+
+        let alreadyExists = false;
+
+        for (let object of newFieldChangesCopy) {
+            if ( Object.values(objectToPush)[0] == Object.values(object)[0] ) {
+                alreadyExists = true;
+            
+            }
+        }
+        
+
+        if (alreadyExists) {
+            for (let object of newFieldChangesCopy) {
+                if (Object.values(objectToPush)[0] == Object.values(object)[0]) {
+                    object[objectKeyDateName] = newDate;
+                }
+            }
+        } else {
+            newFieldChangesCopy.push(objectToPush);
+        }
+        
+
+        setNewFieldChanges(newFieldChangesCopy);
+
+        setTimeout(() => console.log("new FIeld changes: ", newFieldChanges), 5000);
+
+    }
+    // useEffect for updates
+    useEffect(() => {
+
+        console.log("newFieldChanges inside annual training: ", newFieldChanges);
+
+        let userId = loggedUser[0].id;
+
+        const fetchFieldHelper = (field) => {
+
+            /*
+            const response = await fetch('https://httpbin.org/post', {
+                method: 'post',
+                body: JSON.stringify(body),
+                headers: {'Content-Type': 'application/json'}
+            });
+            */
+
+            let patchBody = {
+                method: 'PATCH',
+                body: JSON.stringify(field),
+                headers: {"Access-Control-Allow-Origin": "*"}
+            }
+
+            if (field.training_name) {
+
+                console.log("field: ", field);
+                    fetch(`http://localhost:3001/annual_training/${userId}`, {
+                        method: 'PATCH',
+                        body: JSON.stringify(field),
+                        headers: {"Access-Control-Allow-Origin": "*", 'Content-Type': 'application/json'}
+                    })
+                    .then(response => response.json())
+                    .then(data => console.log("Success: ", data))
+                    .catch(err => console.log("err: ", err))
+              
+            }
+
+              // } else if () {
+                    
+                // } else if () {
+                    
+                // } else if () {
+                    
+                // } else if () {
+                    
+                // } else if () {
+                    
+                // }
+
+        }
+
+        let newFieldChangesPromisesArray = [];
+
+        newFieldChanges.forEach((fieldObject, index) => {
+            
+            newFieldChangesPromisesArray.push(new Promise(() => fetchFieldHelper(fieldObject)));
+
+        })
+
+        console.log("newFieldChangesPromisesArray: ", newFieldChangesPromisesArray)
+
+        Promise.all(newFieldChangesPromisesArray)
+        .then(info => {
+            console.log("All fields updated!")
+            setNewFieldChanges([]);
+        })
+        .then(info => {
+            setLoggedUserToggle(loggedUserToggle += 1);
+        })
+        .then(info => {
+            console.log("loggedUserToggle in ProfileCards: ", loggedUserToggle);
+        })
+        
 
 
+    }, [fieldChanged])
 
-                        currentLabel = obj.training_name;
+    // useEffect(() => {
+    //     const timer = setTimeout(() => console.log("Hello, World!"), 3000);
+    //     setTimerComplete(true);
+    //     return () => clearTimeout(timer);
+        
+    //   }, [loggedUserPromiseChainComplete]);
 
-                        // { id: 1, skill_name: "Foreign Language", refresh_date: "2022-06-06", users_id: 1 }
+        if (loggedUserPromiseChainComplete === true && loggedUserSummary[0] !== undefined) {
 
-                        if (new Date(obj.training_date).valueOf() > Date.now()) {
-
-                            let date = new Date(obj.training_date).valueOf();
-                            let msDate = new Date(parseInt(date, 10));
-                            let uiDate = msDate.toDateString();
-                            currentLabelStatus = 'Due Date\n' + uiDate;
-
-                            if (new Date(obj.training_date).valueOf() - Date.now() <= 2592000000) {
-
-                                let date = new Date(obj.training_date).valueOf();
-                                let msDate = new Date(parseInt(date, 10));
-                                let uiDate = msDate.toDateString();
-                                amber = true;
-                                currentLabelStatus = 'Due Date\n' + uiDate;
-
-                            }
-
-                        } else if (new Date(obj.training_date).valueOf() < Date.now()) {
-
-                            let date = new Date(obj.training_date).valueOf();
-                            let msDate = new Date(parseInt(date, 10));
-                            let uiDate = msDate.toDateString();
-                            red = true;
-                            currentLabelStatus = 'Due Date\n' + uiDate;
-                        }
+            return (
+ 
+                <ul key="1" className="w-10/12 h-8/12 width: 'vw' list-none flex flex-row flex-wrap gap-8 border border-2 border-gray border-double mx-auto my-8 p-4 bg-[#A3BD8A] rounded-lg shadow-2xl ">
+                    <div>
+                        <h2 className="text-3xl font-bold border-r-2 py-2 pr-8">Annual Training</h2>
+                        {updateFieldsToggle % 2 !== 0 ? 
+                        <>
+                        <h2 className="text-xl font-bold border-r-2 py-2 pr-8 border-gray text-green-100">Add New Annual Training
+                        <br/>
+                        <i className="text-sm text-center font-normal">Separate each additional entry with a comma</i>
+                                </h2> 
+                                </>
+                                : <></>
                         
-                        if (currentLabel === "") {
-                            return <></>
-                            
-                        } else {
-                            
-                            
-                        if (loggedUser !== []) {
-                            if (loggedUserPromiseChainComplete === true && loggedUserSummary[0] !== undefined) { 
+                        } 
+                    </div>
+                    {updateFieldsToggle % 2 !== 0 ? <AddItem itemType="Annual Training" itemName="New Annual Training Name(s):"/> : <></>}
 
-                                return (
-
-                                    <li
-
+                        {loggedUserSummary.map((obj, index) => {
+                            console.log("loggedUserSummary: ", loggedUserSummary)
+                            console.log("obj: ", obj)
+                            if (obj.training_name) {
+                                console.log("test")
+                                //props.elements.map((skill, index) => {
+        
+                                let currentLabel = "";
+                                let currentLabelStatus = "";
+                                let amber = false;
+                                let red = false;
+        
+                                let date;
+                                let msDate;
+                                let uiDate;
+        
+        
+        
+                                currentLabel = obj.training_name;
+        
+                                // { id: 1, skill_name: "Foreign Language", refresh_date: "2022-06-06", users_id: 1 }
+        
+                                if (new Date(obj.training_date).valueOf() > Date.now()) {
+        
+                                    date = new Date(obj.training_date).valueOf();
+                                    msDate = new Date(parseInt(date, 10));
+                                    uiDate = msDate.toDateString();
+                                    currentLabelStatus = 'Due Date\n' + uiDate;
+        
+                                    if (new Date(obj.training_date).valueOf() - Date.now() <= 2592000000) {
+        
+                                        date = new Date(obj.training_date).valueOf();
+                                        msDate = new Date(parseInt(date, 10));
+                                        uiDate = msDate.toDateString();
+                                        amber = true;
+                                        currentLabelStatus = 'Due Date\n' + uiDate;
+        
+                                    }
+        
+                                } else if (new Date(obj.training_date).valueOf() < Date.now()) {
+        
+                                    date = new Date(obj.training_date).valueOf();
+                                    msDate = new Date(parseInt(date, 10));
+                                    uiDate = msDate.toDateString();
+                                    red = true;
+                                    currentLabelStatus = 'Due Date\n' + uiDate;
+                                }
+                                
+                                if (currentLabel === "") {
+                                    return <></>
+                                    
+                                } else {
+                                    
+                                    
+                                if (loggedUser !== []) {
+                                    if (loggedUserPromiseChainComplete === true && loggedUserSummary[0] !== undefined) { 
+                                        if (updateFieldsToggle % 2 === 0) {
+                                            return ( 
+                                                <li
+                                                key={index}
+                                                className={colorHelper(amber, red)}>
+                                                <strong className="text-center">
+                                                    {/* If label isn't annual training, put colon after label */}
+                                                    {currentLabelHelper(currentLabel)}{currentLabelHelper2(currentLabel) === undefined ? ":" : ""}
+                        
+                                                </strong>
+                                                <strong className="text-center">
+                                                    {/* If label isn't annual training, do not add colon on new line */}
+                                                    {currentLabelHelper2(currentLabel)}{currentLabelHelper2(currentLabel) !== undefined ? ":" : ""}
+                                                </strong>
+                                                { console.log(`currentLabelStatus: ${currentLabel}, `, currentLabelStatus) }
+                                                <p className="text-center">{currentLabelStatus}</p>
+                                                </li> 
+                                            )
+                                        } else {
+                                            return ( 
+                                                <li
+                                                key={index}
+                                                className="bg-slate-400 border border-2 border-black border-double py-2 px-8 rounded-md shadow-lg break-all">
+                                                <strong className="text-center">
+                                                    {/* If label isn't annual training, put colon after label */}
+                                                    {"New " + currentLabelHelper(currentLabel) + " Date"}{currentLabelHelper2(currentLabel) === undefined ? ":" : ""}
+                        
+                                                </strong>
+                                                <strong className="text-center">
+                                                    {/* If label isn't annual training, do not add colon on new line */}
+                                                    {currentLabelHelper2(currentLabel)}{currentLabelHelper2(currentLabel) !== undefined ? ":" : ""}
+                                                </strong>
+                                                <br/>
+                                                <br/>
+                                                { /* dateHelper(uiDate) */ }
+                                                <input type="date" defaultValue={dateHelper(uiDate)} onChange={(event) => console.log("event.target.value: ", updateFieldHelper(obj, event.target.value))} />
+                                                </li>
+                                                
+                                            )
+                                        }
+                                        
+                                    } else {
+        
+                                        <li
+        
                                         key={index}
                                         className={colorHelper(amber, red)}>
-
+        
                                         <strong className="text-center">
-                                            {currentLabel}
+                                            Loading...
                                         </strong>
-
-                                        <p className="text-center">{currentLabelStatus}</p>
-
-                                    </li>
-
-                                );
+        
+                                        <p className="text-center">Loading...</p>
+        
+                                        </li>
+        
+                                    }
+                                }
+        
+                                }
                             } else {
-
-                                <li
-
-                                key={index}
-                                className={colorHelper(amber, red)}>
-
-                                <strong className="text-center">
-                                    Loading...
-                                </strong>
-
-                                <p className="text-center">Loading...</p>
-
-                                </li>
-
+                                return <></>;
+        
                             }
-                        }
+                        })}
+                    
+                </ul>
+        
+            )
+           
+        } else {
+            <section id="wrapper" className="pb-8 m-12">
+                <section id='welcome_box' className="w-1/5 mx-auto p-4 min-w-fit max-w-fit bg-slate-100 opacity-90 rounded-md shadow-xl shadow-black">
+                    <div>Loading...</div>
+                </section>
+            </section>
+        }
+    
 
-                        }
-                    } else {
-                        return <></>;
 
-                    }
-                })
-            }
-        </ul>
-    )
+    
+   
 };
-
-
 
 export const SpecialTraining = (props) => {
 
@@ -581,14 +857,23 @@ export const SpecialTraining = (props) => {
         setLoggedUserToggle,
         loggedUserSummary,
         setLoggedUserSummary,
+        loggedUserPromiseChainComplete,
+        setLoggedUserPromiseChainComplete,
         loggedUserServiceMembers,
         setLoggedUserServiceMembers,
         loggedUserServiceMemberSummaries,
         setLoggedUserServiceMemberSummaries,
-        loggedUserPromiseChainComplete,
-        setLoggedUserServiceMemberPromiseChainComplete
+        loggedUserServiceMemberPromiseChainComplete,
+        setLoggedUserServiceMemberPromiseChainComplete,
+        updateFieldsToggle,
+        setUpdateFieldsToggle,
+        fieldChanged,
+        setFieldChanged,
+        newFieldChanges,
+        setNewFieldChanges,
+        fieldFetchesComplete, 
+        setFieldFetchesComplete
     }
-
         = useContext(AppContext);
 
     const colorHelper = (amber, red,) => {
@@ -603,12 +888,232 @@ export const SpecialTraining = (props) => {
             return 'bg-green-400 border border-2 border-black border-double py-2 px-8 rounded-md shadow-lg break-all';
         }
     }
+    const currentLabelHelper = (currentLabel) => {
+
+        if (currentLabel == "Annual Training") {
+            return "Annual"
+        } else {
+            return currentLabel;
+        }
+
+    }
+
+    const currentLabelHelper2 = (currentLabel) => {
+
+        if (currentLabel === "Annual Training") {
+            return "Training"
+        } else {
+            return;
+        }
+
+    }
+
+    const dateHelper = (uiDate) => {
+
+        const monthHelper = (month) => {
+
+            switch (month.toLowerCase()) {
+
+                case 'jan':
+                    return '01';
+                    break;
+                
+                case 'feb':
+                    return '02';
+                    break;
+
+                case 'mar':
+                    return '03';
+                    break;
+                    
+                case 'apr':
+                    return '04';
+                    break;
+                
+                case 'may':
+                    return '05';
+                    break;
+        
+                case 'jun':
+                    return '06';
+                    break;
+                
+                case 'jul':
+                    return '07';
+                    break;
+
+                case 'aug':
+                    return '08';
+                    break;
+        
+                case 'sep':
+                    return '09';
+                    break;
+
+                case 'oct':
+                    return '10';
+                    break;
+
+                case 'nov':
+                    return '11';
+                    break;
+
+                case 'dec':
+                    return '12';
+                    break;
+                default:
+                    break;
+
+            }
+
+        }
+
+        let dateArray = uiDate.split(" ");
+
+        console.log("dateArray: ", dateArray);
+        
+        let correctedDateFormat = `${dateArray[3]}-${monthHelper(dateArray[1])}-${dateArray[2]}`;
+
+        console.log("correctedDateFormat: ", correctedDateFormat);
+        return correctedDateFormat;
+
+    }
+
+    const updateFieldHelper = (object, newDate) => {
+
+        console.log("special training object, newDate: ", object, newDate);
+        let objectKeyName = Object.keys(object)[1];
+        let objectKeyNameValue = Object.values(object)[1];
+
+        let objectKeyDateName = Object.keys(object)[2];
+        let objectToPush = {[objectKeyName]: objectKeyNameValue, [objectKeyDateName]: newDate };
+        
+
+        let newFieldChangesCopy = newFieldChanges.slice();
+
+        let alreadyExists = false;
+
+        for (let object of newFieldChangesCopy) {
+            if ( Object.values(objectToPush)[0] == Object.values(object)[0] ) {
+                alreadyExists = true;
+            
+            }
+        }
+        
+
+        if (alreadyExists) {
+            for (let object of newFieldChangesCopy) {
+                if (Object.values(objectToPush)[0] == Object.values(object)[0]) {
+                    object[objectKeyDateName] = newDate;
+                }
+            }
+        } else {
+            newFieldChangesCopy.push(objectToPush);
+        }
+        
+
+        setNewFieldChanges(newFieldChangesCopy);
+
+        setTimeout(() => console.log("new FIeld changes: ", newFieldChanges), 5000);
+
+    }
+
+    useEffect(() => {
+
+        console.log("newFieldChanges inside annual training: ", newFieldChanges);
+
+        let userId = loggedUser[0].id;
+
+        const fetchFieldHelper = (field) => {
+
+            /*
+            const response = await fetch('https://httpbin.org/post', {
+                method: 'post',
+                body: JSON.stringify(body),
+                headers: {'Content-Type': 'application/json'}
+            });
+            */
+
+            let patchBody = {
+                method: 'PATCH',
+                body: JSON.stringify(field),
+                headers: {"Access-Control-Allow-Origin": "*"}
+            }
+
+            if (field.skill_refresh_date) {
+
+                console.log("field: ", field);
+                    fetch(`http://localhost:3001/special_skills/${userId}`, {
+                        method: 'PATCH',
+                        body: JSON.stringify(field),
+                        headers: {"Access-Control-Allow-Origin": "*", 'Content-Type': 'application/json'}
+                    })
+                    .then(response => response.json())
+                    .then(data => console.log("Success: ", data))
+                    .catch(err => console.log("err: ", err))
+              
+            }
+
+              // } else if () {
+                    
+                // } else if () {
+                    
+                // } else if () {
+                    
+                // } else if () {
+                    
+                // } else if () {
+                    
+                // }
+
+        }
+
+        let newFieldChangesPromisesArray = [];
+
+        newFieldChanges.forEach((fieldObject, index) => {
+            
+            newFieldChangesPromisesArray.push(new Promise(() => fetchFieldHelper(fieldObject)));
+
+        })
+
+        console.log("newFieldChangesPromisesArray: ", newFieldChangesPromisesArray)
+
+        Promise.all(newFieldChangesPromisesArray)
+        .then(info => {
+            console.log("All fields updated!")
+            setNewFieldChanges([]);
+        })
+        .then(info => {
+            setLoggedUserToggle(loggedUserToggle += 1);
+        })
+        .then(info => {
+            console.log("loggedUserToggle in ProfileCards: ", loggedUserToggle);
+        })
+        
+
+
+    }, [fieldChanged])
+
 
     return (
         <ul key="1" className="w-10/12 h-8/12 width: 'vw' list-none flex flex-row flex-wrap gap-8 border border-2 border-gray border-double mx-auto my-8 p-4 bg-[#A3BD8A] rounded-lg shadow-2xl ">
             <div>
-                <h2 className="text-3xl font-bold border-r-2 py-8 pr-8">Special Training</h2>
+                <h2 className="text-3xl font-bold border-r-2 py-2 pr-8">Special Training</h2>
+                
+                    {updateFieldsToggle % 2 !== 0 ? 
+                        <>
+                        <h2 className="text-xl font-bold border-r-2 py-2 pr-8 border-gray text-green-100">Add New Special Training
+                        <br/>
+                        <i className="text-sm text-center font-normal">Separate each additional entry with a comma</i>
+                                </h2> 
+                                </>
+                                : <></>
+                        
+                    } 
+                    
+
             </div>
+            {updateFieldsToggle % 2 !== 0 ? <AddItem itemName="New Special Training Name(s):" itemType="Special Training"/> : <></>}
             {
                 loggedUserSummary.map((obj, index) => {
                     console.log("loggedUserSummary: ", loggedUserSummary)
@@ -622,7 +1127,9 @@ export const SpecialTraining = (props) => {
                         let amber = false;
                         let red = false;
 
-
+                        let date;
+                        let msDate;
+                        let uiDate;
 
                         currentLabel = obj.skill_name;
 
@@ -630,16 +1137,16 @@ export const SpecialTraining = (props) => {
 
                         if (new Date(obj.skill_refresh_date).valueOf() > Date.now()) {
 
-                            let date = new Date(obj.skill_refresh_date).valueOf();
-                            let msDate = new Date(parseInt(date, 10));
-                            let uiDate = msDate.toDateString();
+                            date = new Date(obj.skill_refresh_date).valueOf();
+                            msDate = new Date(parseInt(date, 10));
+                            uiDate = msDate.toDateString();
                             currentLabelStatus = 'Due Date\n' + uiDate;
 
                             if (new Date(obj.skill_refresh_date).valueOf() - Date.now() <= 2592000000) {
 
-                                let date = new Date(obj.skill_refresh_date).valueOf();
-                                let msDate = new Date(parseInt(date, 10));
-                                let uiDate = msDate.toDateString();
+                                date = new Date(obj.skill_refresh_date).valueOf();
+                                msDate = new Date(parseInt(date, 10));
+                                uiDate = msDate.toDateString();
                                 amber = true;
                                 currentLabelStatus = 'Due Date\n' + uiDate;
 
@@ -647,9 +1154,9 @@ export const SpecialTraining = (props) => {
 
                         } else if (new Date(obj.skill_refresh_date).valueOf() < Date.now()) {
 
-                            let date = new Date(obj.skill_refresh_date).valueOf();
-                            let msDate = new Date(parseInt(date, 10));
-                            let uiDate = msDate.toDateString();
+                            date = new Date(obj.skill_refresh_date).valueOf();
+                            msDate = new Date(parseInt(date, 10));
+                            uiDate = msDate.toDateString();
                             red = true;
                             currentLabelStatus = 'Due Date\n' + uiDate;
                         }
@@ -662,23 +1169,46 @@ export const SpecialTraining = (props) => {
                             
                         if (loggedUser !== []) {
                             if (loggedUserPromiseChainComplete === true && loggedUserSummary[0] !== undefined) { 
-
-                                return (
-
-                                    <li
-
+                                if (updateFieldsToggle % 2 === 0) {
+                                    return ( 
+                                        <li
                                         key={index}
                                         className={colorHelper(amber, red)}>
-
                                         <strong className="text-center">
-                                            {currentLabel}
+                                            {/* If label isn't annual training, put colon after label */}
+                                            {currentLabelHelper(currentLabel)}{currentLabelHelper2(currentLabel) === undefined ? ":" : ""}
+                
                                         </strong>
-
+                                        <strong className="text-center">
+                                            {/* If label isn't annual training, do not add colon on new line */}
+                                            {currentLabelHelper2(currentLabel)}{currentLabelHelper2(currentLabel) !== undefined ? ":" : ""}
+                                        </strong>
+                                        { console.log(`currentLabelStatus: ${currentLabel}, `, currentLabelStatus) }
                                         <p className="text-center">{currentLabelStatus}</p>
+                                        </li> 
+                                    )
+                                } else {
+                                    return ( 
+                                        <li
+                                        key={index}
+                                        className="bg-slate-400 border border-2 border-black border-double py-2 px-8 rounded-md shadow-lg break-all">
+                                        <strong className="text-center">
+                                            {/* If label isn't annual training, put colon after label */}
+                                            {"New " + currentLabelHelper(currentLabel) + " Date"}{currentLabelHelper2(currentLabel) === undefined ? ":" : ""}
+                
+                                        </strong>
+                                        <strong className="text-center">
+                                            {/* If label isn't annual training, do not add colon on new line */}
+                                            {currentLabelHelper2(currentLabel)}{currentLabelHelper2(currentLabel) !== undefined ? ":" : ""}
+                                        </strong>
+                                        <br/>
+                                        <br/>
+                                        { /* dateHelper(uiDate) */ }
+                                        <input type="date" defaultValue={dateHelper(uiDate)} onChange={(event) => console.log("event.target.value: ", updateFieldHelper(obj, event.target.value))} />
+                                        </li> 
+                                    )
+                                }
 
-                                    </li>
-
-                                );
                             } else {
 
                                 <li
@@ -704,6 +1234,7 @@ export const SpecialTraining = (props) => {
                     }
                 })
             }
+            
         </ul>
     )
 };
@@ -722,56 +1253,251 @@ export const StaticTraining = (props) => {
         setLoggedUserToggle,
         loggedUserSummary,
         setLoggedUserSummary,
+        loggedUserPromiseChainComplete,
+        setLoggedUserPromiseChainComplete,
         loggedUserServiceMembers,
         setLoggedUserServiceMembers,
         loggedUserServiceMemberSummaries,
         setLoggedUserServiceMemberSummaries,
         loggedUserServiceMemberPromiseChainComplete,
-        setLoggedUserServiceMemberPromiseChainComplete
+        setLoggedUserServiceMemberPromiseChainComplete,
+        updateFieldsToggle,
+        setUpdateFieldsToggle,
+        fieldChanged,
+        setFieldChanged,
+        newFieldChanges,
+        setNewFieldChanges,
+        fieldFetchesComplete, 
+        setFieldFetchesComplete
     }
 
         = useContext(AppContext);
-    // const staticItems = () => {
 
-    //}
-    // const staticItems = (
-    //     <ul>
-    //         {loggedUserSummary.map((obj) => {
-    //                 if (obj.skill_name && !obj.skill_refresh_date) {
-    //                     <li key={skill.id}>
-    //                         {skill.name}--
-    //                         {skill.skill_date}
-    //                     </li>
-    //         )}
+        const currentLabelHelper = (currentLabel) => {
 
-    //         </ul>
+            if (currentLabel == "Annual Training") {
+                return "Annual"
+            } else {
+                return currentLabel;
+            }
+    
+        }
+    
+        const currentLabelHelper2 = (currentLabel) => {
+    
+            if (currentLabel === "Annual Training") {
+                return "Training"
+            } else {
+                return;
+            }
+    
+        }
+    
+        const dateHelper = (uiDate) => {
+    
+            const monthHelper = (month) => {
+    
+                switch (month.toLowerCase()) {
+    
+                    case 'jan':
+                        return '01';
+                        break;
+                    
+                    case 'feb':
+                        return '02';
+                        break;
+    
+                    case 'mar':
+                        return '03';
+                        break;
+                        
+                    case 'apr':
+                        return '04';
+                        break;
+                    
+                    case 'may':
+                        return '05';
+                        break;
+            
+                    case 'jun':
+                        return '06';
+                        break;
+                    
+                    case 'jul':
+                        return '07';
+                        break;
+    
+                    case 'aug':
+                        return '08';
+                        break;
+            
+                    case 'sep':
+                        return '09';
+                        break;
+    
+                    case 'oct':
+                        return '10';
+                        break;
+    
+                    case 'nov':
+                        return '11';
+                        break;
+    
+                    case 'dec':
+                        return '12';
+                        break;
+                    default:
+                        break;
+    
+                }
+    
+            }
+    
+            let dateArray = uiDate.split(" ");
+    
+            console.log("dateArray: ", dateArray);
+            
+            let correctedDateFormat = `${dateArray[3]}-${monthHelper(dateArray[1])}-${dateArray[2]}`;
+    
+            console.log("correctedDateFormat: ", correctedDateFormat);
+            return correctedDateFormat;
+    
+        }
+    
+        const updateFieldHelper = (object, newDate) => {
+    
+            console.log("static training object, newDate: ", object, newDate);
+            let objectKeyName = Object.keys(object)[1];
+            let objectKeyNameValue = Object.values(object)[1];
+    
+            let objectKeyDateName = Object.keys(object)[2];
+            let objectToPush = {[objectKeyName]: objectKeyNameValue, [objectKeyDateName]: newDate };
+            
+    
+            let newFieldChangesCopy = newFieldChanges.slice();
+    
+            let alreadyExists = false;
+    
+            for (let object of newFieldChangesCopy) {
+                if ( Object.values(objectToPush)[0] == Object.values(object)[0] ) {
+                    alreadyExists = true;
+                
+                }
+            }
+            
+    
+            if (alreadyExists) {
+                for (let object of newFieldChangesCopy) {
+                    if (Object.values(objectToPush)[0] == Object.values(object)[0]) {
+                        object[objectKeyDateName] = newDate;
+                    }
+                }
+            } else {
+                newFieldChangesCopy.push(objectToPush);
+            }
+            
+    
+            setNewFieldChanges(newFieldChangesCopy);
+    
+            setTimeout(() => console.log("new FIeld changes: ", newFieldChanges), 5000);
+    
+        }
+    
+        useEffect(() => {
+    
+            console.log("newFieldChanges inside annual training: ", newFieldChanges);
+    
+            let userId = loggedUser[0].id;
+    
+            const fetchFieldHelper = (field) => {
+    
+                /*
+                const response = await fetch('https://httpbin.org/post', {
+                    method: 'post',
+                    body: JSON.stringify(body),
+                    headers: {'Content-Type': 'application/json'}
+                });
+                */
+    
+                let patchBody = {
+                    method: 'PATCH',
+                    body: JSON.stringify(field),
+                    headers: {"Access-Control-Allow-Origin": "*"}
+                }
+    
+                if (field.skill_date) {
+    
+                    console.log("field: ", field);
+                        fetch(`http://localhost:3001/static_skills/${userId}`, {
+                            method: 'PATCH',
+                            body: JSON.stringify(field),
+                            headers: {"Access-Control-Allow-Origin": "*", 'Content-Type': 'application/json'}
+                        })
+                        .then(response => response.json())
+                        .then(data => console.log("Success: ", data))
+                        .catch(err => console.log("err: ", err))
+                  
+                }
+    
+                  // } else if () {
+                        
+                    // } else if () {
+                        
+                    // } else if () {
+                        
+                    // } else if () {
+                        
+                    // } else if () {
+                        
+                    // }
+    
+            }
+    
+            let newFieldChangesPromisesArray = [];
+    
+            newFieldChanges.forEach((fieldObject, index) => {
+                
+                newFieldChangesPromisesArray.push(new Promise(() => fetchFieldHelper(fieldObject)));
+    
+            })
+    
+            console.log("newFieldChangesPromisesArray: ", newFieldChangesPromisesArray)
+    
+            Promise.all(newFieldChangesPromisesArray)
+            .then(info => {
+                console.log("All fields updated!")
+                setNewFieldChanges([]);
+            })
+            .then(info => {
+                setLoggedUserToggle(loggedUserToggle += 1);
+            })
+            .then(info => {
+                console.log("loggedUserToggle in ProfileCards: ", loggedUserToggle);
+            })
+            
+    
+    
+        }, [fieldChanged])
 
-    // );
 
-    /*
-    STATIC
-           "id": 1,
-           "skill_name": "Knowledge Management Professional",
-           "users_id": 1
-   SPECIAL
-           {
-   "id": 1,
-   "skill_name": "SEC+",
-   "skill_refresh_date": "2025-05-22",
-   "users_id": 1
- },
-       */
-
-    /* 
-        {skill_name: 'SEC+', skill_refresh_date:'2025-05-22', users_id:1 },
-    */
     return (
         <ul className="w-10/12 h-8/12 list-none flex gap-8 border border-2 border-gray border-double mx-auto my-8 p-4 bg-[#A3BD8A] rounded-lg shadow-2xl ">
             <div>
                 <h2 className="text-3xl font-bold border-r-2 py-0 pr-8">Static Training</h2>
-                <h5 className="font-bold border-r-2 py-0 pr-8">Relevent Training with no </h5>
-                <h5 className="font-bold border-r-2 py-0 pr-8">recertification required</h5>
+                <h5 className="font-bold border-r-2 py-2 pr-8">Relevant Training with no recertification required</h5>
+
+                {updateFieldsToggle % 2 !== 0 ? 
+                        <>
+                        <h2 className="text-xl font-bold border-r-2 py-2 pr-8 border-gray text-green-100">Add New Static Training
+                        <br/>
+                        <i className="text-sm text-center font-normal">Separate each additional entry with a comma</i>
+                                </h2> 
+                                </>
+                                : <></>
+                        
+                    } 
             </div>
+            {updateFieldsToggle % 2 !== 0 ? <div><AddItem itemName="New Static Training Name(s):" itemType="Static Training"/></div> : <></>}
             <ul id='static'>
                 <ul>
 
@@ -779,13 +1505,64 @@ export const StaticTraining = (props) => {
                         console.log("loggedUserSummary: ", loggedUserSummary)
                         console.log("obj: ", obj)
                         if (obj.skill_name && !obj.skill_refresh_date) {
+                            if (loggedUser !== []) {
+                                if (loggedUserPromiseChainComplete === true && loggedUserSummary[0] !== undefined) { 
+                                    if (updateFieldsToggle % 2 === 0) {
+                                        return ( 
+                                            <li
+                                            key={index}
+                                            className="">
+                                            <strong className="text-center">
+                                                {/* If label isn't annual training, put colon after label */}
+                                                {obj.skill_name}<i className="font-normal"> -- { obj.skill_date}</i>
+                    
+                                            </strong>
+                                            </li> 
+                                        )
+                                    } else {
+                                        return ( 
+                                            <li
+                                            key={index}
+                                            className="">
+                                            <strong className="text-center">
+                                                {/* If label isn't annual training, put colon after label */}
+                                                {obj.skill_name} Date:
+                                            </strong>
+                                            &nbsp;&nbsp;&nbsp;<input type="date" defaultValue={obj.skill_date} onChange={(event) => console.log("event.target.value: ", updateFieldHelper(obj, event.target.value))} />
+                                            </li> 
+                                        )
+                                    }
+    
+                                } else {
+    
+                                    <li
+    
+                                    key={index}
+                                    className="">
+    
+                                    <strong className="text-center">
+                                        Loading...
+                                    </strong>
+    
+                                    <p className="text-center">Loading...</p>
+    
+                                    </li>
+    
+                                }
+                            }
+    
+                            
+                        } else {
+                            return <></>;
+    
+                        }
                             return (
                                 <li key={index}>
                                     {obj.skill_name}--
                                     {obj.skill_date}
                                 </li>
                             )
-                        }
+                        
                     })}
 
                 </ul>

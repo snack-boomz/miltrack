@@ -30,6 +30,7 @@ function App() {
   const [ fieldChanged, setFieldChanged ] = useState(0);
   const [ newFieldChanges, setNewFieldChanges ] = useState([]);
   const [ fieldFetchesComplete, setFieldFetchesComplete ] = useState(0);
+  const [ formattedItemsCollection, setFormattedItemsCollection ] = useState([]);
 
   useEffect(() => {
     fetch('http://localhost:3001/users')
@@ -97,6 +98,8 @@ function App() {
     setNewFieldChanges,
     fieldFetchesComplete,
     setFieldFetchesComplete,
+    formattedItemsCollection,
+    setFormattedItemsCollection
   }
 
   // const testObject = {
