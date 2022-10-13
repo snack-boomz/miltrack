@@ -1,11 +1,14 @@
 # miltrack
+*The tracker to end all trackers*
 
-![CyberReq-cover-image](/cover.png)
+
+ \\\\\\//////Miltrack Image goes here\\\\\\//////
 
 ## Overview
 
-- CyberReq is here to solve the problem of finding personnel with the skills you need to solve your mission.
-- Ability to track talents, skills, specializations for every member to be able to quickly find personnel to fill job requirements.
+- Miltrack is here to solve a common problem that is present in all military branches which is that all your resources that need to be tracked are scattered throughtout multiple sites across the internet and all service members regardeless of the rank have to spend valuable time trying to track and find the correct information through all the sites in order to know if they're current in all their medical, yearly training and other schools or information.
+- Miltrack grants the ability to track all your special skills, currency of medical information and provide valuable links that saves time and helps increases productivity along the ranks for the service member but also for all the subordinates under their command.
+
 
 ## Table of Contents
 
@@ -18,7 +21,9 @@
 
 ## Problem Statement
 
-CyberReq seeks to address the problem of talent management across each service branch’s Cyber corps. CyberReq aims to consolidate Cyber talent across all service branches into a single portal. Servicemembers can then consistently and periodically update the CyberReq portal with their talents, skill sets, specializations and education, and mission owners (Commanders, flight chiefs, team leaders) can then use the CyberReq portal to properly search for the best and brightest talent across the military and scout those servicemembers to fulfill the mission need.
+
+SM’s and unit leaders need an accessible system to update and track admin tasks and requirements. SM’s are currently forced to navigate many complicated and constantly changing online systems to acquire this information, which leads to poor tracking.  PERSTAT strives to be an optional, open-source application that units can use as an alternative method of tracking all relevant admin items.
+
 
 ### Users
 
@@ -34,14 +39,16 @@ search stuff
 
 ### Schema - Entity Relationship Diagram
 
-![CyberReq-cover-image](./schema.png)
+\\\\\\//////schema picture here\\\\\\//////
 
 ## Setup & Dependencies: <a name="setup"></a>
 
 ### GitHub Repo: <a name="github"></a>
 
 - Clone github repo for this project
-  - https://github.com/gustovshikov/full-stack-project
+
+ - (https://github.com/snack-boomz/miltrack)
+
 - Navigate to and open repo in your IDE
 
 ### Install Dependencies: <a name="dependencies"></a>
@@ -119,15 +126,22 @@ search stuff
 
 ### User stories
 
-1. As a user I want to be able to update my skills so that my talent is known for mission owners.
-2. As a user I should be able to login and update my profile.
-3. As a mission owner I want to be able to search by certain skill sets for members who can fulfill those requirements.
+1. I want to be able to update my medical readiness with a status and a date (date conducted/ date due) without needing to log into a government system/ console. 
+2. I want to be able to update and track  my upcoming leave and pass (dates, on a calendar); I also want to be able to track TDY and other training activites.
+
+### User features
+
+1. From individual level to BN/GRP level.
+2. Mission owners can make a billet/job posting.
+3. Track medical (medpros).
+4. Track online training.
+5. Track specific qualifications (unit/MOS basis).
+ 
 
 #### STRETCH
-
-1. Mission owners can make a billet/job posting
-2. Users can search jobs
-3. Educational Opportunities
+1. Incorporate callsigns in place of names for confidentiality. 
+2. Must include Minesweeper.
+=======
 
 ### Features (To be filled upon completion once we confirm what actual features the PoC ships with)
 

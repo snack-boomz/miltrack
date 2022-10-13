@@ -5,6 +5,12 @@
     display: flex;
     justify-content: start;
     align-items: center;
+    border-bottom: 4px #1c464c solid;
+  }
+  .icon {
+    color: #1c464c;
+    height: 50px;
+    width: 50px;
   }
 
   .title{
@@ -93,6 +99,7 @@
   
   span {
     margin-left: 16px;
+    text-align: left;
   }
 
 .x {
@@ -101,11 +108,13 @@
 }
 
 .nav-text a svg {
-  color: #224A4F !important;
+  color: #1c464c !important;
 }
 
-.quick-links {
-    text-decoration: none;
+.quick-link {
+    font-weight: bold;
+    font-size: 25px;
+    padding-top: 30px;
 }
 
 .links {

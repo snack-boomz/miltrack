@@ -5,9 +5,9 @@ import Loginbars from "../components/Loginbars";
 
 const Login = () => {
     return (
-        <>
+        <div>
             <Loginbars />
-        </>
+        </div>
     )
     };
 

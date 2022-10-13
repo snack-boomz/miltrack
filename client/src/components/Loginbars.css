@@ -7,7 +7,7 @@
     gap: 0px;
     height: 100vh;
     font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
-    background-color: #f8f9fd;
+  
   }
   
   input[type="text"],
@@ -20,15 +20,16 @@
     margin-top: 10px;
     cursor: pointer;
     font-size: 15px;
-    background: #01d28e;
-    border: 1px solid #01d28e;
-    color: #fff;
+    background: #a3bd8a;
+    border: 1px solid #a3bd8a;
+    color: #224A4F;
     padding: 10px 20px;
     margin: 10px;
+    font-weight: bold;
   }
   
   input[type="submit"]:hover {
-    background: #6cf0c2;
+    background: #c8e7ab;
   }
   
   .button-container {
@@ -41,7 +42,8 @@
     background-color: white;
     padding: 2rem;
     width: 300px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.2), 0 10px 40px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 10px;
   }
   
   .list-container {
@@ -71,6 +73,22 @@
     margin-top: 10px;
     cursor: pointer;
     font-size: 15px;
+    background: #a3bd8a;
+    border: 1px solid #a3bd8a;
+    color: #224A4F;
+    padding: 10px 20px;
+    margin: 10px;
+    font-weight: bold;
+  }
+
+  .register:hover {
+    background: #c8e7ab;
+  }
+
+  .login {
+    margin-top: 10px;
+    cursor: pointer;
+    font-size: 15px;
     background: #01d28e;
     border: 1px solid #01d28e;
     color: #fff;
@@ -78,6 +96,9 @@
     margin: 10px;
   }
 
-  .register:hover {
+  .login:hover {
     background: #6cf0c2;
+  }
+  body {
+    background-image: url('../../public/Army.jpg');
   }

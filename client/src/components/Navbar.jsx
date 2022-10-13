@@ -1,19 +1,41 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
+import * as IoIcons from 'react-icons/io';
 import { Link } from 'react-router-dom';
-import { SidebarData } from './SidebarData';
+//import { SidebarData } from './SidebarData';
 import './Navbar.css';
-import { IconContext } from 'react-icons';
-import * as GrIcons from 'react-icons/gr';
-import styled from 'styled-components';
+import { AppContext } from '../AppContext';
 
 
 
 function Navbar() {
+  const { loggedUser, loggedUser2, user, setLoggedUser2, setUser, setLoggedUser, setServiceMember, serviceMember} = useContext(AppContext)
   const [sidebar, setSidebar] = useState(false);
-
   const showSidebar = () => setSidebar(!sidebar);
+  const SidebarData = [
+    {
+      title: 'My Profile',
+      path: loggedUser[0] === undefined ? '/' : `/${loggedUser[0].username}`,
+      icon: <AiIcons.AiFillHome />,
+      cName: 'nav-text',
+      action: () => {setServiceMember(loggedUser[0])}
+    },
+    {
+      title: 'Subordinate Dashboard',
+      path: '/dashboard',
+      icon: <IoIcons.IoIosPeople />,
+      cName: 'nav-text'
+
+    },
+    {
+      title: 'logout',
+      path: '/',
+      icon: <IoIcons.IoIosPaper />,
+      cName: 'nav-text',
+      action: () => {setLoggedUser([])}
+    }
+  ]
 
   return (
     <div className='header'>
@@ -32,8 +54,8 @@ function Navbar() {
             </li>
             {SidebarData.map((item, index) => {
               return (
-                <li key={index} className={item.cName}>
-                  <Link to={item.path}>
+                <li  onClick={item.action !== undefined ? item.action : null } key={index} className={item.cName}>
+                  <Link to={item.path} >
                     {item.icon}
                     <span>{item.title}</span>
                   </Link>
@@ -41,7 +63,7 @@ function Navbar() {
               );
             })}
             <div className="links-container">
-            <h2  className="link"
+            <h2  className="quick-link"
             style={{ color: '#1c464c', textDecorationLine: 'underline'}}>
                 Quick Links
             </h2>
