@@ -127,10 +127,6 @@ const userInfo = [
     { id: 1, name: "Joe Smith", rank: "SPC", dob: "2000-01-01", basd: "2020-07-01", unit_id: "B Co, 8th BN, 4th ID", dodid: 123456789, mos: "11C" },
 ]
 
-
-
-
-
 function Profile() {
 
     let { 
@@ -163,7 +159,9 @@ function Profile() {
         formattedItemsCollection,
         setFormattedItemsCollection,
         allPostPromisesComplete, 
-        setAllPostPromisesComplete
+        setAllPostPromisesComplete,
+        serviceMemberSummary,
+        setServiceMemberSummary
 
         } 
 
@@ -351,6 +349,141 @@ function Profile() {
 
     }, [loggedUserToggle, fieldChanged, updateFieldsToggle, allPostPromisesComplete])
 
+    // grab all service member user information
+
+    useEffect(() => {
+        try {
+            console.log("servicemember inside profile: ", serviceMember);
+            let userId = serviceMember.id;
+            let medicalPromise = (
+                fetch(`http://localhost:3001/medical/${userId}`)
+                    .then(response => response.json())
+                    .then(data => {
+
+                        // setLoggedUserSummary([...loggedUserSummary, ...data])
+                        console.log("medical promise")
+                        return data;
+                    })
+            )
+            let annualTrainingPromise = (
+                fetch(`http://localhost:3001/annual_training/${userId}`)
+                    .then(response => response.json())
+                    .then(data => {
+
+                        // setLoggedUserSummary([...loggedUserSummary, ...data])
+                        console.log("annual training promise")
+                        return data;
+                    })
+            )
+
+            let evaluationsPromise = (
+
+                fetch(`http://localhost:3001/evaluations/${userId}`)
+                    .then(response => response.json())
+                    .then(data => {
+
+                        // setLoggedUserSummary([...loggedUserSummary, ...data])
+                        console.log("evaluations promise")
+                        return data;
+                    })
+
+            )
+
+            let specialSkillsPromise = (
+                fetch(`http://localhost:3001/special_skills/${userId}`)
+                    .then(response => response.json())
+                    .then(data => {
+
+                        // setLoggedUserSummary([...loggedUserSummary, ...data])
+                        console.log("special skills promise")
+                        return data;
+                    })
+
+            )
+
+            let staticSkillsPromise = (
+
+                fetch(`http://localhost:3001/static_skills/${userId}`)
+                    .then(response => response.json())
+                    .then(data => {
+
+                        // setLoggedUserSummary([...loggedUserSummary, ...data])
+                        console.log("static skills promise")
+                        return data;
+                    })
+
+            )
+            // iterate through each promise and return the element (recursive), to prevent nested for loops below
+            // in Promise.all
+
+            let loggedUserArray = [];
+
+            const promiseAllHelper = (promise, promiseLength) => {
+                console.log("promiseAllhelper promise: ", promise);
+                console.log("promiseAllhelper promiseLength: ", promiseLength);
+                if (promiseLength == 0) {
+
+                } else {
+
+                    console.log("pushing promise[promiseLength - 1]: ", promise[promiseLength - 1]);
+                    loggedUserArray.push(promise[promiseLength - 1])
+                    promiseLength -= 1;
+                    promiseAllHelper(promise, promiseLength)
+                }
+
+
+            }
+
+        
+            
+            Promise.all([medicalPromise, annualTrainingPromise, specialSkillsPromise, staticSkillsPromise])
+                .then((info) => {
+
+                    console.log("all promises complete");
+                    // add SM status from loggedUser
+                    //
+                    console.log("serviceMember inside useEffect pull: ", serviceMember);
+                    loggedUserArray.push({ current_status: serviceMember.current_status });
+                    for (let promise of info) {
+                        console.log("promise: ", promise)
+                        promiseAllHelper(promise, promise.length)
+                    }
+                    console.log("loggedUserArray: ", loggedUserArray);
+                    setServiceMemberSummary(loggedUserArray);
+
+                    /*
+
+                        setTimeout(() => Promise.all(subordinatePromises)
+                        .then((info) => {
+
+                            setLoggedUserServiceMemberPromiseChainComplete(true);
+                            console.log("all subordinate promises are complete");
+
+                        }), 3000)
+
+                    */
+                })
+                .then((info) => {
+
+                    const timer = setTimeout(() => {
+                        setLoggedUserPromiseChainComplete(true);
+                        console.log("loggedUserPromiseChain complete");
+                    }, 500)
+                    return () => clearTimeout(timer);
+                    
+                })
+                console.log("loggedUserToggle: ", loggedUserToggle)
+
+        } catch (error) {
+
+            console.log(error);
+
+        }
+
+        
+
+    }, [serviceMember, loggedUserToggle, fieldChanged, updateFieldsToggle, allPostPromisesComplete])
+
     // used for all post requests made for adding trainings (AddItem component)
     useEffect(() => {
 
@@ -450,9 +583,9 @@ function Profile() {
                     {userInfo.map((val, key) => {
                         return (
                             <section key={key} id="wrapper" className="pb-8 m-12">
-                                {loggedUser[0].username !== serviceMember ? 
+                                {loggedUser[0].username !== serviceMember.username ? 
                                     <section id='welcome_box' className="w-1/5 mx-auto p-4 min-w-fit max-w-fit bg-slate-100 opacity-90 rounded-md shadow-xl shadow-black">
-                                    <div style={{color: '#1c464c', fontWeight: 'bold', fontSize: '30px'}}> You're Viewing: {serviceMember === undefined ? "Loading..." : serviceMember }</div>
+                                    <div style={{color: '#1c464c', fontWeight: 'bold', fontSize: '30px'}}> You're Viewing: {serviceMember === undefined ? "Loading..." : serviceMember.name }</div>
                                     {console.log("thise is the service member:", serviceMember)}
                                     </section> :                              
                                 <section id='welcome_box' className="w-1/5 mx-auto p-4 min-w-fit max-w-fit bg-slate-100 opacity-90 rounded-md shadow-xl shadow-black">
@@ -461,10 +594,10 @@ function Profile() {
                                         <div>Welcome, {rankHelper(loggedUser[0].rank)} {loggedUser[0].name}</div>
                                         <div style={{ fontStyle: 'italic' }}>"Stay <strong className="text-[#A3BD8A]">GREEN</strong> to stay in the fight!"</div>
                                         <section className={hidePersonalInfo % 2 === 0 ? "hidden" : ""}>
-                                            <div>DOB: {val.dob} </div>
-                                            <div>BASD: {val.basd} </div>
-                                            <div>MOS: {val.mos} </div>
-                                            <div>DODID: {val.dodid} </div>
+                                            <div>DOB: {loggedUser[0].DOB} </div>
+                                            <div>BASD: {loggedUser[0].BASD} </div>
+                                            <div>MOS: {loggedUser[0].MOS} </div>
+                                            <div>DODID: {loggedUser[0].DoDID} </div>
                                         </section>
                                     </tr>
                                     <button onClick={ () => setHidePersonalInfo(hidePersonalInfo += 1) } className="block w-7/12 py-1 rounded-lg mx-auto mt-2 text-black bg-transparent border border-black border-double hover:bg-slate-400 transition transition-200">{hidePersonalInfo % 2 === 0 ? "Show Personal Info" : "Hide Personal Info"}</button>

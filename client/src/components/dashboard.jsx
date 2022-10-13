@@ -64,7 +64,7 @@ const [skillsArr, setSkillsArr] = useState([]);
                 // }
             
               return ( 
-                <div  onClick={() => {console.log("THIS IS SUBORD"); setServiceMember(member.name)}}>
+                <div  onClick={() => {console.log("THIS IS SUBORD"); setServiceMember(member)}}>
               <Link to={`/${member.username}`}> <SubTag  elements={ loggedUserServiceMemberSummaries[index] } currentSM= { member } key={key}/>
               </Link>
               </div>) }
@@ -79,7 +79,7 @@ const [skillsArr, setSkillsArr] = useState([]);
             {console.log(loggedUserServiceMemberSummaries[index])}
             {console.log("loggedUserServiceMemberSummaries: ", loggedUserServiceMemberSummaries)}
             return ( 
-                <div  onClick={() => {console.log("THIS IS SUBORD"); setServiceMember(member.name)}}>
+                <div  onClick={() => {console.log("THIS IS SUBORD"); setServiceMember(member)}}>
             <Link to={`/${member.username}`} > <SubTag  elements={ loggedUserServiceMemberSummaries[index] } currentSM= { member } key={key}/>
             </Link>
             </div>)   
@@ -447,67 +447,66 @@ const [skillsArr, setSkillsArr] = useState([]);
     // console.log(allUsers);
 
     // console.log(loggedUserOrg);
-        if (loggedUser[0].supervisor_id === null) {
-    if (loggedUser !== []) {
-        if (loggedUserServiceMemberPromiseChainComplete === false && loggedUserServiceMemberSummaries[0] !== undefined) {
+    if (loggedUser[0].supervisor_id === null) {
+        if (loggedUser !== []) {
+            if (loggedUserServiceMemberPromiseChainComplete !== false && loggedUserServiceMemberSummaries[0] !== undefined) {
+                    return (
+                        <>
+                            { /* data_user_basic will be dynamically loaded based on loggedIn user state  */}
+                            {/* {console.log(loggedUser)} */}
+                            {loggedUser.map((element, key) => {
+                                return (
+                                    <section  id="wrapper" className="pb-8 m-12">
+                                    <section id='welcome_box' className="w-1/5 mx-auto p-4 min-w-fit max-w-fit bg-slate-100 opacity-90 rounded-md shadow-xl shadow-black">
+                                        <tr>
+                                            <div>{loggedUserOrg === "" ? "Loading..." : loggedUserOrg}</div>
+                                            <div>Welcome, {element.name}</div>
+                                            <div className="italic">"Stay <strong className="text-[#A3BD8A]">GREEN</strong> to stay in the fight!"</div>
+                                        </tr>
+                                    </section>
+                                        {/* <IndivTag elements={ testObject } component="medical"/> */}
+                                        {/* Logged in Soldier below */}
+                                        <div  onClick={() => {console.log("THIS IS SUBORD"); setServiceMember(element)}}>
+                                        <Link to={`/${element.username}`}>
+                                        <SubTag elements={ loggedUserSummary } currentSM= { loggedUser[0] } key={key} />
+                                        </Link>
+                                        </div>
+                                        {console.log("subordinate promise chain: ", loggedUserServiceMemberPromiseChainComplete)} 
+                                        <hr className="w-10/12 mx-auto border-t-2 mt-12"/>
+                                        <h3 className="w-2/12 text-2xl font-bold italic text-center min-w-fit max-w-fit mx-auto mt-12 p-2 bg-slate-100 opacity-90 rounded-md shadow-xl shadow-black">SMs tracked:</h3>
+                                        <div className="searchbar_container">
+                                        <input className="searchbar" style={{height: '40px'}}type="text" placeholder="Search a member of your teams skills here!" value={skillEntered} onChange={skillHandler} />
+                                        </div>
+                                        {/* Subordinates below */}
+                                            {skillEntered === "" ? renderFunc(key) : searchFunc(key)} 
+
+
+                                    </section>
+                                )
+                            })}
+                        </>
+                    )
+
             
+            } else {
                 return (
-                    <>
-                        { /* data_user_basic will be dynamically loaded based on loggedIn user state  */}
-                        {/* {console.log(loggedUser)} */}
-                        {loggedUser.map((element, key) => {
-                            return (
-                                <section  id="wrapper" className="pb-8 m-12">
-                                <section id='welcome_box' className="w-1/5 mx-auto p-4 min-w-fit max-w-fit bg-slate-100 opacity-90 rounded-md shadow-xl shadow-black">
-                                    <tr>
-                                        <div>{loggedUserOrg === "" ? "Loading..." : loggedUserOrg}</div>
-                                        <div>Welcome, {element.name}</div>
-                                        <div className="italic">"Stay <strong className="text-[#A3BD8A]">GREEN</strong> to stay in the fight!"</div>
-                                    </tr>
-                                </section>
-                                    {/* <IndivTag elements={ testObject } component="medical"/> */}
-                                    {/* Logged in Soldier below */}
-                                    <div  onClick={() => {console.log("THIS IS SUBORD"); setServiceMember(element.username)}}>
-                                    <Link to={`/${element.username}`}>
-                                    <SubTag elements={ loggedUserSummary } currentSM= { loggedUser[0] } key={key} />
-                                    </Link>
-                                    </div>
-                                    {console.log("subordinate promise chain: ", loggedUserServiceMemberPromiseChainComplete)} 
-                                    <hr className="w-10/12 mx-auto border-t-2 mt-12"/>
-                                    <h3 className="w-2/12 text-2xl font-bold italic text-center min-w-fit max-w-fit mx-auto mt-12 p-2 bg-slate-100 opacity-90 rounded-md shadow-xl shadow-black">SMs tracked:</h3>
-                                    <div className="searchbar_container">
-                                    <input className="searchbar" style={{height: '40px'}}type="text" placeholder="Search a member of your teams skills here!" value={skillEntered} onChange={skillHandler} />
-                                    </div>
-                                    {/* Subordinates below */}
-                                        {skillEntered === "" ? renderFunc(key) : searchFunc(key)} 
-
-                                        
-
-                                    
-                                    
-                                </section>
-                            )
-                        })}
-                    </>
-                )
-
-        
-        } else {
-            return (
-                <section id="wrapper" className="pb-8 m-12">
-                    <section id='welcome_box' className="w-1/5 mx-auto p-4 min-w-fit max-w-fit bg-slate-100 opacity-90 rounded-md shadow-xl shadow-black">
-                        <div>Loading...</div>
+                    <section id="wrapper" className="pb-8 m-12">
+                        <section id='welcome_box' className="w-1/5 mx-auto p-4 min-w-fit max-w-fit bg-slate-100 opacity-90 rounded-md shadow-xl shadow-black">
+                            <div>Loading...</div>
+                        </section>
                     </section>
-                </section>
-            )
-        }
+                )
+            }
 
     
-   }} else {
+        }
+
+
+    } else {
         return (
             <section id="wrapper" className="pb-8 m-12">
                 <section id='welcome_box' className="w-1/5 mx-auto p-4 min-w-fit max-w-fit bg-slate-100 opacity-90 rounded-md shadow-xl shadow-black">
-                    <div>You have no subordinates. Weak. Do better!</div>
+                    <div>You have no subordinates.</div>
                 </section>
             </section>
         )

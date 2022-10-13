@@ -138,11 +138,32 @@ app.post('/organization', (req, res) => {
     knex('organization').insert(req.body)
         .then(data => res.send({ message: 'organization created' }))  
 })
+app.post('/organization/:id', (req, res) => {
+    let { id } = req.params;
+    knex('organization')
+    .insert(req.body,  ['*'])
+    .then(data => res.send({ message: 'training added' }))
+    .catch(err =>
+        res.status(404).json({
+             Message: `Error: ${err}`
+        }))  
+})
 app.post('/additional', (req, res) => {
     knex('additional').insert(req.body)
         .then(data => res.send({ message: 'additional info added' }))  
 })
+app.post('/additional/:id', (req, res) => {
+    let { id } = req.params;
+    knex('additional')
+    .insert(req.body,  ['*'])
+    .then(data => res.send({ message: 'training added' }))
+    .catch(err =>
+        res.status(404).json({
+             Message: `Error: ${err}`
+        }))  
+})
 app.post('/annual_training', (req, res) => {
+    let { id } = req.params;
     knex('annual_training')
     .insert(req.body,  ['*'])
     .then(data => res.send({ message: 'training added' }))
@@ -154,7 +175,6 @@ app.post('/annual_training', (req, res) => {
 app.post('/annual_training/:id', (req, res) => {
     let { id } = req.params;
     knex('annual_training')
-    .where({users_id: id})
     .insert(req.body,  ['*'])
     .then(data => res.send({ message: 'training added' }))
     .catch(err =>
@@ -166,9 +186,30 @@ app.post('/medical', (req, res) => {
     knex('medical').insert(req.body)
         .then(data => res.send({ message: 'medical info added' }))  
 })
+app.post('/medical/:id', (req, res) => {
+    let { id } = req.params;
+    knex('medical')
+    .insert(req.body,  ['*'])
+    .then(data => res.send({ message: 'training added' }))
+    .catch(err =>
+        res.status(404).json({
+             Message: `Error: ${err}`
+        }))  
+})
 app.post('/evaluations', (req, res) => {
     knex('evaluations').insert(req.body)
         .then(data => res.send({ message: 'eval added' }))  
+})
+app.post('/evaluations/:id', (req, res) => {
+    let { id } = req.params;
+    knex('evaluations')
+    .where({users_id: id})
+    .insert(req.body,  ['*'])
+    .then(data => res.send({ message: 'training added' }))
+    .catch(err =>
+        res.status(404).json({
+             Message: `Error: ${err}`
+        }))  
 })
 app.post('/special_skills', (req, res) => {
     knex('special_skills').insert(req.body)

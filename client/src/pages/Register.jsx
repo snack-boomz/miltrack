@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
-import { useState, useEffect, useNavigate } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { AppContext } from "../AppContext";
 import "./Register.css";
 
@@ -8,7 +8,7 @@ import "./Register.css";
 
 const Register = () => {
 
-    const {loggedUser2, setLoggedUser2,allUsers,setAllUsers, orgData, setOrgData} = useContext(AppContext)
+    const {loggedUser2, setLoggedUser2,allUsers,setAllUsers, orgData, setOrgData, setServiceMember, serviceMember} = useContext(AppContext)
     const [formComplete, setFormComplete] = useState(false);
     const [user, setUser] = useState({
         name:"",
@@ -47,7 +47,7 @@ const Register = () => {
         eval_date:""
     })
     
-
+    const navigate = useNavigate();
     
     
     const [filteredData, setFilteredData] = useState([]);
@@ -69,7 +69,10 @@ const Register = () => {
         .then((res) => res.json())
         .then((data) => {
             console.log("post", data);
-        });
+        })
+        .catch((error) => {
+            console.log("error on registration: ", error);
+        })
     };
 
     const handleSubmit = (e) => {
@@ -205,17 +208,45 @@ const Register = () => {
                     <input type="text" name="annualtraining" placeholder="Annual Training" style={{ borderRadius: '5px', width: '250px', textAlign: 'center', borderColor: 'black', marginTop: '10px'}} onChange={(e) => {setAnnualTraining({...annualTraining, training_name:e.target.value})}}/>                  
                     <p>Training Date: <input className="datebars" type="date" min="2018-01-01" max="2050-12-31" name="trainingdate" maxLength="10" onChange={(e) => {setAnnualTraining({...annualTraining, training_date:e.target.value})}}/></p>
                     <input type="text" name="additional" placeholder="Additional Training" style={{ borderRadius: '5px', width: '250px', textAlign: 'center', borderColor: 'black', marginTop: '10px'}} onChange={(e) => {setAdditionalTable({...additionalTable, additional_name:e.target.value})}}/>
-                    <Link to={`/${user.username}`}>
+                    
                     <button className="submit" onClick={() => {
-                        setFormComplete(false)
-                        addUserInfo("http://localhost:3001/users", user)
-                        addUserInfo("http://localhost:3001/annual_training", annualTraining)
-                        addUserInfo("http://localhost:3001/medical", medTable)
-                        addUserInfo("http://localhost:3001/static_skills", skillsTable)
-                        addUserInfo("http://localhost:3001/additional", additionalTable)
-                        addUserInfo("http://localhost:3001/evaluations", evalTable)
+                        setFormComplete(false);
+                        // let promise = new Promise(() => {  })
+
+                        fetch('http://localhost:3001/users')
+                        .then(result => {
+                            addUserInfo("http://localhost:3001/users", user); 
+                        })
+                        .then(result => setTimeout(() => {
+                            let newUser;
+                            fetch('http://localhost:3001/users')
+                            .then(response => response.json())
+                            .then(data => {
+                                newUser = data.pop();
+                                console.log(newUser);
+                                setServiceMember(newUser);
+                                console.log("setting service member")
+                            })
+                        }, 500 ))
+                        .then (newUser => setTimeout(() => {
+                            console.log(serviceMember);
+                            console.log("serviceMember.id: ", serviceMember.id);
+                            addUserInfo(`http://localhost:3001/annual_training/${serviceMember.id}`, annualTraining) 
+                            addUserInfo(`http://localhost:3001/medical/${serviceMember.id}`, medTable)
+                            addUserInfo(`http://localhost:3001/static_skills/${serviceMember.id}`, skillsTable)
+                            addUserInfo(`http://localhost:3001/additional/${serviceMember.id}`, additionalTable)
+                            addUserInfo(`http://localhost:3001/evaluations/${serviceMember.id}`, evalTable)
+                            
+                            console.log("setting all user info")
+                        }, 1000))
+                        .then(result => setTimeout(() => {
+
+                            navigate(`/${serviceMember.username}`)
+                            console.log("navigating")
+            
+                        }, 2000))
+                        
                     }}>Submit</button>
-                </Link>
                 </div>
                 </form>
             </div>
@@ -251,8 +282,12 @@ const Register = () => {
                     <div className="button-container">
                         <div className="button-container">
                             <input onClick={() => {
-                               console.log("click worked")// setFormComplete(false)
-                                }} type="submit" />
+                               console.log("click worked");
+                               // user added
+
+                              
+                               // setFormComplete(false)
+                            }} type="submit" />
                         </div>
                     </div>
                 </form>
