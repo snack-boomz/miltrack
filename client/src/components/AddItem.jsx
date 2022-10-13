@@ -1,7 +1,5 @@
 //const { useState } = require("react")
 import React, { useState, useEffect, useContext } from "react";
-import './dashboard.css';
-import styled from 'styled-components';
 import IndivTag from "./IndivTag";
 import SubTag from "./SubTag";
 import { AppContext } from '../AppContext';
@@ -9,6 +7,8 @@ import { AppContext } from '../AppContext';
 
 export const AddItem = (props) => {
     
+    let [ submitMessage, setSubmitMessage ] = useState(0);
+
     let {
         loggedUser,
         setLoggedUser,
@@ -46,12 +46,26 @@ export const AddItem = (props) => {
     }, [fieldChanged])
 
 
+    const removeInputTextHelper = (id) => {
+
+        document.getElementById(`${id}`).value = "";
+
+    }
+
     const itemTypeHelper = (currentItems, itemType) => {
 
+        let userId = loggedUser[0].id;
+
+        // remove empty array elements
+        for (let iterator = 0; iterator < currentItems.length; iterator++) {
+            if (currentItems[iterator] === "") {
+                currentItems.splice(iterator, 1);
+            }
+        }
+
+        console.log("currentItems: ", currentItems);
         let defaultDate = "2022-01-01";
         let formattedItemsArray = [];
-
-        if (typeof currentItems === 'array') {
 
             if (itemType === "Annual Training") {
 
@@ -60,7 +74,8 @@ export const AddItem = (props) => {
                     let annualTrainingObject = {
 
                         "training_name": item,
-                        "training_date": defaultDate
+                        "training_date": defaultDate,
+                        "users_id": userId
 
                     }
 
@@ -75,7 +90,8 @@ export const AddItem = (props) => {
                     let specialTrainingObject = {
 
                         "skill_name": item,
-                        "skill_refresh_date": defaultDate
+                        "skill_refresh_date": defaultDate,
+                        "users_id": userId
 
                     }
 
@@ -90,7 +106,8 @@ export const AddItem = (props) => {
                     let staticTrainingObject = {
 
                         "skill_name": item,
-                        "skill_refresh_date": defaultDate
+                        "skill_date": defaultDate,
+                        "users_id": userId
 
                     }
 
@@ -99,112 +116,119 @@ export const AddItem = (props) => {
 
             }
 
-        } else {
-            if (itemType === "Annual Training") {
-
-
-                    let annualTrainingObject = {
-
-                        "training_name": currentItems,
-                        "training_date": defaultDate
-
-                    }
-
-                    formattedItemsArray.push(annualTrainingObject)
-                    
-                
-
-            } else if (itemType === "Special Training") {
-
-                
-                    
-                    let specialTrainingObject = {
-
-                        "skill_name": currentItems,
-                        "skill_refresh_date": defaultDate
-
-                    }
-
-                    formattedItemsArray.push(specialTrainingObject)
-
-                
-
-            } else if (itemType === "Static Training") {
-
-                    let staticTrainingObject = {
-
-                        "skill_name": currentItems,
-                        "skill_refresh_date": defaultDate
-
-                    }
-
-                    formattedItemsArray.push(staticTrainingObject)
-                
-
-            }
-        }
+        
 
         let formattedItemsCollectionCopy = formattedItemsCollection.slice();
         formattedItemsCollectionCopy.push(formattedItemsArray) 
         setFormattedItemsCollection(formattedItemsCollectionCopy)
+        console.log("formattedItemsCollection: ", formattedItemsCollection);
 
     }
 
     const inputHandler = (event) => {
-        let currentItem = event.target.value;
+
+        console.log("event: ", event);
+        event.preventDefault();
+
+        const formHelper = (destructuredInput) => {
+            let currentItem = destructuredInput.value;
+        console.log("currentItem: ", currentItem);
         let currentItems;
 
-        if (currentItems.includes(",")) {
-            currentItems = currentItem.split(',')
-        }
+        // if (currentItems === undefined) {
+        //     switch(props.itemType) {
 
-        if (currentItems === undefined) {
-            switch(props.itemType) {
+        //         case 'Annual Training':
+        //             itemTypeHelper(currentItem, "Annual Training")
+        //             break;
 
-                case 'Annual Training':
-                    itemTypeHelper(currentItem, "Annual Training")
-                    break;
+        //         case 'Special Training':
+        //             itemTypeHelper(currentItem, "Special Training")
+        //             break;
 
-                case 'Special Training':
-                    itemTypeHelper(currentItem, "Special Training")
-                    break;
+        //         case 'Static Training':
+        //             itemTypeHelper(currentItem, "Static Training")
+        //             break;
+        //     }
+        
+        if (currentItem.includes(",")) {
 
-                case 'Static Training':
-                    itemTypeHelper(currentItem, "Static Training")
-                    break;
-            }
-        }
-        if (currentItems !== undefined) {
+            currentItems = currentItem.split(',');
 
             switch(props.itemType) {
 
                 case 'Annual Training':
-                    itemTypeHelper(currentItems, "Annual Training")
+                    console.log("itemTypeHelper annual training firing")
+                    itemTypeHelper(currentItems, "Annual Training");
                     break;
-
+    
                 case 'Special Training':
-                    itemTypeHelper(currentItems, "Special Training")
+                    itemTypeHelper(currentItems, "Special Training");
                     break;
-
+    
                 case 'Static Training':
-                    itemTypeHelper(currentItems, "Static Training")
+                    itemTypeHelper(currentItems, "Static Training");
                     break;
             }
+
+        } else {
+            currentItem = currentItem + ",";
+            currentItems = currentItem.split(',');
+
+            switch(props.itemType) {
+
+                case 'Annual Training':
+                    console.log("itemTypeHelper annual training firing")
+                    itemTypeHelper(currentItems, "Annual Training");
+                    break;
+    
+                case 'Special Training':
+                    itemTypeHelper(currentItems, "Special Training");
+                    break;
+    
+                case 'Static Training':
+                    itemTypeHelper(currentItems, "Static Training");
+                    break;
+            }
+
+
         }
     }
-    
-    
+
+        // console.log("event.target.innerHTML: ", event.target.innerHTML.includes("name"));
+        // console.log("typeof event.target.innerHTML: ", typeof event.target.innerHTML);
+        if (event.target.innerHTML.includes("annualTraining")) {
+            console.log("annualTraining event fired")
+            let { annualTraining } = document.forms[0];
+            formHelper(annualTraining);
+        } else if (event.target.innerHTML.includes("specialTraining")) {
+            let { specialTraining } = document.forms[1];
+            formHelper(specialTraining);
+
+        } else if (event.target.innerHTML.includes("staticTraining")) {
+            let { staticTraining } = document.forms[2];
+            formHelper(staticTraining);
+
+        }
+
+        
+
+
+    }
 
     return (
         <li
         key="100"
-        className="bg-slate-400 border border-2 border-black border-double py-2 px-8 py-8 rounded-md shadow-lg break-all">
+        className="bg-orange-400 border border-2 border-black border-double py-2 px-4 py-4 rounded-md shadow-lg break-all">
         <strong className="text-center">
             {/* If label isn't annual training, put colon after label */}
             <label>{props.itemName}</label>
             <br/>
-            <input type="text" name="uname" onChange={inputHandler} required />
-
+            <form onSubmit={inputHandler}>
+                <input type="text" name={props.itemIdentifier} id={props.itemIdentifier} />
+                <input style={{background: "transparent"}} className="hover:bg-white" type="submit" onClick={(event) => { setSubmitMessage(submitMessage += 1); setTimeout((event) => { setSubmitMessage(submitMessage += 1); removeInputTextHelper(props.itemIdentifier); }, 8000);  }}/>
+                <p className={submitMessage % 2 === 0 ? "hidden" : ""}>Submitted! <br/> Click <strong className="text-green-100">Submit Changes</strong> above to see your changes.</p>
+            </form>
         </strong>
         <br/>
         <br/>

@@ -143,8 +143,24 @@ app.post('/additional', (req, res) => {
         .then(data => res.send({ message: 'additional info added' }))  
 })
 app.post('/annual_training', (req, res) => {
-    knex('annual_training').insert(req.body)
-        .then(data => res.send({ message: 'training added' }))  
+    knex('annual_training')
+    .insert(req.body,  ['*'])
+    .then(data => res.send({ message: 'training added' }))
+    .catch(err =>
+        res.status(404).json({
+             Message: `Error: ${err}`
+        }))  
+})
+app.post('/annual_training/:id', (req, res) => {
+    let { id } = req.params;
+    knex('annual_training')
+    .where({users_id: id})
+    .insert(req.body,  ['*'])
+    .then(data => res.send({ message: 'training added' }))
+    .catch(err =>
+        res.status(404).json({
+             Message: `Error: ${err}`
+        }))  
 })
 app.post('/medical', (req, res) => {
     knex('medical').insert(req.body)
@@ -158,9 +174,33 @@ app.post('/special_skills', (req, res) => {
     knex('special_skills').insert(req.body)
         .then(data => res.send({ message: 'skill added' }))  
 })
+app.post('/special_skills/:id', (req, res) => {
+    let { id } = req.params;
+    knex('special_skills')
+    .where({users_id: id})
+    .insert(req.body,  ['*'])
+    .then(data => res.send({ message: 'training added' }))
+    .catch(err =>
+        res.status(404).json({
+             Message: `Error: ${err}`
+        }))  
+})
+
 app.post('/static_skills', (req, res) => {
     knex('static_skills').insert(req.body)
         .then(data => res.send({ message: 'skill added' }))  
+})
+
+app.post('/static_skills/:id', (req, res) => {
+    let { id } = req.params;
+    knex('static_skills')
+    .where({users_id: id})
+    .insert(req.body,  ['*'])
+    .then(data => res.send({ message: 'training added' }))
+    .catch(err =>
+        res.status(404).json({
+             Message: `Error: ${err}`
+        }))  
 })
 
 
@@ -249,8 +289,7 @@ app.patch('/evaluations/:id', (req, res) => {
         .then(data => res.send({ message: 'user updated' }))
         .catch(err =>
             res.status(404).json({
-                message:
-                    'The data you are looking for could not be found. Please try again'
+                 Message: `Error: ${err}`
             }))
 })
 app.patch('/special_skills/:id', (req, res) => {
@@ -262,8 +301,7 @@ app.patch('/special_skills/:id', (req, res) => {
         .then(data => res.send({ message: 'user updated' }))
         .catch(err =>
             res.status(404).json({
-                message:
-                    'The data you are looking for could not be found. Please try again'
+                 Message: `Error: ${err}`
             }))
 })
 app.patch('/static_skills/:id', (req, res) => {
@@ -275,8 +313,7 @@ app.patch('/static_skills/:id', (req, res) => {
         .then(data => res.send({ message: 'user updated' }))
         .catch(err =>
             res.status(404).json({
-                message:
-                    'The data you are looking for could not be found. Please try again'
+                 Message: `Error: ${err}`
             }))
 })
 
@@ -287,58 +324,93 @@ app.patch('/static_skills/:id', (req, res) => {
 app.delete('/users/:id', (req, res) => {
     const { id } = req.params;
     knex('users')
-        .where({ id: id })
+        .where({ users_id: id })
         .del()
         .then(res.send({message: 'member deleted'}))
+        .catch(err =>
+            res.status(404).json({
+                 Message: `Error: ${err}`
+            }))
 })
 app.delete('/organization/:id', (req, res) => {
     const { id } = req.params;
     knex('organization')
-        .where({ id: id })
+        .where({ users_id: id })
         .del()
         .then(res.send({message: 'organization deleted'}))
+        .catch(err =>
+            res.status(404).json({
+                 Message: `Error: ${err}`
+            }))
 })
 app.delete('/additional/:id', (req, res) => {
     const { id } = req.params;
     knex('additional')
-        .where({ id: id })
+        .where({ users_id: id })
         .del()
         .then(res.send({message: 'info deleted'}))
+        .catch(err =>
+            res.status(404).json({
+                 Message: `Error: ${err}`
+            }))
 })
 app.delete('/annual_training/:id', (req, res) => {
     const { id } = req.params;
     knex('annual_training')
-        .where({ id: id })
+        .where({ users_id: id })
+        .where({ training_name: req.body.training_name })
         .del()
         .then(res.send({message: 'training deleted'}))
+        .catch(err =>
+            res.status(404).json({
+                 Message: `Error: ${err}`
+            }))
 })
 app.delete('/medical/:id', (req, res) => {
     const { id } = req.params;
     knex('medical')
-        .where({ id: id })
+        .where({ users_id: id })
         .del()
         .then(res.send({message: 'medical deleted'}))
+        .catch(err =>
+            res.status(404).json({
+                 Message: `Error: ${err}`
+            }))
 })
 app.delete('/evaluations/:id', (req, res) => {
     const { id } = req.params;
     knex('evaluations')
-        .where({ id: id })
+        .where({ users_id: id })
         .del()
         .then(res.send({message: 'evaluations deleted'}))
+        .catch(err =>
+            res.status(404).json({
+                 Message: `Error: ${err}`
+            }))
 })
 app.delete('/special_skills/:id', (req, res) => {
     const { id } = req.params;
     knex('special_skills')
-        .where({ id: id })
+        .where({ users_id: id })
+        .where({ skill_name: req.body.skill_name })
         .del()
         .then(res.send({message: 'skill deleted'}))
+        .catch(err =>
+            res.status(404).json({
+                 Message: `Error: ${err}`
+            }))
 })
 app.delete('/static_skills/:id', (req, res) => {
     const { id } = req.params;
     knex('static_skills')
-        .where({ id: id })
+        .where({ users_id: id })
+        .where({ skill_name: req.body.skill_name })
         .del()
         .then(res.send({message: 'skill deleted'}))
+        .catch(err =>
+            res.status(404).json({
+                 Message: `Error: ${err}`
+            }))
 
 })
 

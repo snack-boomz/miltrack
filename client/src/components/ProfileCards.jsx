@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import * as AiIcons from 'react-icons/ai';
 import * as IoIcons from 'react-icons/io';
 import * as GrIcons from 'react-icons/gr';
+import { CiCircleRemove } from "react-icons/fa";
 import { AppContext } from '../AppContext';
 import { AddItem } from './AddItem';
 //import Profile, { staticSkillsTestArrayOfObjects as staticSkills, specialSkillsTestArrayOfObjects as specialSkills, userObject } from './profile';
@@ -39,7 +40,9 @@ export const Medical = (props) => {
         newFieldChanges,
         setNewFieldChanges,
         fieldFetchesComplete, 
-        setFieldFetchesComplete
+        setFieldFetchesComplete,
+        itemToBeDeleted, 
+        setItemToBeDeleted
     }
         = useContext(AppContext);
 
@@ -373,7 +376,7 @@ export const Medical = (props) => {
                                                 className="bg-slate-400 border border-2 border-black border-double py-2 px-8 rounded-md shadow-lg break-all">
                                                 <strong className="text-center">
                                                     {/* If label isn't annual training, put colon after label */}
-                                                    {"New " + currentLabelHelper(currentLabel) + " Date"}{currentLabelHelper2(currentLabel) === undefined ? ":" : ""}
+                                                    {"New " + currentLabelHelper(currentLabel) + " Due Date"}{currentLabelHelper2(currentLabel) === undefined ? ":" : ""}
                         
                                                 </strong>
                                                 <strong className="text-center">
@@ -452,7 +455,9 @@ export const AnnualTraining = (props) => {
         newFieldChanges,
         setNewFieldChanges,
         fieldFetchesComplete, 
-        setFieldFetchesComplete
+        setFieldFetchesComplete,
+        itemToBeDeleted, 
+        setItemToBeDeleted
     }
         = useContext(AppContext);
 
@@ -600,6 +605,49 @@ export const AnnualTraining = (props) => {
         setTimeout(() => console.log("new FIeld changes: ", newFieldChanges), 5000);
 
     }
+
+    const deleteFieldHelper = (event) => { 
+
+        
+
+        console.log(event);
+        console.log("event.target.parentElement.textContent: ", event.target.parentElement.textContent);
+        console.log("typeof event.target.parentElement.textContent: ", typeof event.target.parentElement.textContent);
+
+        let fieldArray = event.target.parentElement.textContent.split(" ");
+
+        for (let iterator = 0; iterator < fieldArray.length; iterator++) {
+            if (fieldArray[iterator] === "New") {
+                fieldArray.splice(iterator, 1);
+            }
+            if (fieldArray[iterator] === "Due") {
+                fieldArray.splice(iterator, 1);
+            }
+            if (fieldArray[iterator] === "Date:") {
+                fieldArray.splice(iterator, 1);
+            }
+        }
+
+        let formattedFieldToBeDeleted = fieldArray.join(" ");
+        let formattedObject;
+
+        console.log("FieldArray (formattedFieldToBeDeleted) after modifications: ", formattedFieldToBeDeleted);
+
+        formattedObject = {"training_name": formattedFieldToBeDeleted};
+
+
+        console.log("formattedObject: ", formattedObject);
+
+
+
+
+
+        setItemToBeDeleted(formattedObject);
+
+        // event.target.nextSibling.textContent
+
+        // event.target.parentElement.parentElement.innerText
+    }
     // useEffect for updates
     useEffect(() => {
 
@@ -677,6 +725,85 @@ export const AnnualTraining = (props) => {
 
     }, [fieldChanged])
 
+    // useEffect for deletes
+    useEffect(() => {
+
+        let userId = loggedUser[0].id;
+        let promise;
+
+        console.log("item to be deleted: ", itemToBeDeleted);
+
+        if (itemToBeDeleted !== undefined) {
+            try {
+
+                if (itemToBeDeleted.training_name) {
+
+                    promise = (
+                        
+                        fetch(`http://localhost:3001/annual_training/${userId}`, {
+                            method: 'DELETE',
+                            body: JSON.stringify(itemToBeDeleted),
+                            headers: {"Access-Control-Allow-Origin": "*", 'Content-Type': 'application/json'}
+                        })
+                        .then(response => response.json())
+                        .then(data => console.log("Success: ", data))
+                        .catch(err => console.log("err: ", err))
+
+                    )
+
+                }
+                // } else if (itemToBeDeleted.skill_refresh_date) {
+                    
+                //     promise = (
+                        
+                //         fetch(`http://localhost:3001/special_skills/${userId}`, {
+                //             method: 'DELETE',
+                //             body: JSON.stringify(itemToBeDeleted),
+                //             headers: {"Access-Control-Allow-Origin": "*", 'Content-Type': 'application/json'}
+                //         })
+                //         .then(response => response.json())
+                //         .then(data => console.log("Success: ", data))
+                //         .catch(err => console.log("err: ", err))
+
+                //     )
+                // } else if (itemToBeDeleted.skill_date) {
+
+                //     promise = (
+                        
+                //         fetch(`http://localhost:3001/static_skills/${userId}`, {
+                //             method: 'DELETE',
+                //             body: JSON.stringify(itemToBeDeleted),
+                //             headers: {"Access-Control-Allow-Origin": "*", 'Content-Type': 'application/json'}
+                //         })
+                //         .then(response => response.json())
+                //         .then(data => console.log("Success: ", data))
+                //         .catch(err => console.log("err: ", err))
+
+                //     )
+
+                // }
+
+                if (promise !== undefined) {
+
+                    promise
+                    .then(result => {
+
+                        console.log("result of deletion: ", result);
+
+                    })
+
+                }
+            } catch (error) {
+
+                console.log("parentSibling was likely not rendered yet or interpreted, try clicking the delete button again. error: ", error);
+
+            }
+        }
+
+            
+
+
+    }, [itemToBeDeleted])
     // useEffect(() => {
     //     const timer = setTimeout(() => console.log("Hello, World!"), 3000);
     //     setTimerComplete(true);
@@ -695,14 +822,14 @@ export const AnnualTraining = (props) => {
                         <>
                         <h2 className="text-xl font-bold border-r-2 py-2 pr-8 border-gray text-green-100">Add New Annual Training
                         <br/>
-                        <i className="text-sm text-center font-normal">Separate each additional entry with a comma</i>
+                        <i className="text-sm text-center font-normal">Separate each additional entry with a comma. Change due dates after.</i>
                                 </h2> 
                                 </>
                                 : <></>
                         
                         } 
                     </div>
-                    {updateFieldsToggle % 2 !== 0 ? <AddItem itemType="Annual Training" itemName="New Annual Training Name(s):"/> : <></>}
+                    {updateFieldsToggle % 2 !== 0 ? <AddItem itemType="Annual Training" itemName="New Annual Training Name(s):" itemIdentifier="annualTraining"/> : <></>}
 
                         {loggedUserSummary.map((obj, index) => {
                             console.log("loggedUserSummary: ", loggedUserSummary)
@@ -763,8 +890,10 @@ export const AnnualTraining = (props) => {
                                         if (updateFieldsToggle % 2 === 0) {
                                             return ( 
                                                 <li
+                                                
                                                 key={index}
                                                 className={colorHelper(amber, red)}>
+                                                
                                                 <strong className="text-center">
                                                     {/* If label isn't annual training, put colon after label */}
                                                     {currentLabelHelper(currentLabel)}{currentLabelHelper2(currentLabel) === undefined ? ":" : ""}
@@ -776,6 +905,7 @@ export const AnnualTraining = (props) => {
                                                 </strong>
                                                 { console.log(`currentLabelStatus: ${currentLabel}, `, currentLabelStatus) }
                                                 <p className="text-center">{currentLabelStatus}</p>
+                                                
                                                 </li> 
                                             )
                                         } else {
@@ -783,9 +913,13 @@ export const AnnualTraining = (props) => {
                                                 <li
                                                 key={index}
                                                 className="bg-slate-400 border border-2 border-black border-double py-2 px-8 rounded-md shadow-lg break-all">
+                                                    
                                                 <strong className="text-center">
+                                                    <IoIcons.IoIosCloseCircleOutline 
+                                                    className="mx-auto w-8 h-8 text-red-500 border border-red-500 rounded-3xl hover:bg-black"
+                                                    onClick={(event) => { deleteFieldHelper(event) }}/>
                                                     {/* If label isn't annual training, put colon after label */}
-                                                    {"New " + currentLabelHelper(currentLabel) + " Date"}{currentLabelHelper2(currentLabel) === undefined ? ":" : ""}
+                                                    {"New " + currentLabelHelper(currentLabel) + " Due Date"}{currentLabelHelper2(currentLabel) === undefined ? ":" : ""}
                         
                                                 </strong>
                                                 <strong className="text-center">
@@ -872,7 +1006,9 @@ export const SpecialTraining = (props) => {
         newFieldChanges,
         setNewFieldChanges,
         fieldFetchesComplete, 
-        setFieldFetchesComplete
+        setFieldFetchesComplete,
+        itemToBeDeleted, 
+        setItemToBeDeleted
     }
         = useContext(AppContext);
 
@@ -1018,6 +1154,53 @@ export const SpecialTraining = (props) => {
 
     }
 
+    const deleteFieldHelper = (event) => { 
+
+        
+
+        console.log(event);
+        console.log("event.target.parentElement.textContent: ", event.target.parentElement.textContent);
+        console.log("typeof event.target.parentElement.textContent: ", typeof event.target.parentElement.textContent);
+
+        let fieldArray = event.target.parentElement.textContent.split(" ");
+
+        for (let iterator = 0; iterator < fieldArray.length; iterator++) {
+            if (fieldArray[iterator] === "New") {
+                fieldArray.splice(iterator, 1);
+            }
+            if (fieldArray[iterator] === "Due") {
+                fieldArray.splice(iterator, 1);
+            }
+            if (fieldArray[iterator] === "Date:") {
+                fieldArray.splice(iterator, 1);
+            }
+        }
+
+        let formattedFieldToBeDeleted = fieldArray.join(" ");
+        let formattedObject;
+
+        console.log("FieldArray (formattedFieldToBeDeleted) after modifications: ", formattedFieldToBeDeleted);
+
+        console.log("event.target.parentElement.parentElement.innerText: ", event.target.parentElement.parentElement.innerText);
+        console.log("event.target.parentElement.parentElement.parentElement.parentElement.innerText: ", event.target.parentElement.parentElement.parentElement.parentElement.innerText);
+
+        formattedObject = {"skill_name": formattedFieldToBeDeleted, "skill_refresh_date": "2022-01-01"};
+
+
+
+        console.log("formattedObject: ", formattedObject);
+
+
+
+
+
+        setItemToBeDeleted(formattedObject);
+
+        // event.target.nextSibling.textContent
+
+        // event.target.parentElement.parentElement.innerText
+    }
+    // useEffect for updates
     useEffect(() => {
 
         console.log("newFieldChanges inside annual training: ", newFieldChanges);
@@ -1094,6 +1277,55 @@ export const SpecialTraining = (props) => {
 
     }, [fieldChanged])
 
+    // useEffect for deletes
+    useEffect(() => {
+
+        let userId = loggedUser[0].id;
+        let promise;
+
+        console.log("item to be deleted: ", itemToBeDeleted);
+
+        if (itemToBeDeleted !== undefined) {
+            try {
+
+                if (itemToBeDeleted.skill_refresh_date) {
+                        
+                    promise = (
+                        
+                        fetch(`http://localhost:3001/special_skills/${userId}`, {
+                            method: 'DELETE',
+                            body: JSON.stringify(itemToBeDeleted),
+                            headers: {"Access-Control-Allow-Origin": "*", 'Content-Type': 'application/json'}
+                        })
+                        .then(response => response.json())
+                        .then(data => console.log("Success: ", data))
+                        .catch(err => console.log("err: ", err))
+
+                    )
+
+                    if (promise !== undefined) {
+
+                        promise
+                        .then(result => {
+
+                            console.log("result of deletion: ", result);
+
+                        })
+
+                    }
+                }
+            } catch (error) {
+
+                console.log("parentSibling was likely not rendered yet or interpreted, try clicking the delete button again. error: ", error);
+
+            }
+        }
+
+            
+
+
+    }, [itemToBeDeleted])
+
 
     return (
         <ul key="1" className="w-10/12 h-8/12 width: 'vw' list-none flex flex-row flex-wrap gap-8 border border-2 border-gray border-double mx-auto my-8 p-4 bg-[#A3BD8A] rounded-lg shadow-2xl ">
@@ -1113,7 +1345,7 @@ export const SpecialTraining = (props) => {
                     
 
             </div>
-            {updateFieldsToggle % 2 !== 0 ? <AddItem itemName="New Special Training Name(s):" itemType="Special Training"/> : <></>}
+            {updateFieldsToggle % 2 !== 0 ? <AddItem itemName="New Special Training Name(s):" itemType="Special Training" itemIdentifier="specialTraining"/> : <></>}
             {
                 loggedUserSummary.map((obj, index) => {
                     console.log("loggedUserSummary: ", loggedUserSummary)
@@ -1193,8 +1425,11 @@ export const SpecialTraining = (props) => {
                                         key={index}
                                         className="bg-slate-400 border border-2 border-black border-double py-2 px-8 rounded-md shadow-lg break-all">
                                         <strong className="text-center">
+                                        <IoIcons.IoIosCloseCircleOutline 
+                                        className="mx-auto w-8 h-8 text-red-500 border border-red-500 rounded-3xl hover:bg-black"
+                                        onClick={(event) => { deleteFieldHelper(event) }}/>
                                             {/* If label isn't annual training, put colon after label */}
-                                            {"New " + currentLabelHelper(currentLabel) + " Date"}{currentLabelHelper2(currentLabel) === undefined ? ":" : ""}
+                                            {"New " + currentLabelHelper(currentLabel) + " Due Date"}{currentLabelHelper2(currentLabel) === undefined ? ":" : ""}
                 
                                         </strong>
                                         <strong className="text-center">
@@ -1268,9 +1503,10 @@ export const StaticTraining = (props) => {
         newFieldChanges,
         setNewFieldChanges,
         fieldFetchesComplete, 
-        setFieldFetchesComplete
+        setFieldFetchesComplete,
+        itemToBeDeleted, 
+        setItemToBeDeleted
     }
-
         = useContext(AppContext);
 
         const currentLabelHelper = (currentLabel) => {
@@ -1402,7 +1638,60 @@ export const StaticTraining = (props) => {
             setTimeout(() => console.log("new FIeld changes: ", newFieldChanges), 5000);
     
         }
+
+        const deleteFieldHelper = (event) => { 
+
+        
+
+            console.log(event);
+            console.log("event.target.parentElement.textContent: ", event.target.parentElement.textContent);
+            console.log("typeof event.target.parentElement.textContent: ", typeof event.target.parentElement.textContent);
     
+            let fieldArray = event.target.parentElement.textContent.split(" ");
+
+            console.log("FieldArray: ", fieldArray);
+    
+            for (let iterator = 0; iterator < fieldArray.length; iterator++) {
+                if (fieldArray[iterator] === "New") {
+                    fieldArray.splice(iterator, 1);
+                }
+                if (fieldArray[iterator] === "Completion") {
+                    fieldArray.splice(iterator, 1);
+                }
+                if (fieldArray[iterator] === "Date:") {
+                    fieldArray.splice(iterator, 1);
+                }
+            }
+    
+            let formattedFieldToBeDeleted = fieldArray.join(" ");
+            let formattedObject;
+    
+            console.log("FieldArray (formattedFieldToBeDeleted) after modifications: ", formattedFieldToBeDeleted);
+    
+            console.log("event.target.parentElement.parentElement.innerText: ", event.target.parentElement.parentElement.innerText);
+            console.log("event.target.parentElement.parentElement.parentElement.parentElement.innerText: ", event.target.parentElement.parentElement.parentElement.parentElement.innerText);
+    
+    
+
+            formattedObject = {"skill_name": formattedFieldToBeDeleted, "skill_date": "2022-01-01"};
+    
+        
+    
+    
+            console.log("formattedObject: ", formattedObject);
+    
+    
+    
+    
+    
+            setItemToBeDeleted(formattedObject);
+    
+            // event.target.nextSibling.textContent
+    
+            // event.target.parentElement.parentElement.innerText
+        }
+    
+        // useEffect for updates
         useEffect(() => {
     
             console.log("newFieldChanges inside annual training: ", newFieldChanges);
@@ -1479,6 +1768,56 @@ export const StaticTraining = (props) => {
     
         }, [fieldChanged])
 
+        // useEffect for deletes
+        useEffect(() => {
+
+            let userId = loggedUser[0].id;
+            let promise;
+
+            console.log("item to be deleted: ", itemToBeDeleted);
+
+            if (itemToBeDeleted !== undefined) {
+                try {
+
+                    if (itemToBeDeleted.skill_date) {
+
+                        promise = (
+                            
+                            fetch(`http://localhost:3001/static_skills/${userId}`, {
+                                method: 'DELETE',
+                                body: JSON.stringify(itemToBeDeleted),
+                                headers: {"Access-Control-Allow-Origin": "*", 'Content-Type': 'application/json'}
+                            })
+                            .then(response => response.json())
+                            .then(data => console.log("Success: ", data))
+                            .catch(err => console.log("err: ", err))
+
+                        )
+
+                    }
+
+                    if (promise !== undefined) {
+
+                        promise
+                        .then(result => {
+
+                            console.log("result of deletion: ", result);
+
+                        })
+
+                    }
+                } catch (error) {
+
+                    console.log("parentSibling was likely not rendered yet or interpreted, try clicking the delete button again. error: ", error);
+
+                }
+            }
+
+                
+
+
+        }, [itemToBeDeleted])
+
 
     return (
         <ul className="w-10/12 h-8/12 list-none flex gap-8 border border-2 border-gray border-double mx-auto my-8 p-4 bg-[#A3BD8A] rounded-lg shadow-2xl ">
@@ -1497,7 +1836,7 @@ export const StaticTraining = (props) => {
                         
                     } 
             </div>
-            {updateFieldsToggle % 2 !== 0 ? <div><AddItem itemName="New Static Training Name(s):" itemType="Static Training"/></div> : <></>}
+            {updateFieldsToggle % 2 !== 0 ? <div><AddItem itemName="New Static Training Name(s):" itemType="Static Training" itemIdentifier="staticTraining"/></div> : <></>}
             <ul id='static'>
                 <ul>
 
@@ -1525,8 +1864,11 @@ export const StaticTraining = (props) => {
                                             key={index}
                                             className="">
                                             <strong className="text-center">
+                                            <IoIcons.IoIosCloseCircleOutline 
+                                                    className="mx-auto w-8 h-8 text-red-500 border border-red-500 rounded-3xl hover:bg-black"
+                                                    onClick={(event) => { deleteFieldHelper(event) }}/>
                                                 {/* If label isn't annual training, put colon after label */}
-                                                {obj.skill_name} Date:
+                                                New {obj.skill_name} Completion Date:
                                             </strong>
                                             &nbsp;&nbsp;&nbsp;<input type="date" defaultValue={obj.skill_date} onChange={(event) => console.log("event.target.value: ", updateFieldHelper(obj, event.target.value))} />
                                             </li> 

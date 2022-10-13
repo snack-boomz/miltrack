@@ -32,6 +32,7 @@ function App() {
   const [ fieldFetchesComplete, setFieldFetchesComplete ] = useState(0);
   const [ formattedItemsCollection, setFormattedItemsCollection ] = useState([]);
   const [ allPostPromisesComplete, setAllPostPromisesComplete ] = useState(0);
+  const [ itemToBeDeleted, setItemToBeDeleted ] = useState({});
 
 
   useEffect(() => {
@@ -103,7 +104,9 @@ function App() {
     formattedItemsCollection,
     setFormattedItemsCollection,
     allPostPromisesComplete, 
-    setAllPostPromisesComplete
+    setAllPostPromisesComplete,
+    itemToBeDeleted, 
+    setItemToBeDeleted
   }
 
   // const testObject = {

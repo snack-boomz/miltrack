@@ -348,66 +348,80 @@ function Profile() {
     // used for all post requests made for adding trainings (AddItem component)
     useEffect(() => {
 
-        let userId = loggedUser[0].id;
-        let allPostPromises = [];
+        try {
 
-        const recursiveCreateFetchesFunction = (array, arrayLength, arrayType) => {
+            let userId = loggedUser[0].id;
+            let allPostPromises = [];
 
-            if (arrayLength == 0) {
+
+            const recursiveCreateFetchesFunction = (array, arrayLength, arrayType) => {
+
+                if (arrayLength == 0) {
+
+                } else {
+                    let promise = (
+                        fetch(`http://localhost:3001/${arrayType}/${userId}`, {
+                            method: 'POST',
+                            body: JSON.stringify(array[arrayLength - 1]),
+                            headers: {"Access-Control-Allow-Origin": "*", 'Content-Type': 'application/json'}
+                        })
+                        .then(response => response.json())
+                        .then(data => console.log("Success: ", data))
+                        .catch(err => console.log("err: ", err))
+                    )
+    
+                    allPostPromises.push(promise);
+    
+                    arrayLength -= 1;
+                    
+                    recursiveCreateFetchesFunction(array, arrayLength, arrayType)
+                }
+
+                
 
             }
 
-            let promise = (
-                fetch(`http://localhost:3001/${arrayType}/${userId}`, {
-                    method: 'POST',
-                    body: JSON.stringify(array[arrayLength - 1]),
-                    headers: {"Access-Control-Allow-Origin": "*", 'Content-Type': 'application/json'}
-                })
-                .then(response => response.json())
-                .then(data => console.log("Success: ", data))
-                .catch(err => console.log("err: ", err))
-            )
+            const fetchPostHelper = (array) => {
 
-            allPostPromises.push(promise);
+                if (array[0].training_name) {
+                    let arrayType = "annual_training";
+                    recursiveCreateFetchesFunction(array, array.length, arrayType);
+                } else if (array[0].skill_refresh_date) {
+                    let arrayType = "special_skills";
+                    recursiveCreateFetchesFunction(array, array.length, arrayType);
+                } else if (array[0].skill_date) {
+                    let arrayType = "static_skills";
+                    recursiveCreateFetchesFunction(array, array.length, arrayType);
+                }
 
-            arrayLength -= 1;
-            
-            recursiveCreateFetchesFunction(array, arrayLength, arrayType)
-
-        }
-
-        const fetchPostHelper = (array) => {
-
-            if (array[0].training_name) {
-                let arrayType = "annual_training";
-                recursiveCreateFetchesFunction(array, array.length, arrayType);
-            } else if (array[0].skill_refresh_date) {
-                let arrayType = "special_skills";
-                recursiveCreateFetchesFunction(array, array.length, arrayType);
-            } else if (array[0].skill_date) {
-                let arrayType = "static_skills";
-                recursiveCreateFetchesFunction(array, array.length, arrayType);
             }
 
+            for (let formattedItemArray of formattedItemsCollection) {
+
+                fetchPostHelper(formattedItemArray);
+
+            }
+
+            //formattedItemsCollection
+
+            Promise.all(allPostPromises)
+            .then(info => {
+                console.log("All post promises complete")
+            })
+            .then(info => {
+                
+                setAllPostPromisesComplete(allPostPromisesComplete += 1);
+
+            })
+            .then(info => {
+                // formatted items collection reset
+                setFormattedItemsCollection([]);
+
+            })
+
+        } catch (error) {
+            loggedUser[0] === undefined ? setNoUser(true) : console.log(error)
         }
-
-        for (let formattedItemArray of formattedItemsCollection) {
-
-            fetchPostHelper(formattedItemArray);
-
-        }
-
-        //formattedItemsCollection
-
-        Promise.all(allPostPromises)
-        .then(info => {
-            console.log("All post promises complete")
-        })
-        .then(info => {
-            
-            setAllPostPromisesComplete(allPostPromisesComplete += 1);
-
-        })
 
     }, [fieldChanged])
 
