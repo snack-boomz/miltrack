@@ -1,12 +1,14 @@
 # miltrack
 *The tracker to end all trackers*
 
+
  \\\\\\//////Miltrack Image goes here\\\\\\//////
 
 ## Overview
 
 - Miltrack is here to solve a common problem that is present in all military branches which is that all your resources that need to be tracked are scattered throughtout multiple sites across the internet and all service members regardeless of the rank have to spend valuable time trying to track and find the correct information through all the sites in order to know if they're current in all their medical, yearly training and other schools or information.
 - Miltrack grants the ability to track all your special skills, currency of medical information and provide valuable links that saves time and helps increases productivity along the ranks for the service member but also for all the subordinates under their command.
+
 
 ## Table of Contents
 
@@ -19,7 +21,9 @@
 
 ## Problem Statement
 
+
 SM’s and unit leaders need an accessible system to update and track admin tasks and requirements. SM’s are currently forced to navigate many complicated and constantly changing online systems to acquire this information, which leads to poor tracking.  PERSTAT strives to be an optional, open-source application that units can use as an alternative method of tracking all relevant admin items.
+
 
 ### Users
 
@@ -42,7 +46,9 @@ search stuff
 ### GitHub Repo: <a name="github"></a>
 
 - Clone github repo for this project
-  -[ https://github.com/gustovshikov/full-stack-project](https://github.com/snack-boomz/miltrack)
+
+ - (https://github.com/snack-boomz/miltrack)
+
 - Navigate to and open repo in your IDE
 
 ### Install Dependencies: <a name="dependencies"></a>
@@ -135,6 +141,7 @@ search stuff
 #### STRETCH
 1. Incorporate callsigns in place of names for confidentiality. 
 2. Must include Minesweeper.
+=======
 
 ### Features (To be filled upon completion once we confirm what actual features the PoC ships with)
 
