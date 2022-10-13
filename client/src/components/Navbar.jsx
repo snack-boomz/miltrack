@@ -19,7 +19,7 @@ function Navbar() {
       path: loggedUser[0] === undefined ? '/' : `/${loggedUser[0].username}`,
       icon: <AiIcons.AiFillHome />,
       cName: 'nav-text',
-      action: () => {setServiceMember(loggedUser[0].username)}
+      action: () => {setServiceMember(loggedUser[0])}
     },
     {
       title: 'Subordinate Dashboard',

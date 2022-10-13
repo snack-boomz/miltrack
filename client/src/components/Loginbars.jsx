@@ -36,7 +36,7 @@ const Loginbars = () => {
     };
 
     const userFunc = () => {
-        setServiceMember(loggedUser[0].username)
+        setServiceMember(loggedUser[0])
         navigate(`/${loggedUser[0].username}`)
     }
 

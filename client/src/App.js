@@ -35,6 +35,7 @@ function App() {
   const [ formattedItemsCollection, setFormattedItemsCollection ] = useState([]);
   const [ allPostPromisesComplete, setAllPostPromisesComplete ] = useState(0);
   const [ itemToBeDeleted, setItemToBeDeleted ] = useState({});
+  const [ serviceMemberSummary, setServiceMemberSummary ] = useState([]);
 
   useEffect(() => {
     fetch('http://localhost:3001/users')
@@ -125,7 +126,9 @@ function App() {
     allPostPromisesComplete, 
     setAllPostPromisesComplete,
     itemToBeDeleted, 
-    setItemToBeDeleted
+    setItemToBeDeleted,
+    serviceMemberSummary,
+    setServiceMemberSummary
 
   }
 
