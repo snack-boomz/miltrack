@@ -21,6 +21,25 @@ const SubTag = (props) => {
         }
     }
 
+    const currentLabelStatusHelper = (amber, red, currentLabelStatus) => {
+
+        if (currentLabelStatus === "") {
+            if (red) {
+                return 'red';
+            
+            } else if (amber) {
+                return 'amber';
+            
+            } else {
+                return 'green';
+            }
+        } else {
+            return "";
+        }
+        
+
+    }
+
     const currentLabelHelper = (currentLabel) => {
 
         if (currentLabel == "Annual Training") {
@@ -105,7 +124,7 @@ const SubTag = (props) => {
                             currentValue = value;
                         }
                     })
-                    if (index <= 10) {
+                    if (index <= 50) {
                         // console.log(key);
                         // console.log(currentValue);
 
@@ -129,7 +148,7 @@ const SubTag = (props) => {
                         // console.log(currentValue);
 
                         // console.log(`${currentValue.valueOf()} : ${new Date('2020-01-01').toString().valueOf()}`)
-                        if (key === "pha_date" || key === "dental_date" || key === "hearing_date" || key === "pdha_date" || key === "vision_date" || key === "hiv_date") {
+                        if (key === "pha_date" || key === "dental_date" || key === "hearing_date" || key === "vision_date" || key === "hiv_date") {
 
                             currentLabel = "Medical";
 
@@ -143,8 +162,9 @@ const SubTag = (props) => {
                                 }
 
                             } else if (new Date(currentValue).valueOf() < Date.now()) {
+                                    console.log("currentValue and key of medical: ", currentValue, key);
                                     red = true;
-                                    currentLabelStatus = "red";
+                                    //currentLabelStatus = "red";
                             }
                         }
 
@@ -156,7 +176,7 @@ const SubTag = (props) => {
                                 
                                 if (new Date(currentValue).valueOf() - Date.now() <= 2592000000) {
                                     amber = true;
-                                    currentLabelStatus = "amber";
+                                    // currentLabelStatus = "amber";
 
                                 } else {
                                     
@@ -164,7 +184,7 @@ const SubTag = (props) => {
 
                             } else if (new Date(currentValue).valueOf() < Date.now()) {
                                     red = true;
-                                    currentLabelStatus = "red";
+                                    // currentLabelStatus = "red";
                             }
 
                         }
@@ -194,7 +214,7 @@ const SubTag = (props) => {
                                 { currentLabelHelper2(currentLabel) }{currentLabelHelper2(currentLabel) !== undefined ? ":" : ""}
                             </strong> 
                             <br/>
-                            <p className="text-center">{currentLabelStatus}</p> 
+                            <p className="text-center">{ currentLabelStatusHelper(amber, red, currentLabelStatus) + " " +  currentLabelStatus }</p> 
                         </li>
                     )
 

@@ -449,7 +449,7 @@ const [skillsArr, setSkillsArr] = useState([]);
     // console.log(loggedUserOrg);
     if (loggedUser[0].supervisor_id === null) {
         if (loggedUser !== []) {
-            if (loggedUserServiceMemberPromiseChainComplete !== false && loggedUserServiceMemberSummaries[0] !== undefined) {
+            if (loggedUserServiceMemberSummaries[0] !== undefined) {
                     return (
                         <>
                             { /* data_user_basic will be dynamically loaded based on loggedIn user state  */}
