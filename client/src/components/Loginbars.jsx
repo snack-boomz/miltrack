@@ -10,7 +10,7 @@ import { AppContext } from "../AppContext";
 const Loginbars = () => {
     const [errorMessages, setErrorMessages] = useState({});
     const [isSubmitted, setIsSubmitted] = useState(false);
-    let { loggedUser, setLoggedUser, loggedUserToggle, setLoggedUserToggle } = useContext(AppContext);
+    let { loggedUser, setLoggedUser, loggedUserToggle, setLoggedUserToggle, serviceMember, setServiceMember } = useContext(AppContext);
     const [dataUsers, setDataUsers]  = useState([]);
     let navigate = useNavigate();
 
@@ -35,6 +35,11 @@ const Loginbars = () => {
         pass: "invalid password"
     };
 
+    const userFunc = () => {
+        setServiceMember(loggedUser[0].username)
+        navigate(`/${loggedUser[0].username}`)
+    }
+
     const handleSubmit = (event) => {
        
         event.preventDefault();
@@ -58,6 +63,7 @@ const Loginbars = () => {
             } else {
                 setIsSubmitted(true);
                 setTimeout(() => console.log(isSubmitted), 2000);
+                
             }
         } else {
     
@@ -101,7 +107,7 @@ const Loginbars = () => {
             <div className="app">
                 <div className="login-form">
                     <div className="signIn">Sign In</div>
-                   {isSubmitted ? navigate(`/${loggedUser[0].username}`) : renderForm}
+                   {isSubmitted ? userFunc() : renderForm}
                 </div>
             </div>
         );

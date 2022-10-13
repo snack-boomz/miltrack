@@ -5,52 +5,18 @@ import styled from 'styled-components';
 import IndivTag from "./IndivTag";
 import SubTag from "./SubTag";
 import { AppContext } from '../AppContext';
+import { Link } from 'react-router-dom';
 
 
 
-const userObject = {
-    id: 10, username: "billy", password: "a;sdkfjn;alkshdfoiajsd;lfj", rank: "e4", full_name: "Justin Hernandez", status: "TDY"
-  }
 
-  const testObject = {
-    id: 1, pha_date: '2021-03-21', dental_date: '2021-03-21', hearing_date: '2021-03-21' 
-  }
-
-  const testArrayOfObjects = [
-    { id: 1, current_status: "PDY"},
-    { id: 2, pha_date: '2022-12-30', dental_date: '2022-10-15', hearing_date: '2021-03-21', vaccination_date: '2021-03-21' },
-    { id: 3, training_name: '2021-03-21', training_date: '2022-10-05' },
-
-  ]
-
-const data_user_basic = [
-    { "id": 1, username: "Joe Smith", medical_status: 'red', unit_id: '0233, 10th SFG(A)' }
-]
-
-const data_user_medical = [
-    { "id": 1, pha: "amber", immunizations: 'green', dental: 'amber', hearing: 'green', vision: 'red' }
-]
-
-const data_user_additional = [
-    { "id": 1, jump_status: 'green', }
-]
-
-
-/*export const dataFetch = (props) => {
-    const [userData, setUserData] = useState([]);
-    }
-
-    /*    useEffect(() => {
-            async function fetchAPI() {
-                const res = await fetch('http://localhost:8080/');
-                const posts = await res.json();
-            }
-            fetchAPI();
-        }, [])
-        return <Context.Provider elementue={userData}></Context.Provider>
-    */
 function Dashboard() {
+const [ skillEntered, setSkillEntered ] = useState('');
+const [ filteredData, setFilteredData ] = useState([]);
+const [ skillFilter, setSkillFilter ] = useState([]);
+const [skillsArr, setSkillsArr] = useState([]);
 
+// const [memberArr, setMemberArr] = useState([]);
     let { 
         loggedUser, 
         setLoggedUser, 
@@ -67,38 +33,159 @@ function Dashboard() {
         loggedUserServiceMemberSummaries, 
         setLoggedUserServiceMemberSummaries,
         loggedUserServiceMemberPromiseChainComplete, 
-        setLoggedUserServiceMemberPromiseChainComplete
+        setLoggedUserServiceMemberPromiseChainComplete,
+        serviceMember,
+        setServiceMember,
          
         } 
     = useContext(AppContext);
 
+   /* const searchHandler = (e) => {
+        const searchWord = e.target.value;
+        setSkillEntered(searchWord);
+        const newFilter = loggedUserServiceMemberSummaries.filter((value) => {
+            return value.name.toLowerCase().includes(searchWord.toLowerCase());
+        });
 
 
-    // grab all users
+        if (searchWord === "") {
+            setFilteredData([]);
+        } else {
+            setFilteredData(newFilter);
+        }
+    };
+    */
+ 
+    const samesiesFunc = (id) => {
+        return loggedUserServiceMembers.map((member, index, key) => {
+            if (member.id === id /*&& !memberArr.includes(id)*/) {
+                // if(!memberArr.includes(member)){
+                //     setMemberArr({...memberArr, member})
+                // }
+            
+              return ( 
+                <div  onClick={() => {console.log("THIS IS SUBORD"); setServiceMember(member.name)}}>
+              <Link to={`/${member.username}`}> <SubTag  elements={ loggedUserServiceMemberSummaries[index] } currentSM= { member } key={key}/>
+              </Link>
+              </div>) }
+        })
+    };
+
+
+    const renderFunc = (key) => {
+      return loggedUserServiceMembers.map((member, index) => {
+            {console.log("loggedUserServiceMembers: ", loggedUserServiceMembers)}
+            {console.log(member)}
+            {console.log(loggedUserServiceMemberSummaries[index])}
+            {console.log("loggedUserServiceMemberSummaries: ", loggedUserServiceMemberSummaries)}
+            return ( 
+                <div  onClick={() => {console.log("THIS IS SUBORD"); setServiceMember(member.name)}}>
+            <Link to={`/${member.username}`} > <SubTag  elements={ loggedUserServiceMemberSummaries[index] } currentSM= { member } key={key}/>
+            </Link>
+            </div>)   
+      })};
+      
+
+     const skillHandler = (e) => {
+        const searchWord = e.target.value;
+        setSkillEntered(searchWord);
+        let newFilter;
+          newFilter = skillsArr.filter((value) => {
+            return value.skill_name.toLowerCase().includes(searchWord.toLowerCase());
+                
+        });
+
+        if (searchWord === "") {
+            setSkillFilter([]);
+        } else {
+            setSkillFilter(newFilter);
+            console.log("skillFilter: ", skillFilter)
+        }
+        // const newFilter = []
+       // for(let i=0;i<skillsArr.length;i++){
+        //    if(skillsArr[i][0].skill_name.toLowerCase().includes(searchWord.toLowerCase())){
+          //      console.log('the skilliest of filters', skillsArr[i][0])
+        //         setSkillFilter(skillsArr[i][0]) 
+               
+        //     }else {
+        //         setSkillFilter([]);
+        //     }
+        // }
+        // console.log("fucking work already", newFilter)
+
+        // const secondFilter = newFilter.filter((value) =>{  
+        //     console.log("gimme message bitch",value.skill_name)
+        //     return value.skill_name.toLowerCase().includes(searchWord.toLowerCase());
+        // })
+        // console.log("filter these nuts", newFilter)
+        // if (searchWord === "") {
+        //     setSkillFilter([]);
+        // } else {
+        //     setSkillFilter(newFilter);
+        // }
+    };
+    
+       
     useEffect(() => {
-        fetch('http://localhost:3001/users')
-        .then(response => response.json())
-        .then(data => setAllUsers(data))
-    }, [])
+        let newArr = [];
+        loggedUserServiceMembers.map((member)=>{
+            fetch(`http://localhost:3001/special_skills/${member.id}`)
+            .then(response => response.json())
+            .then(specialData => (specialData.map((data)=>newArr.push(data))))
+
+            fetch(`http://localhost:3001/static_skills/${member.id}`)
+            .then(response => response.json())
+            .then(staticData => (staticData.map((data)=>newArr.push(data))))
+        })
+        
+        
+        setSkillsArr(newArr)
+        console.log("This is NEWARR HOE", skillsArr)
+    }, [loggedUserServiceMembers])
+
+    const searchFunc = (key) => {
+       
+            console.log("MADE IT TO HERE")
+            if(skillFilter.length != 0){
+                return(
+                //   <div className="dataResult">
+                <>
+                    {skillFilter.map((value, key) => {
+                        console.log("WTF IS THIS: ", value.skill_name.toLowerCase().includes(skillEntered.toLowerCase()))
+                        return (
+                            <div style={{width: '100%'}}>
+                            { value.skill_name.toLowerCase().includes(skillEntered.toLowerCase()) ? samesiesFunc(value.users_id)/*smth like this*/ : <p>YOU SUCK BUT IT WORKED!</p>}
+                            </div> 
+                        );
+                    })}</>
+                // </div>   
+                )
+                
+            }
+ 
+    };
+    
+
 
   // Temporary use effect to set hardcoded LoggedInUser until we have logging in functionality
-    useEffect(() => {
-        fetch('http://localhost:3001/users')
-        // .then(response => response.json())
-        // .then(data => setLoggedUser([{id: 6, username:'ocelottip',name: 'Joe Rogan', password: '1234', rank: 'O6',supervisor_id:null,organization_id:3, MOS:'35F', current_status: "PDY"}]))
-        // .then(data => {
-        //     console.log(loggedUser);
-        //     console.log("Hello!")
+     useEffect(() => {
+         fetch('http://localhost:3001/users')
+    //     .then(response => response.json())
+    //     .then(data => setLoggedUser([{id: 6, username:'ocelottip',name: 'Joe Rogan', password: '1234', rank: 'O6',supervisor_id:null,organization_id:3, MOS:'35F', current_status: "PDY"}]))
+    //     .then(data => {
+    //         console.log(loggedUser);
+    //         console.log("Hello!")
         
-        // })
+    //     })
         .then(data => {
         setLoggedUserToggle(loggedUserToggle += 1)
         console.log(loggedUserToggle);
-        })
+     })
         .catch(err => {
             console.error("err: ", err)
         })
-    }, [])
+     }, [])
+
 
     // grab logged user org
     useEffect(() => {
@@ -120,7 +207,7 @@ function Dashboard() {
     // grab all logged user information
 
     useEffect(() => {
-        console.log(loggedUser[0]);
+        console.log("medical: ", loggedUser[0]);
         let userId = loggedUser[0].id;
         let medicalPromise = (
             fetch(`http://localhost:3001/medical/${userId}`)
@@ -157,7 +244,7 @@ function Dashboard() {
         )
 
         let specialSkillsPromise = (
-            fetch(`http://localhost:3001/special_skills/${userId}`)
+            fetch(`http://localhost:3001/special_skills/`)
             .then(response => response.json())
             .then(data => {
                 
@@ -351,7 +438,7 @@ function Dashboard() {
         .then((info) => {
 
             setLoggedUserServiceMemberPromiseChainComplete(true);
-            console.log("all subordinate promises are complete");
+            console.log("ALL SUBORDINATES PROMISE COMPLETE");
 
         }), 3000)
 
@@ -360,13 +447,12 @@ function Dashboard() {
     // console.log(allUsers);
 
     // console.log(loggedUserOrg);
-
+        if (loggedUser[0].supervisor_id === null) {
     if (loggedUser !== []) {
-        if (loggedUserServiceMemberPromiseChainComplete === true && loggedUserServiceMemberSummaries[0] !== undefined) {
+        if (loggedUserServiceMemberPromiseChainComplete === false && loggedUserServiceMemberSummaries[0] !== undefined) {
             
                 return (
                     <>
-                        <>testing</>
                         { /* data_user_basic will be dynamically loaded based on loggedIn user state  */}
                         {/* {console.log(loggedUser)} */}
                         {loggedUser.map((element, key) => {
@@ -381,20 +467,23 @@ function Dashboard() {
                                 </section>
                                     {/* <IndivTag elements={ testObject } component="medical"/> */}
                                     {/* Logged in Soldier below */}
-                                    <SubTag elements={ loggedUserSummary } currentSM= { loggedUser[0] } key={key}/>
+                                    <div  onClick={() => {console.log("THIS IS SUBORD"); setServiceMember(element.username)}}>
+                                    <Link to={`/${element.username}`}>
+                                    <SubTag elements={ loggedUserSummary } currentSM= { loggedUser[0] } key={key} />
+                                    </Link>
+                                    </div>
                                     {console.log("subordinate promise chain: ", loggedUserServiceMemberPromiseChainComplete)} 
                                     <hr className="w-10/12 mx-auto border-t-2 mt-12"/>
                                     <h3 className="w-2/12 text-2xl font-bold italic text-center min-w-fit max-w-fit mx-auto mt-12 p-2 bg-slate-100 opacity-90 rounded-md shadow-xl shadow-black">SMs tracked:</h3>
+                                    <div className="searchbar_container">
+                                    <input className="searchbar" style={{height: '40px'}}type="text" placeholder="Search a member of your teams skills here!" value={skillEntered} onChange={skillHandler} />
+                                    </div>
                                     {/* Subordinates below */}
-                                    {
-                                        loggedUserServiceMembers.map((member, index) => {
-                                            {console.log("loggedUserServiceMembers: ", loggedUserServiceMembers)}
-                                            {console.log(member)}
-                                            {console.log(loggedUserServiceMemberSummaries[index])}
-                                            {console.log("loggedUserServiceMemberSummaries: ", loggedUserServiceMemberSummaries)}
-                                            return <SubTag elements={ loggedUserServiceMemberSummaries[index] } currentSM= { member } key={key}/>
-                                        })
-                                    }
+                                        {skillEntered === "" ? renderFunc(key) : searchFunc(key)} 
+
+                                        
+
+                                    
                                     
                                 </section>
                             )
@@ -414,16 +503,16 @@ function Dashboard() {
         }
 
     
-   } else {
+   }} else {
         return (
             <section id="wrapper" className="pb-8 m-12">
                 <section id='welcome_box' className="w-1/5 mx-auto p-4 min-w-fit max-w-fit bg-slate-100 opacity-90 rounded-md shadow-xl shadow-black">
-                    <div>Loading...</div>
+                    <div>You have no subordinates. Weak. Do better!</div>
                 </section>
             </section>
         )
    }
 
-
+    
 }
 export default Dashboard;

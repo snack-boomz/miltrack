@@ -7,6 +7,7 @@ import { Medical, AnnualTraining, SpecialTraining, StaticTraining } from "./Prof
 import { Link, useNavigate } from "react-router-dom";
 //this is for test or dummy data
 import { AppContext } from '../AppContext';
+import { FaTruckLoading } from "react-icons/fa";
 
 const rankHelper = (rank) => {
     // console.log("Rank: ", rank);
@@ -155,10 +156,15 @@ function Profile() {
         setFieldChanged,
         fieldFetchesComplete,
         setFieldFetchesComplete,
+        loggedUserServiceMembers,
+        setLoggedUserServiceMembers,
+        serviceMember,
+        setServiceMember,
         formattedItemsCollection,
         setFormattedItemsCollection,
         allPostPromisesComplete, 
         setAllPostPromisesComplete
+
         } 
 
     = useContext(AppContext);
@@ -196,7 +202,7 @@ function Profile() {
         grab logged user org
     */
     useEffect(() => {
-        console.log(loggedUser);
+        console.log("this is the user" , loggedUser);
         fetch(`http://localhost:3001/organization/1`)
             .then(response => response.json())
             .then(data => setLoggedUserOrg(data[0].organization_name))
@@ -432,14 +438,23 @@ function Profile() {
     }
 
     // const [apptDate, setApptDate] = useState("");
+    // if loggedUser[0].supervisor_id is null then navigate to /dashboard
+   // if (loggedUser[0].supervisor_id === null) {
+   //     navigate(`/dashboard`);
+   // } else
     if (loggedUser !== []) {
-        
+
         if (loggedUserPromiseChainComplete === true && loggedUserSummary[0] !== undefined && loggedUser[0] !== undefined) {
             return (
                 <>
                     {userInfo.map((val, key) => {
                         return (
                             <section key={key} id="wrapper" className="pb-8 m-12">
+                                {loggedUser[0].username !== serviceMember ? 
+                                    <section id='welcome_box' className="w-1/5 mx-auto p-4 min-w-fit max-w-fit bg-slate-100 opacity-90 rounded-md shadow-xl shadow-black">
+                                    <div style={{color: '#1c464c', fontWeight: 'bold', fontSize: '30px'}}> You're Viewing: {serviceMember === undefined ? "Loading..." : serviceMember }</div>
+                                    {console.log("thise is the service member:", serviceMember)}
+                                    </section> :                              
                                 <section id='welcome_box' className="w-1/5 mx-auto p-4 min-w-fit max-w-fit bg-slate-100 opacity-90 rounded-md shadow-xl shadow-black">
                                     <tr key={key}>
                                         <div>{loggedUserOrg}</div>
@@ -453,8 +468,13 @@ function Profile() {
                                         </section>
                                     </tr>
                                     <button onClick={ () => setHidePersonalInfo(hidePersonalInfo += 1) } className="block w-7/12 py-1 rounded-lg mx-auto mt-2 text-black bg-transparent border border-black border-double hover:bg-slate-400 transition transition-200">{hidePersonalInfo % 2 === 0 ? "Show Personal Info" : "Hide Personal Info"}</button>
+
                                     <button onClick={ () => { setUpdateFieldsToggle(updateFieldsToggle += 1);  updateFieldsToggle % 2 === 0 ? setFieldChanged(fieldChanged += 1) : console.log("updateField wasn't triggered"); console.log("fieldChanged: ", fieldChanged); setUpdateFieldsToggle(updateFieldsToggle += 1); setUpdateFieldsToggle(updateFieldsToggle += 1);  } } className={updateFieldsToggle % 2 === 0 ? "block w-7/12 py-1 rounded-lg mx-auto mt-2 text-black bg-transparent border border-black border-double hover:bg-slate-400 transition transition-200" : "block w-7/12 py-1 rounded-lg mx-auto mt-2 text-black bg-green-400 border border-black border-double hover:bg-black transition transition-200 text-white"}>{updateFieldsToggle % 2 === 0 ? "Update Profile" : "Submit Changes"}</button>
                                 </section>
+                    }
+
+
+
                                 {/* <IndivTag elements={ testObject } component="medical"/> */}
                                 {/* Logged in Soldier below */}
                                 <hr className="w-10/12 mx-auto border-t-2 mt-12" />
@@ -468,6 +488,7 @@ function Profile() {
                             </section>
                         )
                     })}
+                    
                 </>
             )
         } else {

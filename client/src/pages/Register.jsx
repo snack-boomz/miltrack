@@ -57,32 +57,6 @@ const Register = () => {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [errorMessages, setErrorMessages] = useState({});
     
-    // const [fullName, setFullName] = useState("");
-    // const [email, setEmail] = useState("");
-    // const [username, setUsername] = useState("");
-    //const [password, setPassword] = useState("");
-     
-    // const [grade, setGrade] = useState(""); 
-    // const [orgId, setOrgId] = useState("");
-    // const [supervisor, setSupervisor] = useState(0);
-    // const [evalName, setEvalName] = useState("");
-    // const [evalDate, setEvalDate] = useState("");
-    // const [mos, setMos] = useState("");
-    // const [phaDate, setPhaDate] = useState("");
-    // const [dentalDate, setDentalDate] = useState("");
-    // const [hearingDate, setHearingDate] = useState("");
-    // const [hivDate, setHivDate] = useState("");
-    // const [visionDate, setVisionDate] = useState("");
-    // const [staticSkill, setStaticSkill] = useState("");
-    // const [annualTraining2, setAnnualTraining2] = useState("");
-    // const [trainingDate, setTrainingDate] = useState("");
-    //const [additionalTraining, setAdditionalTraining] = useState("");
-    // const userTable = ({ username, fullName, password, grade, supervisor, orgId, mos })
-    // const annualTrainingTable2 = ({ annualTraining, trainingDate })
-    // const evalTable = ({ evalName, evalDate, })
-    // const medicalTable = ({ phaDate, dentalDate, hearingDate, hivDate, visionDate })
-    // const staticSkillTable = ({ staticSkill })
-    // const additionalTrainingTable = ({ additionalTraining })
     
     const addUserInfo = (url, userInfo) => {
         fetch(url, {
@@ -123,22 +97,7 @@ const Register = () => {
     const formMessage = "Please fill out the form above to register";
 
     if (formComplete) {
-        // const supervisors = [
-        //     { id: 1, username: 'snackboomz', name: 'Russell Annis', password: '1234', rank: 'E4', supervisor_id: null, organization_id: 'WH06B2' },
-        //     { id: 2, username: 'Heath_McGraw', name: 'Heath McGraw', password: '1234', rank: 'E7', supervisor_id: null, organization_id: 'WH3LTO' },
-        //     { id: 3, username: 'spoonbillpaver', name: 'Justin Hernandez', password: '1234', rank: 'E6', supervisor_id: null, organization_id: 'WH06B2' },
-        //     { id: 4, username: 'CANTfindKEYS', name: 'Tristan Hicks', password: '1234', rank: 'E3', supervisor_id: null, organization_id: 'WH3LTO' },
-        //     { id: 5, username: 'keelsonwhimsical', name: 'Michel Alam', password: '1234', rank: 'E4', supervisor_id: null, organization_id: 'WH06B2' },
-        //     { id: 6, username: 'ocelottip', name: 'Joe Rogan', password: '1234', rank: 'O6', supervisor_id: 1, organization_id: 'WH3LTO' }
-        // ];
 
-        //const units = [
-         //   { organization_id: 'WH06B2', unit_name: '5th SFG(A), 3rd BN, B CO' },
-         //   { organization_id: 'WH3LTO', unit_name: '1/75 Ranger Regiment HHC' }
-       // ] 
-        // {organization_name: '5th SFG(A), 3rd BN, B CO', UIC:'WH06B2'},
-        // {organization_name: '1/75 Ranger Regiment HHC', UIC:'WH3LTO'},
-        // {organization_name: 'Unit_3', UIC:''}
 
 
         const eventHandler = (e) => {
@@ -183,7 +142,7 @@ const Register = () => {
                 <p>{user.name}</p>
                 <p>{user.email}</p>
                 <p>Username: {user.username}</p>
-                <p>Please fill out the information below to finish setting up your profile!</p>
+                <p>Please fill out the information below and hit submit to finish setting up your profile!</p>
                 </h1>
                 </div>
                 <form className="completepage" onSubmit={eventHandler}>
