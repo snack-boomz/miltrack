@@ -1,8 +1,6 @@
-# miltrack
+![miltrack-cover-image](/cover.png)
+
 *The tracker to end all trackers*
-
-
- \\\\\\//////Miltrack Image goes here\\\\\\//////
 
 ## Overview
 
