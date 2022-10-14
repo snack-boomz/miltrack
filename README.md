@@ -2,6 +2,7 @@
 
 *The tracker to end all trackers*
 
+
 ## Overview
 
 - Miltrack is here to solve a common problem that is present in all military branches which is that all your resources that need to be tracked are scattered throughtout multiple sites across the internet and all service members regardeless of the rank have to spend valuable time trying to track and find the correct information through all the sites in order to know if they're current in all their medical, yearly training and other schools or information.
@@ -37,7 +38,7 @@ search stuff
 
 ### Schema - Entity Relationship Diagram
 
-\\\\\\//////schema picture here\\\\\\//////
+![Screen Shot 2022-10-14 at 10 12 38 AM](https://user-images.githubusercontent.com/21201215/195868197-1ca635bb-dc53-4445-a2d6-28ca8eb40461.png)
 
 ## Setup & Dependencies: <a name="setup"></a>
 
